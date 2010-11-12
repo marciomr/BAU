@@ -1,0 +1,16 @@
+<div class="author">
+  <% fields_for "book[author_attributes][]", author do |author_form| %>
+    <p>
+      <%= author_form.label :name, "Autor" %><br />
+      <%= author_form.text_field_with_auto_complete :name, :index => nil %>
+      <%#= author_form.text_field :name, :index => nil %>
+      <% if author.new_record? %> 
+        <%= link_to_function "remove", "$(this).up('.author').remove()" %>
+      <% else %>
+        <%= link_to_function "remove", "mark_for_destroy(this)" %>
+        <%= author_form.hidden_field :id, :index => nil %>
+        <%= author_form.hidden_field :should_destroy, :index => nil, :class => 'should_destroy' %>
+      <% end %>
+    <p>
+  <% end %>
+</div>

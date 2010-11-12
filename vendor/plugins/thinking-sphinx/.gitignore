@@ -1,0 +1,8 @@
+gem_deploy.rake
+pkg
+coverage
+*.tmproj
+rdoc
+database.yml
+tmp
+*.gem

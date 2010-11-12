@@ -1,0 +1,21 @@
+one:
+  title: MyString
+  editor: MyString
+  city: MyString
+  country: MyString
+  year: 1
+  language: MyString
+  description: MyText
+  collection: MyString
+  cdd: MyString
+
+two:
+  title: MyString
+  editor: MyString
+  city: MyString
+  country: MyString
+  year: 1
+  language: MyString
+  description: MyText
+  collection: MyString
+  cdd: MyString

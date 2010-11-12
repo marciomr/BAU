@@ -1,0 +1,47 @@
+<% form_for @book do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :title, "Título" %><br />
+    <%= f.text_field :title %>
+  </p>
+  
+  <div id="authors">
+    <%= render :partial => "author", :collection => @book.authors %>
+  </div>
+
+  <p><%= add_author_link "Adicionar um autor" %></p>
+
+  <p>
+    <%= f.label :editor, "Editor" %><br />
+    <%= text_field_with_auto_complete :book, :editor %>
+  </p>
+  <p>
+    <%= f.label :city, "Cidade" %><br />
+    <%= text_field_with_auto_complete :book, :city %>
+  </p>
+  <p>
+    <%= f.label :country, "País" %><br />
+    <%= text_field_with_auto_complete :book, :country %>
+  </p>
+  <p>
+    <%= f.label :year, "Ano" %><br />
+    <%= f.text_field :year %>
+  </p>
+  <p>
+    <%= f.label :language, "Língua" %><br />
+    <%= text_field_with_auto_complete :book, :language %>
+  </p>
+  <p>
+    <%= f.label :collection, "Acervo" %><br />
+    <%= text_field_with_auto_complete :book, :collection %>
+  </p>
+  <p>
+    <%= f.label :cdd, "CDD" %><br />
+    <%= f.text_field :cdd %>
+  </p>
+   <p>
+    <%= f.label :description, "Descrição" %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p><%= f.submit "Salvar" %></p>
+<% end %>

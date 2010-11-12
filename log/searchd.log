@@ -1,0 +1,146 @@
+[Wed Nov 10 22:14:28.132 2010] [30612] accepting connections
+[Wed Nov 10 22:14:44.046 2010] [30612] rotating indices (seamless=1)
+[Wed Nov 10 22:14:44.048 2010] [30612] rotating index 'book_core': success
+[Wed Nov 10 22:14:44.048 2010] [30612] rotating finished
+[Wed Nov 10 22:21:59.673 2010] [30612] rotating indices (seamless=1)
+[Wed Nov 10 22:21:59.675 2010] [30612] rotating index 'book_core': success
+[Wed Nov 10 22:21:59.676 2010] [30612] rotating finished
+[Wed Nov 10 22:25:18.313 2010] [30612] caught SIGTERM, shutting down
+[Wed Nov 10 22:25:18.313 2010] [30612] shutdown complete
+[Wed Nov 10 22:25:18.635 2010] [30847] accepting connections
+[Wed Nov 10 22:25:44.911 2010] [30847] rotating indices (seamless=1)
+[Wed Nov 10 22:25:44.914 2010] [30847] rotating index 'book_delta': success
+[Wed Nov 10 22:25:44.914 2010] [30847] rotating finished
+[Wed Nov 10 23:21:15.007 2010] [30847] caught SIGTERM, shutting down
+[Wed Nov 10 23:21:15.008 2010] [30847] shutdown complete
+[Thu Nov 11 10:58:22.576 2010] [ 2490] accepting connections
+[Thu Nov 11 14:44:41.916 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:44:41.980 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:44:41.980 2010] [ 2490] rotating finished
+[Thu Nov 11 14:49:21.046 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:49:21.049 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:49:21.049 2010] [ 2490] rotating finished
+[Thu Nov 11 14:51:34.417 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:51:34.419 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:51:34.419 2010] [ 2490] rotating finished
+[Thu Nov 11 14:51:51.285 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:51:51.287 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:51:51.288 2010] [ 2490] rotating finished
+[Thu Nov 11 14:52:02.932 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:52:02.935 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:52:02.935 2010] [ 2490] rotating finished
+[Thu Nov 11 14:53:02.749 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:53:02.751 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:53:02.751 2010] [ 2490] rotating finished
+[Thu Nov 11 14:53:12.911 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:53:12.913 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:53:12.913 2010] [ 2490] rotating finished
+[Thu Nov 11 14:56:25.410 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:56:25.416 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:56:25.416 2010] [ 2490] rotating finished
+[Thu Nov 11 14:56:34.757 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:56:34.759 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:56:34.759 2010] [ 2490] rotating finished
+[Thu Nov 11 14:57:43.310 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:57:43.312 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:57:43.312 2010] [ 2490] rotating finished
+[Thu Nov 11 14:58:04.428 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:58:04.431 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:58:04.431 2010] [ 2490] rotating finished
+[Thu Nov 11 14:58:35.043 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:58:35.057 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:58:35.057 2010] [ 2490] rotating finished
+[Thu Nov 11 14:58:44.401 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 14:58:44.404 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 14:58:44.404 2010] [ 2490] rotating finished
+[Thu Nov 11 15:00:09.439 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:00:09.442 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:00:09.442 2010] [ 2490] rotating finished
+[Thu Nov 11 15:00:19.048 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:00:19.054 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:00:19.054 2010] [ 2490] rotating finished
+[Thu Nov 11 15:19:36.638 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:19:36.646 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:19:36.647 2010] [ 2490] rotating finished
+[Thu Nov 11 15:44:01.079 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:44:01.081 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:44:01.081 2010] [ 2490] rotating finished
+[Thu Nov 11 15:47:27.620 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:47:27.622 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:47:27.622 2010] [ 2490] rotating finished
+[Thu Nov 11 15:49:36.967 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:49:36.970 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:49:36.970 2010] [ 2490] rotating finished
+[Thu Nov 11 15:51:23.425 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:51:23.428 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:51:23.428 2010] [ 2490] rotating finished
+[Thu Nov 11 15:51:31.809 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:51:31.811 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:51:31.811 2010] [ 2490] rotating finished
+[Thu Nov 11 15:51:50.449 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:51:50.451 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:51:50.451 2010] [ 2490] rotating finished
+[Thu Nov 11 15:52:36.772 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 15:52:36.774 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 15:52:36.774 2010] [ 2490] rotating finished
+[Thu Nov 11 16:14:16.310 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 16:14:16.312 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 16:14:16.312 2010] [ 2490] rotating finished
+[Thu Nov 11 16:16:45.514 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 16:16:45.516 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 16:16:45.516 2010] [ 2490] rotating finished
+[Thu Nov 11 16:17:07.483 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 16:17:07.485 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 16:17:07.486 2010] [ 2490] rotating finished
+[Thu Nov 11 16:17:47.689 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 16:17:47.691 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 16:17:47.691 2010] [ 2490] rotating finished
+[Thu Nov 11 16:27:05.398 2010] [ 2490] rotating indices (seamless=1)
+[Thu Nov 11 16:27:05.401 2010] [ 2490] rotating index 'book_delta': success
+[Thu Nov 11 16:27:05.401 2010] [ 2490] rotating finished
+[Thu Nov 11 16:28:46.458 2010] [ 2490] caught SIGTERM, shutting down
+[Thu Nov 11 16:28:46.479 2010] [ 2490] shutdown complete
+[Thu Nov 11 16:28:47.031 2010] [ 6959] accepting connections
+[Thu Nov 11 16:29:05.419 2010] [ 6959] caught SIGTERM, shutting down
+[Thu Nov 11 16:29:05.419 2010] [ 6959] shutdown complete
+[Thu Nov 11 16:29:05.728 2010] [ 6987] accepting connections
+[Thu Nov 11 16:29:33.940 2010] [ 6987] rotating indices (seamless=1)
+[Thu Nov 11 16:29:33.947 2010] [ 6987] rotating index 'book_delta': success
+[Thu Nov 11 16:29:33.950 2010] [ 6987] rotating index 'book_core': success
+[Thu Nov 11 16:29:33.950 2010] [ 6987] rotating finished
+[Thu Nov 11 16:29:37.737 2010] [ 6987] caught SIGTERM, shutting down
+[Thu Nov 11 16:29:37.738 2010] [ 6987] shutdown complete
+[Thu Nov 11 16:29:38.040 2010] [ 7017] accepting connections
+[Thu Nov 11 16:34:45.921 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 16:34:45.926 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 16:34:45.926 2010] [ 7017] rotating finished
+[Thu Nov 11 16:34:54.568 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 16:34:54.570 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 16:34:54.570 2010] [ 7017] rotating finished
+[Thu Nov 11 16:38:36.802 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 16:38:36.804 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 16:38:36.804 2010] [ 7017] rotating finished
+[Thu Nov 11 17:00:12.285 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 17:00:12.287 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 17:00:12.287 2010] [ 7017] rotating finished
+[Thu Nov 11 17:01:09.245 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 17:01:09.251 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 17:01:09.251 2010] [ 7017] rotating finished
+[Thu Nov 11 17:02:17.330 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 17:02:17.332 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 17:02:17.332 2010] [ 7017] rotating finished
+[Thu Nov 11 17:40:30.084 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 17:40:30.086 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 17:40:30.086 2010] [ 7017] rotating finished
+[Thu Nov 11 17:41:02.152 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 17:41:02.154 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 17:41:02.154 2010] [ 7017] rotating finished
+[Thu Nov 11 17:42:29.926 2010] [ 7017] rotating indices (seamless=1)
+[Thu Nov 11 17:42:29.928 2010] [ 7017] rotating index 'book_delta': success
+[Thu Nov 11 17:42:29.928 2010] [ 7017] rotating finished
+[Thu Nov 11 19:13:30.859 2010] [ 7017] caught SIGTERM, shutting down
+[Thu Nov 11 19:13:30.899 2010] [ 7017] shutdown complete
+[Thu Nov 11 20:22:57.580 2010] [ 2258] accepting connections
+[Thu Nov 11 20:56:58.931 2010] [ 2258] caught SIGTERM, shutting down
+[Thu Nov 11 20:56:58.931 2010] [ 2258] shutdown complete
+[Thu Nov 11 23:07:29.783 2010] [ 2335] accepting connections

@@ -1,0 +1,56 @@
+<% title @book.title %>
+
+<p>
+  <strong>Tombo:</strong>
+  <%=h @book.id %>
+</p>
+<p>
+  <strong>Título:</strong>
+  <%=h @book.title %>
+</p>
+<% for author in @book.authors %>
+  <p>
+    <strong>Autor:</strong>
+    <%=h author.name %>
+  </p>
+<% end %>
+<p>
+  <strong>Editor:</strong>
+  <%=h @book.editor %>
+</p>
+<p>
+  <strong>Cidade:</strong>
+  <%=h @book.city %>
+</p>
+<p>
+  <strong>País:</strong>
+  <%=h @book.country %>
+</p>
+<p>
+  <strong>Ano:</strong>
+  <%=h @book.year %>
+</p>
+<p>
+  <strong>Língua:</strong>
+  <%=h @book.language %>
+</p>
+<p>
+  <strong>Acervo:</strong>
+  <%=h @book.collection %>
+</p>
+<p>
+  <strong>CDD:</strong>
+  <%=h @book.cdd %>
+</p>
+<p>
+  <strong>Descrição:</strong><br/>
+  <%=h @book.description %>
+</p>
+
+<% if admin? %>
+<p>
+  <%= link_to "Editar", edit_book_path(@book) %> |
+  <%= link_to "Deletar", @book, :confirm => 'Tem certeza?', :method => :delete %> |
+  <%= link_to "Ver Todos", books_path %>
+</p>
+<% end %>
