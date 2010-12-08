@@ -7,7 +7,7 @@ module LayoutHelper
     @content_for_title = page_title.to_s
     @show_title = show_title
   end
-
+  
   def show_title?
     @show_title
   end
@@ -18,5 +18,9 @@ module LayoutHelper
 
   def javascript(*args)
     content_for(:head) { javascript_include_tag(*args) }
+  end
+  
+  def rss(url)
+    content_for(:head) { auto_discovery_link_tag :rss, url }
   end
 end

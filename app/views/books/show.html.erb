@@ -1,8 +1,14 @@
 <% title @book.title %>
 
+<% if @book.imglink && !@book.imglink.empty? %>
+  <div id="capa">
+    <img id="imgcapa" src=<%= @book.imglink %> /> 
+  </div>
+<% end %>
+
 <p>
   <strong>Tombo:</strong>
-  <%=h @book.id %>
+  <%=h @book.tombo %>
 </p>
 <p>
   <strong>Título:</strong>
@@ -19,14 +25,6 @@
   <%=h @book.editor %>
 </p>
 <p>
-  <strong>Cidade:</strong>
-  <%=h @book.city %>
-</p>
-<p>
-  <strong>País:</strong>
-  <%=h @book.country %>
-</p>
-<p>
   <strong>Ano:</strong>
   <%=h @book.year %>
 </p>
@@ -35,22 +33,50 @@
   <%=h @book.language %>
 </p>
 <p>
+  <strong>Páginas:</strong>
+  <%=h @book.page_number %>
+</p>
+<p>
+  <strong>Assunto:</strong>
+  <%=h @book.subject %>
+</p>
+<p>
   <strong>Acervo:</strong>
   <%=h @book.collection %>
+</p>
+<p>
+  <strong>Cidade:</strong>
+  <%=h @book.city %>
+</p>
+<p>
+  <strong>País:</strong>
+  <%=h @book.country %>
 </p>
 <p>
   <strong>CDD:</strong>
   <%=h @book.cdd %>
 </p>
+
+<% if @book.pdflink && !@book.pdflink.empty? %>
+  <p>
+    <%= link_to "PDF", @book.pdflink %>
+  <p>
+<% end %>
+
 <p>
+  <strong>Palavras Chave:</strong>
+  <%=h @book.tag_titles %>
+</p>
+
   <strong>Descrição:</strong><br/>
   <%=h @book.description %>
 </p>
 
-<% if admin? %>
-<p>
-  <%= link_to "Editar", edit_book_path(@book) %> |
-  <%= link_to "Deletar", @book, :confirm => 'Tem certeza?', :method => :delete %> |
+<div id="admin">
+  <% if admin? %> 
+    <%= link_to "Editar", edit_book_path(@book) %> |
+    <%= link_to "Remover", @book, :confirm => 'Tem certeza?', :method => :delete %> |
+  <% end %>
+  
   <%= link_to "Ver Todos", books_path %>
-</p>
-<% end %>
+</div>

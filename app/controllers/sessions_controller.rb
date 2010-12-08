@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def create
     if Session.logon(params[:password])
-      flash[:notice] = "Successfully logged in" 
+      flash[:notice] = "Logado com sucesso." 
       session[:admin] = true
       redirect_to (session[:return_to] || root_path)
     else
@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
-    flash[:notice] = "Successfully logged out"
+    flash[:notice] = "Deslogado com sucesso."
     redirect_to (session[:return_to] || :controller => 'books', :action => 'index')
   end
 

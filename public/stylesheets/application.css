@@ -1,3 +1,6 @@
+h1{
+    margin-bottom: 30px;
+}
 body {
   background-color: #4B7399;
   font-family: Verdana, Helvetica, Arial;
@@ -15,23 +18,26 @@ a {
 
 li {
    list-style: none;
-   margin-bottom: 15px;
+   margin-bottom: 10px;
+   margin-left: -40px;
 }
 
-input{
+#search input{
     font-size: 14pt;
 }
+
 
 #search{
-    margin: auto;
-}
-
-.title{
     font-size: 14pt;
+    margin-bottom: 20px;
 }
 
-.author, .year{
-    font-size: 10pt;
+.index_title{
+    font-size: 12pt;
+}
+
+.index_author, .index_year{
+    font-size: 9pt;
     color: gray;
 }
 
@@ -42,12 +48,18 @@ input{
 }
 
 #container {
-  width: 75%;
+  width: 900px;
   margin: 0 auto;
   background-color: #FFF;
-  padding: 20px 40px;
   border: solid 1px black;
-  margin-top: 20px;
+  margin-top: 30px;
+}
+
+#content {
+  margin: 0 auto;
+  width: 650px;
+/*  margin-bottom: 30px;*/
+  padding: 20px 40px;
 }
 
 #flash_notice, #flash_error {
@@ -101,4 +113,18 @@ input{
 #errorExplanation ul li {
   font-size: 12px;
   list-style: disc;
+}
+
+#capa{
+    float: right;
+    margin-right: 80px;
+}
+
+#imgcapa{
+    width: 180px;
+    height: 280px;
+}
+
+#admin{
+    margin-top: 80px;
 }

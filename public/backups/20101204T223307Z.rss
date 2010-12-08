@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:tl="http://www.terralivre.com/terms" xmlns:dc="http://purl.org/dc/terms">
+  <channel>
+    <title>Terra Livre</title>
+    <description>Cat&#225;logo de livros da Biblioteca Terra Livre</description>
+    <link>http://localhost:3000/books?format=rss</link>
+    <item>
+      <title>Uma Mente Brilhante</title>
+      <description>&lt;h3&gt;Sylvia Nasar&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:37 +0000</pubDate>
+      <link>http://localhost:3000/books/1</link>
+      <guid>http://localhost:3000/books/1</guid>
+      <language></language>
+      <dc:title>Uma Mente Brilhante</dc:title>
+      <dc:date>2002</dc:date>
+      <dc:subject>Biography &amp; Autobiography</dc:subject>
+      <dc:creator>Sylvia Nasar</dc:creator>
+      <tl:tombo>19</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Administra&#231;ao Da Produ&#231;ao Para A Vantagem</title>
+      <description>&lt;h3&gt;Richard B. Chase, Nicholas J. Aquilano, F. Robert Jacobs&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:37 +0000</pubDate>
+      <link>http://localhost:3000/books/2</link>
+      <guid>http://localhost:3000/books/2</guid>
+      <language></language>
+      <category></category>
+      <dc:title>Administra&#231;ao Da Produ&#231;ao Para A Vantagem</dc:title>
+      <dc:date>2006</dc:date>
+      <dc:publisher>Bookman</dc:publisher>
+      <dc:creator>Richard B. Chase</dc:creator>
+      <dc:creator>Nicholas J. Aquilano</dc:creator>
+      <dc:creator>F. Robert Jacobs</dc:creator>
+      <tl:tombo>20</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>C&#225;lculo</title>
+      <description>&lt;h3&gt;Tom M. Apostol&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:37 +0000</pubDate>
+      <link>http://localhost:3000/books/3</link>
+      <guid>http://localhost:3000/books/3</guid>
+      <language></language>
+      <dc:title>C&#225;lculo</dc:title>
+      <dc:date>1983</dc:date>
+      <dc:creator>Tom M. Apostol</dc:creator>
+      <tl:tombo>21</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Eclipse Da Raz&#227;o</title>
+      <description>&lt;h3&gt;Max Horkheimer&lt;/h3&gt; Livro de Horkheimer que critica o positivismo e o pragmatismo. </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:37 +0000</pubDate>
+      <link>http://localhost:3000/books/4</link>
+      <guid>http://localhost:3000/books/4</guid>
+      <language></language>
+      <category>Adorno</category>
+      <category>Positivismo</category>
+      <dc:title>Eclipse Da Raz&#227;o</dc:title>
+      <dc:date>2007</dc:date>
+      <dc:description>Livro de Horkheimer que critica o positivismo e o pragmatismo. </dc:description>
+      <dc:publisher>Centauro</dc:publisher>
+      <dc:subject>Sociologia</dc:subject>
+      <dc:creator>Max Horkheimer</dc:creator>
+      <tl:tombo>1</tl:tombo>
+      <tl:cidade>Frankfurt</tl:cidade>
+      <tl:pais>Alemanha</tl:pais>
+      <tl:acervo>Terra Livre</tl:acervo>
+      <tl:img>http://imagens.travessa.com.br/livro/DT/0d/0db09c74-a328-452f-ae3a-ed6810dee341.jpg</tl:img>
+    </item>
+    <item>
+      <title>Introdu&#231;&#227;o A Sociologia</title>
+      <description>&lt;h3&gt;Theodor W. Adorno, Wolfgang Leo Maar&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:38 +0000</pubDate>
+      <link>http://localhost:3000/books/5</link>
+      <guid>http://localhost:3000/books/5</guid>
+      <language></language>
+      <dc:title>Introdu&#231;&#227;o A Sociologia</dc:title>
+      <dc:date>2008</dc:date>
+      <dc:publisher>UNESP</dc:publisher>
+      <dc:creator>Theodor W. Adorno</dc:creator>
+      <dc:creator>Wolfgang Leo Maar</dc:creator>
+      <tl:tombo>2</tl:tombo>
+      <tl:cidade>Frankfurt</tl:cidade>
+      <tl:pais>Alemanha</tl:pais>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Emille Durkeheim</title>
+      <description>&lt;h3&gt;Jos&#233; Albertino Rodrigues&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:38 +0000</pubDate>
+      <link>http://localhost:3000/books/6</link>
+      <guid>http://localhost:3000/books/6</guid>
+      <language></language>
+      <dc:title>Emille Durkeheim</dc:title>
+      <dc:date>1995</dc:date>
+      <dc:creator>Jos&#233; Albertino Rodrigues</dc:creator>
+      <tl:tombo>3</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Mudar O Mundo Sem Tomar O Poder</title>
+      <description>&lt;h3&gt;John Holloway, Emir Sader&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:38 +0000</pubDate>
+      <link>http://localhost:3000/books/7</link>
+      <guid>http://localhost:3000/books/7</guid>
+      <language></language>
+      <dc:title>Mudar O Mundo Sem Tomar O Poder</dc:title>
+      <dc:date>2003</dc:date>
+      <dc:publisher>Viramundo</dc:publisher>
+      <dc:creator>John Holloway</dc:creator>
+      <dc:creator>Emir Sader</dc:creator>
+      <tl:tombo>4</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>A Conquista Do P&#227;o</title>
+      <description>&lt;h3&gt;Kropotkin&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:38 +0000</pubDate>
+      <link>http://localhost:3000/books/8</link>
+      <guid>http://localhost:3000/books/8</guid>
+      <language></language>
+      <category>Teste</category>
+      <dc:title>A Conquista Do P&#227;o</dc:title>
+      <dc:date>1975</dc:date>
+      <dc:creator>Kropotkin</dc:creator>
+      <tl:tombo>5</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>O Indiv&#237;duo, A Sociedade, E O Estado, E Outros Ensaios</title>
+      <description>&lt;h3&gt;Emma Goldman&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:38 +0000</pubDate>
+      <link>http://localhost:3000/books/9</link>
+      <guid>http://localhost:3000/books/9</guid>
+      <language></language>
+      <dc:title>O Indiv&#237;duo, A Sociedade, E O Estado, E Outros Ensaios</dc:title>
+      <dc:date>2007</dc:date>
+      <dc:publisher>Hedra</dc:publisher>
+      <dc:creator>Emma Goldman</dc:creator>
+      <tl:tombo>6</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Nos Caminhos Da Utopia: O Princ&#237;pio Dial&#243;gico Nas Propostas Libert&#225;rias</title>
+      <description>&lt;h3&gt;Luciana Badin&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:38 +0000</pubDate>
+      <link>http://localhost:3000/books/10</link>
+      <guid>http://localhost:3000/books/10</guid>
+      <language></language>
+      <dc:title>Nos Caminhos Da Utopia: O Princ&#237;pio Dial&#243;gico Nas Propostas Libert&#225;rias</dc:title>
+      <dc:publisher>E-papers</dc:publisher>
+      <dc:creator>Luciana Badin</dc:creator>
+      <tl:tombo>7</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Construindo a Liberdade - Tintin</title>
+      <description>&lt;h3&gt;Daniels, J. S.&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:39 +0000</pubDate>
+      <link>http://localhost:3000/books/11</link>
+      <guid>http://localhost:3000/books/11</guid>
+      <language></language>
+      <category>Tintin</category>
+      <category>Quadrinhos</category>
+      <dc:title>Construindo a Liberdade - Tintin</dc:title>
+      <dc:date>2009</dc:date>
+      <dc:publisher>Deriva</dc:publisher>
+      <dc:creator>Daniels, J. S.</dc:creator>
+      <tl:tombo>8</tl:tombo>
+      <tl:cidade>Porto Alegre</tl:cidade>
+      <tl:pais>Brasil</tl:pais>
+      <tl:acervo>Biblioteca Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Almanaque Anos 80</title>
+      <description>&lt;h3&gt;Luiz Andr&#233; Alzer, Mariana Claudino&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:39 +0000</pubDate>
+      <link>http://localhost:3000/books/12</link>
+      <guid>http://localhost:3000/books/12</guid>
+      <language></language>
+      <dc:title>Almanaque Anos 80</dc:title>
+      <dc:date>2004</dc:date>
+      <dc:publisher>Ediouro Publica&#231;&#245;es</dc:publisher>
+      <dc:creator>Luiz Andr&#233; Alzer</dc:creator>
+      <dc:creator>Mariana Claudino</dc:creator>
+      <tl:tombo>9</tl:tombo>
+    </item>
+    <item>
+      <title>What Is Property?</title>
+      <description>&lt;h3&gt;Pierre Joseph Proudhon&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:39 +0000</pubDate>
+      <link>http://localhost:3000/books/13</link>
+      <guid>http://localhost:3000/books/13</guid>
+      <language></language>
+      <dc:title>What Is Property?</dc:title>
+      <dc:date>1969</dc:date>
+      <dc:publisher>Forgotten Books</dc:publisher>
+      <dc:creator>Pierre Joseph Proudhon</dc:creator>
+      <tl:tombo>10</tl:tombo>
+    </item>
+    <item>
+      <title>Anarchism</title>
+      <description>&lt;h3&gt;Peter Kropotkin&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:39 +0000</pubDate>
+      <link>http://localhost:3000/books/14</link>
+      <guid>http://localhost:3000/books/14</guid>
+      <language></language>
+      <dc:title>Anarchism</dc:title>
+      <dc:date>2002</dc:date>
+      <dc:publisher>Dover Pubns</dc:publisher>
+      <dc:creator>Peter Kropotkin</dc:creator>
+      <tl:tombo>11</tl:tombo>
+    </item>
+    <item>
+      <title>Representing Reality</title>
+      <description>&lt;h3&gt;Bill Nichols&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:39 +0000</pubDate>
+      <link>http://localhost:3000/books/15</link>
+      <guid>http://localhost:3000/books/15</guid>
+      <language></language>
+      <dc:title>Representing Reality</dc:title>
+      <dc:date>1991</dc:date>
+      <dc:publisher>Indiana Univ. Pr.</dc:publisher>
+      <dc:creator>Bill Nichols</dc:creator>
+      <tl:tombo>12</tl:tombo>
+    </item>
+    <item>
+      <title>Harry Potter E A Pedra Filosofal</title>
+      <description>&lt;h3&gt;J. K. Rowling, Lia Wyler&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:39 +0000</pubDate>
+      <link>http://localhost:3000/books/16</link>
+      <guid>http://localhost:3000/books/16</guid>
+      <language></language>
+      <dc:title>Harry Potter E A Pedra Filosofal</dc:title>
+      <dc:date>2000</dc:date>
+      <dc:publisher>Precodoido .Com.Br</dc:publisher>
+      <dc:creator>J. K. Rowling</dc:creator>
+      <dc:creator>Lia Wyler</dc:creator>
+      <tl:tombo>13</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>A Conquista Do P&#227;o</title>
+      <description>&lt;h3&gt;Kropotkine&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:40 +0000</pubDate>
+      <link>http://localhost:3000/books/17</link>
+      <guid>http://localhost:3000/books/17</guid>
+      <language></language>
+      <category>Anarquismo</category>
+      <dc:title>A Conquista Do P&#227;o</dc:title>
+      <dc:date>1975</dc:date>
+      <dc:publisher>Guimar&#227;es</dc:publisher>
+      <dc:subject>Geografia</dc:subject>
+      <dc:creator>Kropotkine</dc:creator>
+      <tl:tombo>14</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Discurso Sobre O Capim</title>
+      <description>&lt;h3&gt;Luiz Schwarcz&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:40 +0000</pubDate>
+      <link>http://localhost:3000/books/18</link>
+      <guid>http://localhost:3000/books/18</guid>
+      <language></language>
+      <dc:title>Discurso Sobre O Capim</dc:title>
+      <dc:date>2005</dc:date>
+      <dc:publisher>Editora Companhia Das Letras</dc:publisher>
+      <dc:subject>Fiction</dc:subject>
+      <dc:creator>Luiz Schwarcz</dc:creator>
+      <tl:tombo>15</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Foucault</title>
+      <description>&lt;h3&gt;Gilles Deleuze, Se&#225;n Hand&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:40 +0000</pubDate>
+      <link>http://localhost:3000/books/19</link>
+      <guid>http://localhost:3000/books/19</guid>
+      <language></language>
+      <dc:title>Foucault</dc:title>
+      <dc:date>1988</dc:date>
+      <dc:publisher>Univ Of Minnesota Press</dc:publisher>
+      <dc:subject>Philosophy</dc:subject>
+      <dc:creator>Gilles Deleuze</dc:creator>
+      <dc:creator>Se&#225;n Hand</dc:creator>
+      <tl:tombo>16</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>The Logical Structure Of The World And Pseudoproblems In Philosophy</title>
+      <description>&lt;h3&gt;Rudolf Carnap, Rolf A. George&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:40 +0000</pubDate>
+      <link>http://localhost:3000/books/20</link>
+      <guid>http://localhost:3000/books/20</guid>
+      <language></language>
+      <dc:title>The Logical Structure Of The World And Pseudoproblems In Philosophy</dc:title>
+      <dc:date>2003</dc:date>
+      <dc:publisher>Open Court Publishing</dc:publisher>
+      <dc:subject>Philosophy</dc:subject>
+      <dc:creator>Rudolf Carnap</dc:creator>
+      <dc:creator>Rolf A. George</dc:creator>
+      <tl:tombo>17</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Agosto</title>
+      <description>&lt;h3&gt;Rubem Fonseca&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:40 +0000</pubDate>
+      <link>http://localhost:3000/books/21</link>
+      <guid>http://localhost:3000/books/21</guid>
+      <language></language>
+      <dc:title>Agosto</dc:title>
+      <dc:date>1990</dc:date>
+      <dc:subject>Fiction</dc:subject>
+      <dc:creator>Rubem Fonseca</dc:creator>
+      <tl:tombo>18</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Alta Fidelidade</title>
+      <description>&lt;h3&gt;&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:41 +0000</pubDate>
+      <link>http://localhost:3000/books/22</link>
+      <guid>http://localhost:3000/books/22</guid>
+      <language></language>
+      <dc:title>Alta Fidelidade</dc:title>
+      <dc:date>1998</dc:date>
+      <dc:creator></dc:creator>
+      <tl:tombo>22</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Medida Do Mundo, A</title>
+      <description>&lt;h3&gt;Daniel Kehlmann, Sonali Bertuol&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 21:59:41 +0000</pubDate>
+      <link>http://localhost:3000/books/23</link>
+      <guid>http://localhost:3000/books/23</guid>
+      <language></language>
+      <dc:title>Medida Do Mundo, A</dc:title>
+      <dc:date>2007</dc:date>
+      <dc:creator>Daniel Kehlmann</dc:creator>
+      <dc:creator>Sonali Bertuol</dc:creator>
+      <tl:tombo>23</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+    <item>
+      <title>Dan&#231;a, A</title>
+      <description>&lt;h3&gt;Oriah Mountain Dreamer&lt;/h3&gt; </description>
+      <pubDate>Sat, 04 Dec 2010 22:33:02 +0000</pubDate>
+      <link>http://localhost:3000/books/24</link>
+      <guid>http://localhost:3000/books/24</guid>
+      <language>pt</language>
+      <dc:title>Dan&#231;a, A</dc:title>
+      <dc:format>218 pages</dc:format>
+      <dc:creator>Oriah Mountain Dreamer</dc:creator>
+      <tl:tombo>24</tl:tombo>
+      <tl:acervo>Terra Livre</tl:acervo>
+    </item>
+  </channel>
+</rss>

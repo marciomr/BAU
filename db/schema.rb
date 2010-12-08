@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101111164411) do
+ActiveRecord::Schema.define(:version => 20101204214150) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -31,6 +31,18 @@ ActiveRecord::Schema.define(:version => 20101111164411) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "delta",       :default => true, :null => false
+    t.string   "pdflink"
+    t.string   "imglink"
+    t.string   "subject"
+    t.integer  "page_number"
+    t.integer  "tombo"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "title"
+    t.integer  "book_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

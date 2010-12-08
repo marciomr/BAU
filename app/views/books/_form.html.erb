@@ -1,8 +1,17 @@
+<% form_remote_tag :url => { :controller => 'books', :action => 'gbook' } do -%>
+  <%= label_tag "ISBN" %><br/>
+  <%= text_field_tag :isbn %>
+  <%= hidden_field_tag :id, @book.id %>
+  <%= submit_tag 'Preencher' %>
+<% end -%>
+
+
 <% form_for @book do |f| %>
   <%= f.error_messages %>
-  <p>
+
+  <p id="title">
     <%= f.label :title, "Título" %><br />
-    <%= f.text_field :title %>
+    <%= f.text_field :title, :size => 60 %>
   </p>
   
   <div id="authors">
@@ -11,37 +20,65 @@
 
   <p><%= add_author_link "Adicionar um autor" %></p>
 
-  <p>
+  <p id="editor">
     <%= f.label :editor, "Editor" %><br />
-    <%= text_field_with_auto_complete :book, :editor %>
+    <%= text_field_with_auto_complete :book, :editor, :size => 60 %>
+  </p>
+  <p id="year">
+    <%= f.label :year, "Ano" %><br />
+    <%= f.text_field :year, :size => 5 %>
+  </p>
+  <div id="language">
+    <p>
+      <%= f.label :language, "Língua" %><br />
+      <%= text_field_with_auto_complete :book, :language, :size => 5 %>
+    </p>
+  </div>
+  <div id="page_number">
+    <p>
+     <%= f.label :page_number, "Número de Páginas" %><br />
+     <%= f.text_field :page_number, :size => 5 %>
+    </p>
+  </div>
+  <div id="subject">
+    <p>
+      <%= f.label :subject, "Assunto" %><br />
+      <%= f.text_field_with_auto_complete :subject, :size => 60 %>
+    </p>
+  </div>
+  <div id="tags">
+    <%= render :partial => "tag", :collection => @book.tags %>
+  </div>
+
+  <p><%= add_tag_link "Adicionar palavra chave" %></p>
+
+  <p>
+    <%= f.label :collection, "Acervo" %><br />
+    <%= text_field_with_auto_complete :book, :collection, :value => "Terra Livre", :size => 60 %>
   </p>
   <p>
     <%= f.label :city, "Cidade" %><br />
-    <%= text_field_with_auto_complete :book, :city %>
+    <%= text_field_with_auto_complete :book, :city, :size => 60 %>
   </p>
   <p>
     <%= f.label :country, "País" %><br />
-    <%= text_field_with_auto_complete :book, :country %>
-  </p>
-  <p>
-    <%= f.label :year, "Ano" %><br />
-    <%= f.text_field :year %>
-  </p>
-  <p>
-    <%= f.label :language, "Língua" %><br />
-    <%= text_field_with_auto_complete :book, :language %>
-  </p>
-  <p>
-    <%= f.label :collection, "Acervo" %><br />
-    <%= text_field_with_auto_complete :book, :collection %>
+    <%= text_field_with_auto_complete :book, :country, :size => 60 %>
   </p>
   <p>
     <%= f.label :cdd, "CDD" %><br />
-    <%= f.text_field :cdd %>
+    <%= f.text_field :cdd, :size => 60 %>
   </p>
-   <p>
+  <p>
+    <%= f.label :pdflink, "PDF" %><br />
+    <%= f.text_field :pdflink, :size => 60 %>
+  </p>
+  <p>
+    <%= f.label :imglink, "Imagem" %><br />
+    <%= f.text_field :imglink, :size => 60 %>
+  </p>
+  <p>
     <%= f.label :description, "Descrição" %><br />
-    <%= f.text_area :description %>
+    <%= f.text_area :description, :cols => 60 %>
   </p>
   <p><%= f.submit "Salvar" %></p>
 <% end %>

@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :tags
+
+  map.connect '/book/gbook', :controller => 'books', :action => 'gbook'
   map.resources :books
 
   map.connect 'login', :controller => 'sessions', :action => 'new'
@@ -35,7 +38,7 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => "books"
+  map.root :controller => "books", :action => "root"
 
   # See how all your routes lay out with "rake routes"
 

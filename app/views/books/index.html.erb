@@ -1,26 +1,26 @@
-<% title "Livros" %>
+<% rss formatted_books_url(:rss) %>
 
-<div id="search" class="nav">
-<% form_tag books_path, :method => :get do %>
-    <%= text_field_tag :search, params[:search]%>
-    <%= submit_tag "Search", :name => nil, :class => 'button' %>
-<% end %>
-</div>
+<% title "Biblioteca Terra Livre" %>
+
+<%= render :partial => "search" %>
 
 <ul>
   <% for book in @books %>
     <li>
-      <span class="title"><%= link_to book.title, book %></span><br/>
-      <span class="author"><%= book.authors_names %></span>
-      <span class="year"><%= book.year %></span>
+      <span class="index_title"><%= link_to book.title, book %></span><br/>
+      <span class="index_author"><%= book.authors_names %></span>
+      <span class="index_year"><%= book.year %></span>
     </li>
   <% end %>
 </ul>
 
 <%= will_paginate @books %>
+
+<div id="admin">
 <% if admin? %>
-  <p><%= link_to "Novo Livro", new_book_path %></p>
-  <p><%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %></p>
+    <%= link_to "Novo Livro", new_book_path %> | 
+    <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
 <% else %>
-  <p><%= link_to "Logar", :controller => 'sessions', :action => 'new' %></p>
-<% end %>
+    <%= link_to "Logar", :controller => 'sessions', :action => 'new' %>
+<% end %>  
+</div>

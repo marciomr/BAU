@@ -1,0 +1,16 @@
+<div class="tag">
+  <% fields_for "book[tag_attributes][]", tag do |tag_form| %>
+    <p>
+      <%= tag_form.label :title, "Palavra Chave" %><br />
+      <%= tag_form.text_field_with_auto_complete :title, :index => nil, :size => 60 %>
+
+      <% if tag.new_record? %> 
+        <%= link_to_function "remove", "remove_after_slide($(this).up('.tag'))" %>
+      <% else %>
+        <%= link_to_function "remove", "mark_tag_for_destroy(this)" %>
+        <%= tag_form.hidden_field :id, :index => nil %>
+        <%= tag_form.hidden_field :should_destroy, :index => nil, :class => 'should_destroy' %>
+      <% end %>
+    <p>
+  <% end %>
+</div>

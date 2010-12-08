@@ -1,0 +1,6 @@
+<div id="search" class="nav">
+<% form_tag books_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :size => 30 %>
+    <%= submit_tag "Search", :name => nil, :class => 'button' %>
+<% end %>
+</div>
