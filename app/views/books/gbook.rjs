@@ -26,17 +26,24 @@ end
   
 # insere os valores nos campos  
 if $entry
+  change_value('title', 'title', :titleize)
   change_value('date', 'year', :year)
   change_value('publisher', 'editor', :titleize)
   change_value('subject', 'subject', :titleize)
   change_value('format', 'page_number', :number)
   change_value('language', 'language')
+  
 
-  title = $entry.select('dc|title').first
-  subtitle = $entry.select('dc|title').last
-
-  $page["book_title"].value = title.text.titleize
-  $page["book_subtitle"].value = subtitle.text.titleize if title != subtitle
+#  $page["book_title"].value = $entry.css('dc|title').first.text.titleize
+#  $page["title"].visual_effect :highlight, :duration => 2
+#  $page["book_subtitle"].value = subtitle.text.titleize if title != subtitle
+   
+  if $entry.css('dc|title').size > 1
+    $page["book_subtitle"].value = $entry.css('dc|title').last.text.titleize
+    $page["#{subtitle}"].visual_effect :highlight, :duration => 2
+  end
+  
+  $page["book_isbn"].value = @isbn
 
   # remove todos os campos "author"
   page.select('.author').each do |author|

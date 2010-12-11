@@ -73,12 +73,13 @@ namespace :backup do
       collection = item.at_css("tl|acervo").text unless item.at_css("tl|acervo").nil?
       pdflink = item.at_css("tl|pdf").text unless item.at_css("tl|pdf").nil?
       imglink = item.at_css("tl|img").text unless item.at_css("tl|img").nil?
-      
+      isbn = item.at_css("dc|identifier").text[/[0-9]+.*/] unless item.at_css("dc|identifier").nil?   
       
       created_at = DateTime.parse(item.at_css("pubDate").text)
       language = item.at_css("language").text unless item.at_css("language").nil?
       
       book = Book.new(
+        :isbn => isbn,
         :tombo => tombo,
         :created_at => created_at,
         :title => title,

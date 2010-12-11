@@ -12,7 +12,7 @@ class Book < ActiveRecord::Base
            
   attr_accessible :title, :editor, :city, :country, :year, :language, :description 
   attr_accessible :collection, :cdd, :author_attributes, :tag_attributes, :pdflink, :imglink
-  attr_accessible :subject, :page_number, :tombo, :volume, :subtitle
+  attr_accessible :subject, :page_number, :tombo, :volume, :subtitle, :isbn
 
   after_update :save_authors, :save_tags
 

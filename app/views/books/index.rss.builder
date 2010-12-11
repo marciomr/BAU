@@ -29,6 +29,7 @@ xml.rss :version => "2.0", 'xmlns:dc' => 'http://purl.org/dc/terms', 'xmlns:tl' 
         xml.tag!("dc:publisher", book.editor) if book.editor && !book.editor.empty?
         xml.tag!("dc:format", "#{book.page_number} pages") if book.page_number
         xml.tag!("dc:subject", book.subject) if book.subject && !book.subject.empty?
+        xml.tag!("dc:identifier", "ISBN:#{book.isbn}") if book.isbn && ! book.isbn.empty?
         
         book.authors.each do |author|
           xml.tag!("dc:creator", author.name)

@@ -1,13 +1,15 @@
 <% form_remote_tag :url => { :controller => 'books', :action => 'gbook' } do -%>
   <%= label_tag "ISBN" %><br/>
-  <%= text_field_tag :isbn %>
+  <%= text_field_tag :isbn, @book.isbn %>
   <%= hidden_field_tag :id, @book.id %>
   <%= submit_tag 'Preencher' %>
 <% end -%>
 
-
 <% form_for @book do |f| %>
   <%= f.error_messages %>
+  <p id="isbn">
+    <%= f.hidden_field :isbn %>
+  </p>
 
   <p id="title">
     <%= f.label :title, "Título" %><br />

@@ -14,12 +14,14 @@
   <strong>Título:</strong>
   <%=h @book.title %>
 </p>
-<p>
-  <strong>Subtítulo:</strong>
-  <%=h @book.subtitle %>
-</p>
+<% if @book.subtitle && !@book.subtitle.empty? %>
+  <p>
+    <strong>Subtítulo:</strong>
+    <%=h @book.subtitle %>
+  </p>
+<% end %>
 
-<% if @book.volume %>
+<% if @book.volume && @book.volume > 0%>
   <strong>Volume:</strong>
   <%=h @book.volume %>
 <% end %>
@@ -34,6 +36,14 @@
   <strong>Editor:</strong>
   <%=h @book.editor %>
 </p>
+
+<% if @book.isbn && !@book.isbn.empty? %>
+  <p>
+    <strong>ISBN:</strong>
+    <%=h @book.isbn %>
+  </p>
+<% end %>
+
 <p>
   <strong>Ano:</strong>
   <%=h @book.year %>
@@ -54,18 +64,27 @@
   <strong>Acervo:</strong>
   <%=h @book.collection %>
 </p>
-<p>
-  <strong>Cidade:</strong>
-  <%=h @book.city %>
-</p>
-<p>
-  <strong>País:</strong>
-  <%=h @book.country %>
-</p>
-<p>
-  <strong>CDD:</strong>
-  <%=h @book.cdd %>
-</p>
+
+<% if @book.city && !@book.city.empty? %>
+  <p>
+    <strong>Cidade:</strong>
+    <%=h @book.city %>
+  </p>
+<% end %>
+
+<% if @book.country && !@book.country.empty? %>
+  <p>
+    <strong>País:</strong>
+    <%=h @book.country %>
+  </p>
+<% end %>
+
+<% if @book.cdd && !@book.cdd.empty? %>
+  <p>
+    <strong>CDD:</strong>
+    <%=h @book.cdd %>
+  </p>
+<% end %>
 
 <% if @book.pdflink && !@book.pdflink.empty? %>
   <p>
