@@ -14,6 +14,16 @@
   <strong>Título:</strong>
   <%=h @book.title %>
 </p>
+<p>
+  <strong>Subtítulo:</strong>
+  <%=h @book.subtitle %>
+</p>
+
+<% if @book.volume %>
+  <strong>Volume:</strong>
+  <%=h @book.volume %>
+<% end %>
+
 <% for author in @book.authors %>
   <p>
     <strong>Autor:</strong>
@@ -74,6 +84,7 @@
 
 <div id="admin">
   <% if admin? %> 
+    <%= link_to "Novo Livro", new_book_path %> | 
     <%= link_to "Editar", edit_book_path(@book) %> |
     <%= link_to "Remover", @book, :confirm => 'Tem certeza?', :method => :delete %> |
   <% end %>

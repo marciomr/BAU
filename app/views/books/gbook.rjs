@@ -26,13 +26,18 @@ end
   
 # insere os valores nos campos  
 if $entry
-  change_value('title', 'title', :titleize)
   change_value('date', 'year', :year)
   change_value('publisher', 'editor', :titleize)
   change_value('subject', 'subject', :titleize)
   change_value('format', 'page_number', :number)
   change_value('language', 'language')
-   
+
+  title = $entry.select('dc|title').first
+  subtitle = $entry.select('dc|title').last
+
+  $page["book_title"].value = title.text.titleize
+  $page["book_subtitle"].value = subtitle.text.titleize if title != subtitle
+
   # remove todos os campos "author"
   page.select('.author').each do |author|
     author.remove

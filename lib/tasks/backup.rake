@@ -1,6 +1,6 @@
 namespace :backup do
-  
-  Path = "/home/marciomr/Programas/MeusProgramas/rails/terralivre/public/backups"
+
+  Path = File.dirname(__FILE__) + '/../../public/backups'
   URL = "http://localhost:3000/books.rss"
   
   desc "Save the current version of the RSS file in backups directory"
@@ -58,7 +58,8 @@ namespace :backup do
         tags.push(Tag.find_or_create_by_title(tag.text))
       end
       
-      title = item.at_css("dc|title").text
+      title = item.css("dc|title").first.text	
+      subtitle = item.css("dc|title").last.text if item.css("dc|title").first != item.css("dc|title").last
       year = item.at_css("dc|date").text.to_i unless item.at_css("dc|date").nil? 
       editor = item.at_css("dc|publisher").text unless item.at_css("dc|publisher").nil?
       description = item.at_css("dc|description").text unless item.at_css("dc|description").nil?
@@ -66,6 +67,7 @@ namespace :backup do
       subject = item.at_css("dc|subject").text unless item.at_css("dc|subject").nil?
       
       tombo = item.at_css("tl|tombo").text
+      volume = item.at_css("tl|volume").text.to_i unless item.at_css("tl|volume").nil?
       city = item.at_css("tl|cidade").text unless item.at_css("tl|cidade").nil?
       country = item.at_css("tl|pais").text unless item.at_css("tl|pais").nil?
       collection = item.at_css("tl|acervo").text unless item.at_css("tl|acervo").nil?
@@ -80,6 +82,8 @@ namespace :backup do
         :tombo => tombo,
         :created_at => created_at,
         :title => title,
+	      :subtitle => subtitle,
+	      :volume => volume,
         :year => year,
         :editor => editor,
         :description => description,
@@ -100,7 +104,7 @@ namespace :backup do
     
     file.close
     
-    Rake::Task["thinking_sphinx:reindex"].invoke
+#    Rake::Task["thinking_sphinx:reindex"].invoke
     Rake::Task["thinking_sphinx:restart"].invoke
   end
   
@@ -122,7 +126,7 @@ namespace :backup do
     resposta = backup_files.first
     
     # arquivos do mais recente pro mais antigo    
-    files.reverse_each do |file|
+    backup_files.reverse_each do |file|
       if DateTime.parse(datetime) > file
         resposta = file
         break

@@ -23,6 +23,7 @@ xml.rss :version => "2.0", 'xmlns:dc' => 'http://purl.org/dc/terms', 'xmlns:tl' 
         
         # informacoes dublic core
         xml.tag!("dc:title", book.title)
+        xml.tag!("dc:title", book.subtitle) if book.subtitle && !book.subtitle.empty?
         xml.tag!("dc:date", book.year) if book.year
         xml.tag!("dc:description", book.description) if book.description && !book.description.empty?
         xml.tag!("dc:publisher", book.editor) if book.editor && !book.editor.empty?
@@ -41,6 +42,7 @@ xml.rss :version => "2.0", 'xmlns:dc' => 'http://purl.org/dc/terms', 'xmlns:tl' 
         xml.tag!("tl:img", book.imglink) if book.imglink && ! book.imglink.empty?
         xml.tag!("tl:pdf", book.pdflink) if book.pdflink && !book.pdflink.empty?
         xml.tag!("tl:cdd", book.cdd) if book.cdd && !book.cdd.empty?
+      	xml.tag!("tl:volume", book.volume) if book.volume
       end
     end
   end

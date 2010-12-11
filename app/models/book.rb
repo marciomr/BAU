@@ -12,12 +12,13 @@ class Book < ActiveRecord::Base
            
   attr_accessible :title, :editor, :city, :country, :year, :language, :description 
   attr_accessible :collection, :cdd, :author_attributes, :tag_attributes, :pdflink, :imglink
-  attr_accessible :subject, :page_number, :tombo
+  attr_accessible :subject, :page_number, :tombo, :volume, :subtitle
 
   after_update :save_authors, :save_tags
 
   define_index do
     indexes title
+    indexes subtitle
     indexes description
     indexes subject
     indexes tags.title, :as => :tag

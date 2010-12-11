@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101204214150) do
+ActiveRecord::Schema.define(:version => 20101210235435) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(:version => 20101204214150) do
     t.string   "subject"
     t.integer  "page_number"
     t.integer  "tombo"
+    t.integer  "volume"
+    t.string   "subtitle"
   end
 
   create_table "tags", :force => true do |t|
