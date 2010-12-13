@@ -24,6 +24,9 @@ class Book < ActiveRecord::Base
     indexes tags.title, :as => :tag
     indexes authors.name, :as => :author
     
+    set_property :enable_star => true
+    set_property :min_infix_len => 3
+    
     set_property :delta => true
   end
 

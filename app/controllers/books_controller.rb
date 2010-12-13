@@ -22,7 +22,22 @@ class BooksController < ApplicationController
           
   def index
     respond_to do |format|
-      format.html { @books = Book.search params[:search], :field_weights => { :author => 20, :title => 10, :tag => 5, :subject => 5, :description => 1 }, :page => params[:page], :per_page => 20 }
+      format.html do 
+        @books = Book.search params[:search], 
+                :star => true,       # Automatic Wildcard
+#                :sort_mode => :extended,
+#                :order => "title DESC, @relevance DESC",
+                :field_weights => {  # Order of relevance
+                  :author => 20, 
+                  :title => 10, 
+                  :tag => 5, 
+                  :subject => 5, 
+                  :description => 1
+                  }, 
+                :page => params[:page], # Pagination with WillPaginate 
+                :per_page => 20 
+      end
+      
       format.rss  { @books = Book.all }
     end
     

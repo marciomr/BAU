@@ -4,6 +4,10 @@
 
 <%= render :partial => "search" %>
 
+<p id="total">
+Total: <%= @books.total_entries %>
+</p>
+
 <ul>
   <% for book in @books %>
     <li>
