@@ -32,6 +32,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
   config.gem 'repeated_auto_complete'
   config.gem 'thinking-sphinx'
+  config.gem 'whenever', :require => false
 #  config.gem 'steak'
 #  config.gem 'capybara'
     
