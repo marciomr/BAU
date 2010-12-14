@@ -138,7 +138,9 @@ namespace :backup do
   
   task :compare do
     require 'ftools'
-    
+   
+    return 0 if backup_files.size = 0
+      
     file1 = "#{APP_CONFIG['backup_path']}/#{backup_files[-1].to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
     file2 = "#{APP_CONFIG['backup_path']}/#{backup_files[-2].to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
     puts File.compare(file1, file2) ? "Identicos" : "Nop"
