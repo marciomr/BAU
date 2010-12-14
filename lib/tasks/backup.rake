@@ -1,6 +1,6 @@
 namespace :backup do
 
-  Path = File.dirname(__FILE__) + '/../../public/backups'
+  Path = File.dirname(__FILE__) + '/../../../backups'
   URL = "http://localhost:3000/books.rss"
   
   desc "Save the current version of the RSS file in backups directory"

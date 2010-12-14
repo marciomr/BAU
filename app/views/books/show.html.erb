@@ -52,10 +52,12 @@
   <strong>Língua:</strong>
   <%=h @book.language %>
 </p>
-<p>
-  <strong>Páginas:</strong>
-  <%=h @book.page_number %>
-</p>
+<% if @book.page_number && @book.page_number != 0 %> 
+  <p>
+    <strong>Páginas:</strong>
+    <%=h @book.page_number %>
+  </p>
+<% end %>
 <p>
   <strong>Assunto:</strong>
   <%=h @book.subject %>
