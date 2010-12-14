@@ -12,8 +12,6 @@ config.action_controller.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 config.action_view.cache_template_loading            = true
 
-config.gem 'mysql'
-
 # Use a different cache store in production
 # config.cache_store = :mem_cache_store
 
