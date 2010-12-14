@@ -1,0 +1,9 @@
+config/database.yml
+config/sphinx.yml
+config/config.yml
+config/development.sphinx.conf
+log/*
+*~
+db/sphinx
+db/sphinx/*
+public/backups/*
