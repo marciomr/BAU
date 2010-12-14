@@ -1,16 +1,15 @@
 namespace :backup do
 
-  Path = File.dirname(__FILE__) + '/../../../backups'
-  URL = "http://localhost:3000/books.rss"
+  URL = "http://bibliotecaterralivre.sarava.org/books.rss"
   
   desc "Save the current version of the RSS file in backups directory"
-  task :save do
+  task :save => :environment do
     require 'ftools'
     require 'open-uri'
     
     rss = open(URL)
     ts =  Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
-    filepath = "#{Path}/#{ts}.rss"
+    filepath = "#{APP_CONFIG['backup_path']}/#{ts}.rss"
     file = File.open(filepath, "w")
     file.syswrite(rss.read)
     file.close
@@ -112,7 +111,7 @@ namespace :backup do
   def backup_files
     files = Array.new
     
-    Dir.entries(Path).each do |file|
+    Dir.entries(APP_CONFIG['backup_path']).each do |file|
       files.push DateTime.parse(file[/^\w+/]) unless file[/^\w+/].nil?
     end
     
@@ -120,7 +119,7 @@ namespace :backup do
   end
   
   def datetime_to_path(datetime)
-    "#{Path}/#{datetime.to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
+    "#{APP_CONFIG['backup_path']}/#{datetime.to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
   end
   
   def last_backup(datetime)
@@ -140,8 +139,8 @@ namespace :backup do
   task :compare do
     require 'ftools'
     
-    file1 = "#{Path}/#{backup_files[-1].to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
-    file2 = "#{Path}/#{backup_files[-2].to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
+    file1 = "#{APP_CONFIG['backup_path']}/#{backup_files[-1].to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
+    file2 = "#{APP_CONFIG['backup_path']}/#{backup_files[-2].to_s.gsub('-', '').gsub(':', '').gsub('+0000','Z')}.rss"
     puts File.compare(file1, file2) ? "Identicos" : "Nop"
   end
 end
