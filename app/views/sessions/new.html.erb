@@ -1,3 +1,5 @@
+<% title "Login" %>
+
 <% form_tag :controller => :sessions, :action => :create do %>
   <%= password_field_tag 'password' %><%= submit_tag 'Log On', :class => 'button' %><br/>
 <% end %> 
