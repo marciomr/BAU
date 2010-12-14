@@ -12,7 +12,7 @@ set :deploy_to, "/var/sites/bibliotecaterralivre/rails"
 set :deploy_via, :remote_cache
 
 set :default_environment, {
-  'PATH' => "#{deploy_to}/.rvm/gems/ruby-1.8.7-p302/bin:#{deploy_to}/.rvm/bin:$PATH",
+  'PATH' => "#{deploy_to}/.rvm/gems/ruby-1.8.7-p302/bin:~/.rvm/bin:$PATH",
   'RUBY_VERSION' => 'ruby 1.8.7',
   'GEM_HOME'     => "#{deploy_to}/.rvm/gems/ruby-1.8.7-p302",
   'GEM_PATH'     => "#{deploy_to}/.rvm/gems/ruby-1.8.7-p302",

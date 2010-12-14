@@ -33,7 +33,6 @@ Rails::Initializer.run do |config|
   config.gem 'repeated_auto_complete'
   config.gem 'thinking-sphinx'
   config.gem 'whenever'
-  config.gem 'mysql', :environment => :production
 #  config.gem 'steak'
 #  config.gem 'capybara'
     
