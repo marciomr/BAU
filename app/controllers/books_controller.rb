@@ -25,24 +25,29 @@ class BooksController < ApplicationController
       format.html do 
         @books = Book.search params[:search], 
                 :star => true,       # Automatic Wildcard
-                :sort_mode => :extended,
-                :order => "title ASC, @relevance DESC",
                 :field_weights => {  # Order of relevance
                   :author => 20, 
                   :title => 10, 
                   :tag => 5, 
                   :subject => 5, 
                   :description => 1
-                  }, 
-                :page => params[:page], # Pagination with WillPaginate 
-                :per_page => 20
-               
-        @books.by_title(params['title_filter']) if params['title_filter'] && !params['title_filter'].empty? 
-        @books.by_author(params['author_filter']) if params['author_filter'] && !params['author_filter'].empty?
-        @books.by_author(params['editor_filter']) if params['editor_filter'] && !params['editor_filter'].empty?
-        @books.by_language(params['language_filter']) if params['language_filter'] && !params['language_filter'].empty?
-        @books.by_collection(params['collection_filter']) if params['collection_filter'] && !params['collection_filter'].empty?
-        @books.delete_if{ |x| x.pdflink.nil? || x.pdflink.empty? } if params['pdf_filter']
+                  }
+                  
+        @books.order_by_relevance_title          
+       
+        @books.by_title(params['title_filter']) if !params['title_filter'].blank? 
+        @books.by_author(params['author_filter']) if !params['author_filter'].blank?
+        @books.by_author(params['editor_filter']) if !params['editor_filter'].blank?
+        @books.by_language(params['language_filter']) if !params['language_filter'].blank?
+        @books.by_collection(params['collection_filter']) if !params['collection_filter'].blank?
+                
+        if params['pdf_filter']
+          @books.delete_if{ |x| x.pdflink.blank? }
+          @total = @books.size 
+        end
+        
+        @total ||= @books.total_entries  
+        @books.paginate params['page']  
       end
       
       format.rss  { @books = Book.all }

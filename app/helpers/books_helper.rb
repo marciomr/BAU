@@ -26,8 +26,11 @@ module BooksHelper
   
   def adv_search_destroy(name)
     link_to_function name, :id => :adv_search_link do |page|
-      page[:advanced_search].remove
-      page[:adv_search_link].show
+      page[:advanced_search].visual_effect :slide_up, :duration => 0.3
+      page.delay(0.3) do 
+        page[:advanced_search].remove
+        page[:adv_search_link].show
+      end
     end
   end
 end

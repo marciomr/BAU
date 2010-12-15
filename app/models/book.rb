@@ -15,7 +15,7 @@ class Book < ActiveRecord::Base
   attr_accessible :subject, :page_number, :tombo, :volume, :subtitle, :isbn
 
   after_update :save_authors, :save_tags
-
+  
   define_index do
     indexes title, :sortable => true
     indexes subtitle
@@ -53,12 +53,20 @@ class Book < ActiveRecord::Base
     {:conditions => { :collection => collection }}
   end
   
+  sphinx_scope(:paginate) do | per_page |
+    {:page => per_page, :per_page => 20 }
+  end
+  
+  sphinx_scope(:order_by_relevance_title) do
+    {:sort_mode => :extended, :order => "title ASC, @relevance DESC"}
+  end
+  
   def self.collections
-    all.map{ |b| b.collection }.uniq.compact.delete_if{ |x| x.empty? }.unshift("")
+    all.map{ |b| b.collection }.uniq.delete_if{ |x| x.blank? }.unshift("")
   end
 
   def self.languages
-    all.map{ |b| b.language }.uniq.compact.delete_if{|x| x.empty? }.unshift("")
+    all.map{ |b| b.language }.uniq.delete_if{|x| x.blank? }.unshift("")
   end
 
   def self.last_tombo
@@ -115,7 +123,4 @@ class Book < ActiveRecord::Base
     tags.map{ |t| t.title }.join(', ')
   end
 
-  def has_pdf?
-    !pdflink.nil? && !pdflink.empty?   
-  end
 end

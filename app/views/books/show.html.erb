@@ -1,6 +1,6 @@
 <% title @book.title %>
 
-<% if @book.imglink && !@book.imglink.empty? %>
+<% if !@book.imglink.blank? %>
   <div id="capa">
     <img id="imgcapa" src=<%= @book.imglink %> /> 
   </div>
@@ -14,7 +14,7 @@
   <strong>Título:</strong>
   <%=h @book.title %>
 </p>
-<% if @book.subtitle && !@book.subtitle.empty? %>
+<% if !@book.subtitle.blank? %>
   <p>
     <strong>Subtítulo:</strong>
     <%=h @book.subtitle %>
@@ -37,7 +37,7 @@
   <%=h @book.editor %>
 </p>
 
-<% if @book.isbn && !@book.isbn.empty? %>
+<% if !@book.isbn.blank? %>
   <p>
     <strong>ISBN:</strong>
     <%=h @book.isbn %>
@@ -67,28 +67,28 @@
   <%=h @book.collection %>
 </p>
 
-<% if @book.city && !@book.city.empty? %>
+<% if !@book.city.blank? %>
   <p>
     <strong>Cidade:</strong>
     <%=h @book.city %>
   </p>
 <% end %>
 
-<% if @book.country && !@book.country.empty? %>
+<% if !@book.country.blank? %>
   <p>
     <strong>País:</strong>
     <%=h @book.country %>
   </p>
 <% end %>
 
-<% if @book.cdd && !@book.cdd.empty? %>
+<% if !@book.cdd.blank? %>
   <p>
     <strong>CDD:</strong>
     <%=h @book.cdd %>
   </p>
 <% end %>
 
-<% if @book.pdflink && !@book.pdflink.empty? %>
+<% if !@book.pdflink.blank? %>
   <p>
     <%= link_to "PDF", @book.pdflink %>
   <p>
