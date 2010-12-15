@@ -16,4 +16,18 @@ module BooksHelper
     end
   end
   
+  def adv_search_create(name)
+    link_to_function name, :id => :adv_search_link do |page|
+      page[:adv_search_link].hide
+      page.insert_html :bottom, :search_form, :partial => 'adv_search'
+      page[:advanced_search].visual_effect :slide_down, :duration => 0.3
+    end
+  end
+  
+  def adv_search_destroy(name)
+    link_to_function name, :id => :adv_search_link do |page|
+      page[:advanced_search].remove
+      page[:adv_search_link].show
+    end
+  end
 end

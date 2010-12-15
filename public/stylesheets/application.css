@@ -26,8 +26,7 @@ li {
     font-size: 14pt;
 }
 
-
-#search{
+#search, #search_button{
     font-size: 14pt;
     margin-bottom: 20px;
 }

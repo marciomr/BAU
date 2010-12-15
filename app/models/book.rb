@@ -17,17 +17,48 @@ class Book < ActiveRecord::Base
   after_update :save_authors, :save_tags
 
   define_index do
-    indexes title
+    indexes title, :sortable => true
     indexes subtitle
     indexes description
     indexes subject
     indexes tags.title, :as => :tag
     indexes authors.name, :as => :author
     
+    indexes collection
+    indexes language
+    
     set_property :enable_star => true
     set_property :min_infix_len => 3
     
     set_property :delta => true
+  end
+
+  sphinx_scope(:by_author) do | author |
+    {:conditions => { :author => author }}
+  end
+  
+  sphinx_scope(:by_title) do | title |
+    {:conditions => { :title => title }}
+  end
+  
+  sphinx_scope(:by_editor) do | editor |
+    {:conditions => { :editor => editor }}
+  end
+
+  sphinx_scope(:by_language) do | language |
+    {:conditions => { :language => language }}
+  end
+  
+  sphinx_scope(:by_collection) do | collection |
+    {:conditions => { :collection => collection }}
+  end
+  
+  def self.collections
+    all.map{ |b| b.collection }.uniq.compact.delete_if{ |x| x.empty? }.unshift("")
+  end
+
+  def self.languages
+    all.map{ |b| b.language }.uniq.compact.delete_if{|x| x.empty? }.unshift("")
   end
 
   def self.last_tombo
@@ -83,5 +114,8 @@ class Book < ActiveRecord::Base
   def tag_titles
     tags.map{ |t| t.title }.join(', ')
   end
-  
+
+  def has_pdf?
+    !pdflink.nil? && !pdflink.empty?   
+  end
 end
