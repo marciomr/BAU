@@ -31,7 +31,9 @@ class BooksController < ApplicationController
                   :tag => 5, 
                   :subject => 5, 
                   :description => 1
-                  }
+                  },
+                :page => params['page'], 
+                :per_page => 20
                   
         @books.order_by_relevance_title          
        
@@ -41,13 +43,13 @@ class BooksController < ApplicationController
         @books.by_language(params['language_filter']) if !params['language_filter'].blank?
         @books.by_collection(params['collection_filter']) if !params['collection_filter'].blank?
                 
-        if params['pdf_filter']
-          @books.delete_if{ |x| x.pdflink.blank? }
-          @total = @books.size 
-        end
+        @books.with_pdflink if params['pdf_filter']
+#        if params['pdf_filter']
+#          @books.delete_if{ |x| x.pdflink.blank? }
+#          @total = @books.size 
+#        end
         
         @total ||= @books.total_entries  
-        @books.paginate params['page']  
       end
       
       format.rss  { @books = Book.all }

@@ -24,6 +24,7 @@ class Book < ActiveRecord::Base
     indexes tags.title, :as => :tag
     indexes authors.name, :as => :author
     
+    indexes pdflink
     indexes collection
     indexes language
     
@@ -53,12 +54,12 @@ class Book < ActiveRecord::Base
     {:conditions => { :collection => collection }}
   end
   
-  sphinx_scope(:paginate) do | per_page |
-    {:page => per_page, :per_page => 20 }
-  end
-  
   sphinx_scope(:order_by_relevance_title) do
     {:sort_mode => :extended, :order => "title ASC, @relevance DESC"}
+  end
+
+  sphinx_scope(:with_pdflink) do
+    {:conditions => { :pdflink => "http" }}
   end
   
   def self.collections
