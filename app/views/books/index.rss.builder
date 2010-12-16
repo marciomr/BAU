@@ -23,13 +23,13 @@ xml.rss :version => "2.0", 'xmlns:dc' => 'http://purl.org/dc/terms', 'xmlns:tl' 
         
         # informacoes dublic core
         xml.tag!("dc:title", book.title)
-        xml.tag!("dc:title", book.subtitle) if book.subtitle && !book.subtitle.empty?
-        xml.tag!("dc:date", book.year) if book.year
-        xml.tag!("dc:description", book.description) if book.description && !book.description.empty?
-        xml.tag!("dc:publisher", book.editor) if book.editor && !book.editor.empty?
-        xml.tag!("dc:format", "#{book.page_number} pages") if book.page_number
-        xml.tag!("dc:subject", book.subject) if book.subject && !book.subject.empty?
-        xml.tag!("dc:identifier", "ISBN:#{book.isbn}") if book.isbn && ! book.isbn.empty?
+        xml.tag!("dc:title", book.subtitle) if !book.subtitle.blank?
+        xml.tag!("dc:date", book.year) if book.year && book.year != 0
+        xml.tag!("dc:description", book.description) if !book.description.blank?
+        xml.tag!("dc:publisher", book.editor) if !book.editor.blank?
+        xml.tag!("dc:format", "#{book.page_number} pages") if book.page_number && book.page_number != 0 
+        xml.tag!("dc:subject", book.subject) if !book.subject.blank?
+        xml.tag!("dc:identifier", "ISBN:#{book.isbn}") if !book.isbn.blank?
         
         book.authors.each do |author|
           xml.tag!("dc:creator", author.name)
@@ -37,13 +37,13 @@ xml.rss :version => "2.0", 'xmlns:dc' => 'http://purl.org/dc/terms', 'xmlns:tl' 
         
         #informacoes extras para a biblioteca
         xml.tag!("tl:tombo", book.tombo)
-        xml.tag!("tl:cidade", book.city) if book.city && !book.city.empty?
-        xml.tag!("tl:pais", book.country) if book.country && !book.country.empty?
-        xml.tag!("tl:acervo", book.collection) if book.collection && !book.collection.empty?
-        xml.tag!("tl:img", book.imglink) if book.imglink && ! book.imglink.empty?
-        xml.tag!("tl:pdf", book.pdflink) if book.pdflink && !book.pdflink.empty?
-        xml.tag!("tl:cdd", book.cdd) if book.cdd && !book.cdd.empty?
-      	xml.tag!("tl:volume", book.volume) if book.volume
+        xml.tag!("tl:cidade", book.city) if !book.city.blank?
+        xml.tag!("tl:pais", book.country) if !book.country.blank?
+        xml.tag!("tl:acervo", book.collection) if !book.collection.blank?
+        xml.tag!("tl:img", book.imglink) if !book.imglink.blank?
+        xml.tag!("tl:pdf", book.pdflink) if !book.pdflink.blank?
+        xml.tag!("tl:cdd", book.cdd) if !book.cdd.blank?
+      	xml.tag!("tl:volume", book.volume) if book.volume && book.volume != 0
       end
     end
   end
