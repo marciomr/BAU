@@ -8,6 +8,7 @@ one:
   description: MyText
   collection: MyString
   cdd: MyString
+  tombo: 1
 
 two:
   title: MyString
@@ -19,3 +20,4 @@ two:
   description: MyText
   collection: MyString
   cdd: MyString
+  tombo: 2
