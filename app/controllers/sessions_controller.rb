@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
   def destroy
     reset_session
     flash[:notice] = "Deslogado com sucesso."
-    redirect_to (session[:return_to] || :controller => 'books', :action => 'index')
+    redirect_to(session[:return_to] || :controller => 'books', :action => 'index')
   end
 
 end
