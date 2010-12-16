@@ -87,9 +87,10 @@ end
 before "deploy:update_code", "thinking_sphinx:stop"
 
 after "deploy:update_code", "deploy:symlink_shared"
-after "deploy:symlink_shared", "gems:install"
-after "deploy:symlink_shared", "deploy:update_crontab"  
+#after "deploy:symlink_shared", "gems:install"
+#after "deploy:symlink_shared", "deploy:update_crontab"  
 
-after "gems:install", "deploy:migrate"
-after "deploy:migrate", "thinking_sphinx:configure"
-after "deploy:migrate", "thinking_sphinx:start"
+#after "gems:install", "deploy:migrate"
+#after "deploy:migrate", "thinking_sphinx:configure"
+#after "deploy:migrate", "thinking_sphinx:start"
+after "deploy:symlink_shared", "thinking_sphinx:start"

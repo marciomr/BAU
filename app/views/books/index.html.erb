@@ -13,7 +13,9 @@
     <li>
       <span class="index_title"><%= link_to book.title, book %></span><br/>
       <span class="index_author"><%= book.authors_names %></span>
-      <span class="index_year"><%= book.year %></span>
+      <% if book.year && book.year > 0 %>
+        <span class="index_year"><%= book.year %></span>
+      <% end %>
     </li>
   <% end %>
 </ul>

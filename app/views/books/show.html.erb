@@ -44,10 +44,13 @@
   </p>
 <% end %>
 
-<p>
-  <strong>Ano:</strong>
-  <%=h @book.year %>
-</p>
+<% if @book.year && @book.year > 0 %>
+  <p>
+    <strong>Ano:</strong>
+    <%=h @book.year %>
+  </p>
+<% end %>
+
 <p>
   <strong>Língua:</strong>
   <%=h @book.language %>
