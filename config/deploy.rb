@@ -33,6 +33,7 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{File.join(current_path,'tmp','restart.txt')}"
   end
+  
   desc "Symlink shared files to the current path."
   task :symlink_shared do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/"
@@ -41,9 +42,10 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/environment.rb #{release_path}/config/"
     run "ln -nfs #{shared_path}/db/sphinx #{release_path}/db/sphinx/"
   end
+  
   desc "Update the crontab file."  
   task :update_crontab, :roles => :db do  
-    run "cd #{release_path}; whenever --update-crontab #{application}"  
+    run "cd #{release_path}; whenever --update-crontab #{application} --set environment=production"  
   end  
 end
 
