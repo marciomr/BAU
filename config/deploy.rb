@@ -49,6 +49,18 @@ namespace :deploy do
   end  
 end
 
+desc "Watch the production log on the application server."
+task :watch_logs, :roles => :app do
+  log_file = "#{shared_path}/log/production.log"
+  run "tail -f #{log_file}" do |channel, stream, data|
+    puts data if stream == :out 
+    if stream == :err 
+      puts "[Error: #{channel[:host]}] #{data}"
+      break
+    end     
+  end
+end
+
 namespace :backup do
   desc "Save a copy of rss file in the server."
   task :remote do
@@ -64,6 +76,11 @@ namespace :backup do
   desc "Recover the last rss file."
   task :rollback do
     run "cd #{current_path}; RAILS_ENV=production rake backup:rollback"
+  end
+  task :last do
+    run "cd #{current_path}; RAILS_ENV=production rake backup:show_last" do |channel, stream, data|
+      puts data
+    end
   end
 end
 

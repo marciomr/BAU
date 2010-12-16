@@ -6,4 +6,6 @@ log/*
 *~
 db/sphinx
 db/sphinx/*
+db/sphinx/development/*
+db/sphinx/test/*
 public/backups/*

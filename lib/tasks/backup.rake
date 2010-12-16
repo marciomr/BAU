@@ -37,6 +37,33 @@ namespace :backup do
   task :rollback => [:reset, :environment] do
     rebuild Time.now.to_s
   end
+
+  desc "Show a specific backup"
+  task :show, [:ts] => :environment do |t, args|
+    show args.ts
+  end
+  
+  desc "Show the last backup"
+  task :show_last => :environment do
+    show Time.now.to_s
+  end
+    
+  def show(datetime)
+    require 'nokogiri'
+    
+    file = File.open(last_backup(datetime), "r")
+    xml = Nokogiri::XML(file)
+    file.close
+    file = File.open(last_backup(datetime), "r")
+    puts file.read 
+    file.close
+    
+    ts = last_backup(datetime).split('/').last[/[0-9T]+/]
+
+    puts "#{xml.css("item").count} itens"
+    puts "#{ts[6..7]}/#{ts[4..5]}/#{ts[0..3]} - #{ts[9..10]}:#{ts[11..12]}:#{ts[12..13]}" 
+    
+  end  
     
   def rebuild(datetime)
     require 'nokogiri'
@@ -107,7 +134,7 @@ namespace :backup do
 #    Rake::Task["thinking_sphinx:reindex"].invoke
     Rake::Task["thinking_sphinx:restart"].invoke
   end
-  
+
   def backup_files
     files = Array.new
     
