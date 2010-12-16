@@ -70,7 +70,7 @@ class Book < ActiveRecord::Base
   end
 
   def self.last_tombo
-    all.map{ |b| b.tombo }.sort.last || 0
+    self.count == 0 ? 0 : all.map{ |b| b.tombo }.sort.last
   end
 
   def author_attributes=(author_attributes)
