@@ -117,6 +117,7 @@ desc "Save the current version of the RSS file in backups directory"
         :city => city,
         :country => country,
         :collection => collection,
+        :language => language,
         :pdflink => pdflink,
         :imglink => imglink
       )

@@ -32,8 +32,9 @@ if $entry
   change_value('subject', 'subject', :titleize)
   change_value('format', 'page_number', :number)
   change_value('language', 'language')
-  
 
+#  $page["book_imglink"].value = $entry.at_css("link[type=~image]")
+  
 #  $page["book_title"].value = $entry.css('dc|title').first.text.titleize
 #  $page["title"].visual_effect :highlight, :duration => 2
 #  $page["book_subtitle"].value = subtitle.text.titleize if title != subtitle
