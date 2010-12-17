@@ -2,6 +2,7 @@ config/database.yml
 config/sphinx.yml
 config/config.yml
 config/development.sphinx.conf
+config/environment.rb
 log/*
 *~
 db/sphinx
