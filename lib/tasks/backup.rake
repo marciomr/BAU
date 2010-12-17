@@ -5,7 +5,7 @@ desc "Save the current version of the RSS file in backups directory"
     require 'ftools'
     require 'open-uri'
         
-    rss = open("#{APP_CONFIG['url']}/books.rss)
+    rss = open("#{APP_CONFIG['url']}/books.rss")
     ts =  Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
     filepath = "#{APP_CONFIG['backup_path']}/#{ts}.rss"
     file = File.open(filepath, "w")
