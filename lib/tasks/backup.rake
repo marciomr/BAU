@@ -1,13 +1,11 @@
 namespace :backup do
 
-  URL = "http://bibliotecaterralivre.sarava.org/books.rss"
-  
-  desc "Save the current version of the RSS file in backups directory"
+desc "Save the current version of the RSS file in backups directory"
   task :save => :environment do
     require 'ftools'
     require 'open-uri'
-    
-    rss = open(URL)
+        
+    rss = open("#{APP_CONFIG['url']}/books.rss)
     ts =  Time.now.utc.iso8601.gsub('-', '').gsub(':', '')
     filepath = "#{APP_CONFIG['backup_path']}/#{ts}.rss"
     file = File.open(filepath, "w")
@@ -75,13 +73,13 @@ namespace :backup do
       authors = Array.new
       
       item.css("dc|creator").each do |author|
-        authors.push(Author.find_or_create_by_name(author.text))
+        authors.push(Author.new(:name => author.text))
       end
       
       tags = Array.new
       
       item.css("category").each do |tag|
-        tags.push(Tag.find_or_create_by_title(tag.text))
+        tags.push(Tag.new(:name => tag.text))
       end
       
       title = item.css("dc|title").first.text	

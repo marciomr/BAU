@@ -33,7 +33,7 @@ class BooksController < ApplicationController
                   :description => 1
                   },
                 :page => params['page'], 
-                :per_page => 20
+                :per_page => 50
                   
         @books.order_by_relevance_title          
        
@@ -44,10 +44,6 @@ class BooksController < ApplicationController
         @books.by_collection(params['collection_filter']) if !params['collection_filter'].blank?
                 
         @books.with_pdflink if params['pdf_filter']
-#        if params['pdf_filter']
-#          @books.delete_if{ |x| x.pdflink.blank? }
-#          @total = @books.size 
-#        end
         
         @total ||= @books.total_entries  
       end
