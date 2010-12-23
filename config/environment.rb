@@ -32,7 +32,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
   config.gem 'repeated_auto_complete'
   config.gem 'thinking-sphinx'
-  config.gem 'whenever'
+  config.gem 'whenever', :require => false
   config.gem 'mysql', :environment => :production
 
   # Only load the plugins named here, in the order given. By default, all plugins 
