@@ -7,7 +7,5 @@
 <% if admin? %>
     <%= link_to "Novo Livro", new_book_path %> | 
     <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
-<% else %>
-    <%= link_to "Logar", :controller => 'sessions', :action => 'new' %>
 <% end %>  
 </div>
