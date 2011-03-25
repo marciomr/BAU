@@ -1,8 +1,31 @@
+# coding: utf-8
+
 namespace :backup do
+
+def view(url_options = {}, *view_args)
+  view_args[0] ||= ActionController::Base.view_paths
+  view_args[1] ||= {}
+  
+  view = ActionView::Base.new(*view_args)
+  routes = Rails::Application.routes
+  routes.default_url_options = {:host => 'localhost'}.merge(url_options)
+
+  view.class_eval do
+    include ApplicationHelper
+    include routes.url_helpers
+  end
+
+  assigns = instance_variables.inject(Hash.new) do |hash, name|
+    hash.merge name[1..-1] => instance_variable_get(name)
+  end
+  view.assign assigns
+  
+  view
+end
 
 desc "Save the current version of the RSS file in backups directory"
   task :save => :environment do
-    require 'ftools'
+    require 'fileutils'
     require 'open-uri'
         
     rss = open("#{APP_CONFIG['url']}/books.rss")
@@ -13,8 +36,8 @@ desc "Save the current version of the RSS file in backups directory"
     file.close
     
     last_backup_file = datetime_to_path(backup_files[-2])
-    if File.compare(filepath, last_backup_file)
-      File.delete last_backup_file
+    if File.identical?(filepath, last_backup_file)
+      File.remove last_backup_file
       puts "Removendo #{last_backup_file} pois é identico ao novo" 
     end
     
@@ -70,61 +93,73 @@ desc "Save the current version of the RSS file in backups directory"
     xml = Nokogiri::XML(file)
     
     xml.css("item").each_with_index do |item, i|
-      authors = Array.new
+      params = {}
+
+      dc = ['date', 'format', 'publisher', 'description', 'publisher', 'subject', 'title']
+      tl = ['tombo', 'volume', 'cidade', 'pais', 'acervo', 'pdf', 'img']
       
+      fields_number = ['date', 'format', 'tombo', 'volume']
+      fields_string = ['publisher', 'description', 'subject', 'cidade', 'pais']
+      fields_string += ['acervo', 'pdf', 'img', 'title']
+      
+      fields_number.each do |field|
+        type = (dc.include?(field) ? 'dc' : 'tl')
+        unless item.at_css("#{type}|#{field}").blank?
+          number = item.at_css("#{type}|#{field}").text.to_i
+          params[field.to_sym] = (number == 0 ? nil : number)
+        end
+      end
+      
+      fields_string.each do |field| 
+        type = (dc.include?(field) ? 'dc' : 'tl')
+        unless item.at_css("#{type}|#{field}").blank?
+          params[field.to_sym] = item.at_css("#{type}|#{field}").text
+        end
+      end
+      
+      if item.css("dc|title").first != item.css("dc|title").last
+        params[:subtitle] = item.css("dc|title").last.text 
+      end      
+      params[:created_at] = DateTime.parse(item.at_css("pubDate").text)
+      params[:language] = item.at_css("language").text unless item.at_css("language").nil?
+      unless item.at_css("dc|identifier").nil?
+        params[:isbn] =  item.at_css("dc|identifier").text[/[0-9]+.*/] 
+      end
+      
+      book = Book.new(
+        :isbn => params[:isbn],
+        :tombo => params[:tombo],
+        :created_at => params[:created_at],
+        :title => params[:title],
+	      :subtitle => params[:subtitle],
+	      :volume => params[:volume],
+        :year => params[:date],
+        :editor => params[:publisher],
+        :description => params[:description],
+        :page_number => params[:format],
+        :subject => params[:subject],
+        :city => params[:cidade],
+        :country => params[:pais],
+        :collection => params[:acervo],
+        :language => params[:language],
+        :pdflink => params[:pdf],
+        :imglink => params[:img]
+      )
+      
+      authors = []
       item.css("dc|creator").each do |author|
         authors.push(Author.new(:name => author.text))
       end
+      book.authors = authors
       
       tags = Array.new
-      
       item.css("category").each do |tag|
         tags.push(Tag.new(:name => tag.text))
       end
-      
-      title = item.css("dc|title").first.text	
-      subtitle = item.css("dc|title").last.text if item.css("dc|title").first != item.css("dc|title").last
-      year = item.at_css("dc|date").text.to_i unless item.at_css("dc|date").nil? 
-      editor = item.at_css("dc|publisher").text unless item.at_css("dc|publisher").nil?
-      description = item.at_css("dc|description").text unless item.at_css("dc|description").nil?
-      pages = item.at_css("dc|format").text.to_i unless item.at_css("dc|format").nil?
-      subject = item.at_css("dc|subject").text unless item.at_css("dc|subject").nil?
-      
-      tombo = item.at_css("tl|tombo").text
-      volume = item.at_css("tl|volume").text.to_i unless item.at_css("tl|volume").nil?
-      city = item.at_css("tl|cidade").text unless item.at_css("tl|cidade").nil?
-      country = item.at_css("tl|pais").text unless item.at_css("tl|pais").nil?
-      collection = item.at_css("tl|acervo").text unless item.at_css("tl|acervo").nil?
-      pdflink = item.at_css("tl|pdf").text unless item.at_css("tl|pdf").nil?
-      imglink = item.at_css("tl|img").text unless item.at_css("tl|img").nil?
-      isbn = item.at_css("dc|identifier").text[/[0-9]+.*/] unless item.at_css("dc|identifier").nil?   
-      
-      created_at = DateTime.parse(item.at_css("pubDate").text)
-      language = item.at_css("language").text unless item.at_css("language").nil?
-      
-      book = Book.new(
-        :isbn => isbn,
-        :tombo => tombo,
-        :created_at => created_at,
-        :title => title,
-	      :subtitle => subtitle,
-	      :volume => volume,
-        :year => year,
-        :editor => editor,
-        :description => description,
-        :pages => pages,
-        :subject => subject,
-        :city => city,
-        :country => country,
-        :collection => collection,
-        :language => language,
-        :pdflink => pdflink,
-        :imglink => imglink
-      )
-      
-      book.authors = authors
       book.tags = tags
+      
       book.save
+    
       puts "Created #{i+1} of #{xml.css("item").count} books"
     end
     
@@ -162,6 +197,7 @@ desc "Save the current version of the RSS file in backups directory"
     datetime_to_path(resposta)
   end
   
+  desc "Compare two versions of a file"
   task :compare do
     require 'ftools'
    
