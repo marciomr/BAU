@@ -1,4 +1,4 @@
-Terralivre2::Application.routes.draw do
+Terralivre::Application.routes.draw do
 
   resources :books do
     get :autocomplete_tag_title, :on => :collection
