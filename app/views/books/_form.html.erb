@@ -1,96 +1,107 @@
-<% form_remote_tag :url => { :controller => 'books', :action => 'gbook' } do -%>
+<%= form_tag url_for(:action => :gbook), :remote => true, :method => :get do -%>
   <%= label_tag "ISBN" %><br/>
   <%= text_field_tag :isbn, @book.isbn %>
   <%= hidden_field_tag :id, @book.id %>
   <%= submit_tag 'Preencher' %>
 <% end -%>
 
-<% form_for @book do |f| %>
+
+<%= form_for @book do |f| %>
   <%= f.error_messages %>
+  
   <p id="isbn">
     <%= f.hidden_field :isbn %>
   </p>
-
+  
   <p id="title">
     <%= f.label :title, "Título" %><br />
-    <%= f.text_field :title, :size => 60 %>
+    <%= f.text_field :title %>
   </p>
-
+  
   <p id="subtitle">
     <%= f.label :subtitle, "Subtítulo" %><br />
-    <%= f.text_field :subtitle, :size => 60 %>
+    <%= f.text_field :subtitle %>
   </p>
-
+  
   <p id="volume">
     <%= f.label :volume, "Volume" %><br />
     <%= f.text_field :volume, :size => 5 %>
-  </p>  
-
-  <div id="authors">
-    <%= render :partial => "author", :collection => @book.authors %>
+  </p>
+  
+  <div id="author">  
+    <%= f.fields_for :authors do |builder| %>  
+      <%= render :partial => "author_fields", :locals => {:f => builder} %>
+    <% end %>
+    <p><%= link_to_add_fields "Add Author", f, :authors %></p> 
   </div>
-
-  <p><%= add_author_link "Adicionar um autor" %></p>
-
+  
+  <div id="tag">  
+    <%= f.fields_for :tags do |builder| %>  
+      <%= render :partial => "tag_fields", :locals => {:f => builder} %>
+    <% end %>
+    <p><%= link_to_add_fields "Add Tag", f, :tags %></p> 
+  </div>
+  
   <p id="editor">
     <%= f.label :editor, "Editor" %><br />
-    <%= text_field_with_auto_complete :book, :editor, :size => 60 %>
+    <%= f.autocomplete_field :editor, autocomplete_book_editor_books_path %>
   </p>
+  
   <p id="year">
     <%= f.label :year, "Ano" %><br />
     <%= f.text_field :year, :size => 5 %>
   </p>
-  <div id="language">
-    <p>
+
+  <p id="language">
       <%= f.label :language, "Língua" %><br />
-      <%= text_field_with_auto_complete :book, :language, :size => 5 %>
-    </p>
-  </div>
-  <div id="page_number">
-    <p>
-     <%= f.label :page_number, "Número de Páginas" %><br />
-     <%= f.text_field :page_number, :size => 5 %>
-    </p>
-  </div>
-  <div id="subject">
-    <p>
-      <%= f.label :subject, "Assunto" %><br />
-      <%= f.text_field_with_auto_complete :subject, :size => 60 %>
-    </p>
-  </div>
-  <div id="tags">
-    <%= render :partial => "tag", :collection => @book.tags %>
-  </div>
+      <%= f.text_field :language, :size => 5 %>
+  </p>
 
-  <p><%= add_tag_link "Adicionar palavra chave" %></p>
+  <p id="page_number">
+    <%= f.label :page_number, "Número de Páginas" %><br />
+    <%= f.text_field :page_number, :size => 5 %>
+  </p>
 
-  <p>
+  <p id="subject">
+    <%= f.label :subject, "Assunto" %><br />
+    <%= f.autocomplete_field :subject, autocomplete_book_subject_books_path %>
+  </p>
+  
+  <p id="collection">
     <%= f.label :collection, "Acervo" %><br />
-    <%= text_field_with_auto_complete :book, :collection, :value => (@book.collection || "Terra Livre"), :size => 60 %>
+    <%= f.autocomplete_field :collection, autocomplete_book_collection_books_path %>
   </p>
-  <p>
+  
+  <p id="city">
     <%= f.label :city, "Cidade" %><br />
-    <%= text_field_with_auto_complete :book, :city, :size => 60 %>
+    <%= f.autocomplete_field :city, autocomplete_book_city_books_path %>
   </p>
-  <p>
+  
+  <p id="country">
     <%= f.label :country, "País" %><br />
-    <%= text_field_with_auto_complete :book, :country, :size => 60 %>
+    <%= f.autocomplete_field :country, autocomplete_book_country_books_path %>
   </p>
-  <p>
+  
+  <p id="cdd">
     <%= f.label :cdd, "CDD" %><br />
-    <%= f.text_field :cdd, :size => 60 %>
+    <%= f.text_field :cdd %>
   </p>
-  <p>
+  
+   <p id="pdflink">
     <%= f.label :pdflink, "PDF" %><br />
-    <%= f.text_field :pdflink, :size => 60 %>
+    <%= f.text_field :pdflink %>
   </p>
-  <p>
+  
+   <p id="imglink">
     <%= f.label :imglink, "Imagem" %><br />
-    <%= f.text_field :imglink, :size => 60 %>
+    <%= f.text_field :imglink %>
   </p>
-  <p>
+  
+  <p id="description">
     <%= f.label :description, "Descrição" %><br />
-    <%= f.text_area :description, :cols => 60 %>
+    <%= f.text_area :description %>
   </p>
+  
+     
   <p><%= f.submit "Salvar" %></p>
 <% end %>

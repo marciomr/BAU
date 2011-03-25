@@ -1,0 +1,30 @@
+<% hash = {
+    'title' => :title, 
+    'subject' => :subject, 
+    'language' => :language, 
+    'year' => :date, 
+    'editor' => :publisher, 
+    'page_number' => :format, 
+    'subtitle' => :subtitle
+    } %>
+
+$("#book_isbn").val("<%= @params[:isbn] %>");        
+
+<% if @params[:title].nil? %>
+    $('#content').prepend('<div id="flash_error">Livro não encontrado.</div>');
+    $('#flash_error').fadeOut(5000);
+<% else %>
+    <% hash.each do |css, dc| %>
+        <% if @params[dc] %>
+            $("#book_<%= css %>").val("<%= @params[dc] %>");        
+            $("#<%= css %>").effect('highlight', {}, 5000);
+        <% end %>    
+    <% end %>
+    
+    $("#author .fields").remove(); // remove todos campos de autor
+    <% @params[:authors].each do |author| %>
+        $("#add_authors").click();
+        $("#author .book_author").last().val("<%= author %>");
+        $("#author .fields").last().effect('highlight', {}, 5000);
+    <% end %>
+<% end %>

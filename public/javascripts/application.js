@@ -1,23 +1,35 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-function remove_after_slide(element){
-    new Effect.SlideUp(
-        $(element), {
-            duration:0.3,
-            afterFinish: function () { 
-                $(element).remove() 
-            }
-        }
-    );
+$(function () {  
+    adv_search = $('#advanced_search').html(); //global variable
+    $('#advanced_search').remove();
+    $('#adv_search_hide').hide();
+});  
+
+function remove_fields(link) {  
+    $(link).prev("input[type=hidden]").val("1");  
+    $(link).closest(".fields").hide();  
+}  
+  
+function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
 }
 
-function mark_author_for_destroy(element){
-    $(element).next('.should_destroy').value = 1;
-    $(element).up('.author').fade();
-}
+function adv_search_show(){
+    $('#search_form').append('<div id="advanced_search">'+adv_search+'</div>');
+    $('#advanced_search').hide();
+    $('#adv_search_show').hide();
+    $('#adv_search_hide').show();
+    $('#advanced_search').slideDown();
+}  
 
-function mark_tag_for_destroy(element){
-    $(element).next('.should_destroy').value = 1;
-    $(element).up('.tag').fade();
+function adv_search_hide(){
+    $('#adv_search_hide').hide();
+    $('#adv_search_show').show(); 
+    $('#advanced_search').slideUp().delay().queue(function() {
+        $(this).remove();
+    });
 }

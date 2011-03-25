@@ -1,26 +1,30 @@
-<% rss formatted_books_url(:rss) %>
+<% rss books_path(:rss) %>
 
 <% title "Biblioteca Terra Livre" %>
 
 <%= render :partial => "search" %>
 
+<!--
 <p id="total">
-<%= @total %> itens encontrados
+<%#= @total %> itens encontrados
 </p>
+-->
 
 <ul>
   <% for book in @books %>
-    <li>
-      <span class="index_title"><%= link_to "#{book.title} #{book.volume}", book %></span><br/>
-      <span class="index_author"><%= book.authors_names %></span>
-      <% if book.year && book.year > 0 %>
-        <span class="index_year"><%= book.year %></span>
-      <% end %>
-    </li>
+    <% if book %>
+      <li>
+        <span class="index_title"><%= link_to "#{book.title} #{book.volume}", book %></span><br/>
+        <span class="index_author"><%= book.authors_names %></span>
+        <% if book.year && book.year > 0 %>
+          <span class="index_year"><%= book.year %></span>
+        <% end %>
+      </li>
+    <% end %>
   <% end %>
 </ul>
 
-<%= will_paginate @books %>
+<%= paginate @books %>  
 
 <div id="admin">
 <% if admin? %>
@@ -28,3 +32,6 @@
     <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
 <% end %>  
 </div>
+
+
+

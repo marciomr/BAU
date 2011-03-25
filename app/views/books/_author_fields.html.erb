@@ -1,0 +1,5 @@
+<p class="fields">  
+    <%= f.label :name, "Autor" %><br />  
+    <%= f.autocomplete_field :name, autocomplete_author_name_books_path, :class => "book_author" %>
+    <%= link_to_remove_fields "remove", f %>  
+</p>  

@@ -1,21 +1,14 @@
 class Book < ActiveRecord::Base
-  has_many :authors, :dependent => :destroy
-  has_many :tags, :dependent => :destroy
-  #accepts_nested_attributes_for :authors
-  
-  # não aceita livros sem título
-  validates_presence_of :title
-  
-  # verifica se o link para a imagem e para o pdf são urls válidos
-  validates_format_of :imglink, :pdflink, :with =>
-        /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix
-           
-  attr_accessible :title, :editor, :city, :country, :year, :language, :description 
-  attr_accessible :collection, :cdd, :author_attributes, :tag_attributes, :pdflink, :imglink
-  attr_accessible :subject, :page_number, :tombo, :volume, :subtitle, :isbn
+  attr_accessible :title, :editor, :city, :country, :year, :language
+  attr_accessible :description, :collection, :cdd, :subtitle, :page_number
+  attr_accessible :volume, :isbn, :subject, :pdflink, :imglink, :authors_attributes 
+  attr_accessible :tags_attributes, :tombo, :created_at
 
-  after_update :save_authors, :save_tags
-  
+  has_many :tags, :dependent => :destroy
+  has_many :authors, :dependent => :destroy
+  accepts_nested_attributes_for :tags, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true  
+  accepts_nested_attributes_for :authors, :reject_if => lambda { |a| a[:name].blank? }, :allow_destroy => true  
+
   define_index do
     indexes title, :sortable => true
     indexes subtitle
@@ -61,67 +54,59 @@ class Book < ActiveRecord::Base
   sphinx_scope(:with_pdflink) do
     {:conditions => { :pdflink => "http" }}
   end
-  
-  def self.collections
-    all.map{ |b| b.collection }.uniq.delete_if{ |x| x.blank? }.unshift("")
-  end
-
-  def self.languages
-    all.map{ |b| b.language }.uniq.delete_if{|x| x.blank? }.unshift("")
-  end
 
   def self.last_tombo
     self.count == 0 ? 0 : all.map{ |b| b.tombo }.sort.last
   end
 
-  def author_attributes=(author_attributes)
-    author_attributes.each do |attributes|
-      if attributes[:id].blank?
-        authors.build(attributes)
-      else
-        author = authors.detect {|t| t.id == attributes[:id].to_i}
-        author.attributes = attributes
-      end
-    end
-  end
-
-  def save_authors
-    authors.each do |a|
-      if a.should_destroy?
-        a.destroy
-      else
-        a.save(false)
-      end
-    end
-  end
-  
   def authors_names
     authors.map{ |a| a.name }.join(', ')
-  end
-
- def tag_attributes=(tag_attributes)
-    tag_attributes.each do |attributes|
-      if attributes[:id].blank?
-        tags.build(attributes)
-      else
-        tag = tags.detect {|t| t.id == attributes[:id].to_i}
-        tag.attributes = attributes
-      end
-    end
-  end
-
-  def save_tags
-    tags.each do |t|
-      if t.should_destroy?
-        t.destroy
-      else
-        t.save(false)
-      end
-    end
   end
 
   def tag_titles
     tags.map{ |t| t.title }.join(', ')
   end
+  
+  def self.collections
+    all.map{ |b| b.collection }.uniq.delete_if{ |x| x.blank? }.unshift("")
+  end
+  
+  def self.languages
+    all.map{ |b| b.language }.uniq.delete_if{|x| x.blank? }.unshift("")
+  end
+  
+  def self.gbook(isbn)
+    uri = "http://books.google.com/books/feeds/volumes?q=isbn:#{isbn}"
+    xml = Nokogiri::XML(open(uri))
+    entry = xml.at_css("entry") 
+    params = {}
+   
+    params[:isbn] = isbn   
+   
+    return params if entry.nil?
+     
+    ['title', 'subject', 'language', 'date', 'publisher', 'format'].each do |token|
+      unless entry.at_css("dc|#{token}").nil?
+        params[token.to_sym] = entry.at_css("dc|#{token}").text
+      end
+    end
+    
+    if entry.css('dc|title').size > 1 #the second dc:title is the subtitle
+      params[:subtitle] = entry.css('dc|title').last.text.titleize
+    end    
+    
+    params[:authors] = []
+    entry.css("dc|creator").each do |author|
+      params[:authors] << author.text.titleize 
+    end
+    
+    [:title, :subtitle, :subject, :publisher].each do |token|
+      params[token] = params[token].titleize if params[token]
+    end
+    
+    params[:date] = params[:date][/[0-9]{4}/] if params[:date]
+    params[:format] = params[:format][/[0-9]+/] if params[:format]
 
+    params
+  end
 end

@@ -1,10 +1,6 @@
-class Author < ActiveRecord::Base
-  belongs_to :books
+class Author < ActiveRecord::Base         
   
-  attr_accessible :name, :should_destroy
-  attr_accessor :should_destroy
+  attr_accessible :_destroy, :name
   
-  def should_destroy?
-    should_destroy.to_i == 1
-  end
+  belongs_to :book
 end

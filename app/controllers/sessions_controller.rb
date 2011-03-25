@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       session[:admin] = true
       redirect_to (session[:return_to] || root_path)
     else
-      flash[:error] = "Login failed."
+      flash[:error] = "Login falhou."
       render :action => :new
     end
   end
