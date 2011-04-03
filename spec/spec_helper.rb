@@ -32,7 +32,7 @@ RSpec.configure do |config|
 
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
-
+  config.color_enabled = true
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -51,13 +51,23 @@ RSpec.configure do |config|
   end
 end
 
-def rake(task)
-  system "RAILS_ENV='test' rake #{task}"
-end
-
 def login
    visit login_path
       
    fill_in "password", :with => APP_CONFIG['password']
    click_button "Entrar"
+end
+
+def accept_js_confirm
+  page.evaluate_script 'window.original_confirm_function = window.confirm;'
+  page.evaluate_script 'window.confirm = function(msg) { return true; }'
+  yield
+  page.evaluate_script 'window.confirm = window.original_confirm_function;'
+end
+
+def reject_js_confirm
+  page.evaluate_script 'window.original_confirm_function = window.confirm;'
+  page.evaluate_script 'window.confirm = function(msg) { return false; }'
+  yield
+  page.evaluate_script 'window.confirm = window.original_confirm_function;'
 end

@@ -1,8 +1,17 @@
-<% title "Edit Book" %>
+<% title "Editar \"#{@book.title}\"" %>
 
-<%= render 'form' %>
+<%= form_for @book do |builder| %>
+  <%= builder.error_messages %>
+  <p id="isbn">
+    <%= builder.label :isbn, "ISBN" %><br />
+    <%= builder.text_field :isbn %>
+  </p>
+
+  <%= render :partial => 'form', :locals => {:f => builder} %>
+
+<% end %>
 
 <p>
-  <%= link_to "Show", @book %> |
-  <%= link_to "View All", books_path %>
+  <%= link_to "Mostrar", @book %> |
+  <%= link_to "Voltar para lista", books_path %>
 </p>

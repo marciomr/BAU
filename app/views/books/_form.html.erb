@@ -1,107 +1,100 @@
-<%= form_tag url_for(:action => :gbook), :remote => true, :method => :get do -%>
-  <%= label_tag "ISBN" %><br/>
-  <%= text_field_tag :isbn, @book.isbn %>
-  <%= hidden_field_tag :id, @book.id %>
-  <%= submit_tag 'Preencher' %>
-<% end -%>
-
-
-<%= form_for @book do |f| %>
-  <%= f.error_messages %>
+<p id="title">
+  <%= f.label :title, "Título" %><br />
+  <%= f.text_field :title, :value => @params['title'] %>
+</p>
   
-  <p id="isbn">
-    <%= f.hidden_field :isbn %>
-  </p>
+<p id="subtitle">
+  <%= f.label :subtitle, "Subtítulo" %><br />
+  <%= f.text_field :subtitle, :value => @params['subtitle'] %>
+</p>
   
-  <p id="title">
-    <%= f.label :title, "Título" %><br />
-    <%= f.text_field :title %>
-  </p>
+<p id="volume">
+  <%= f.label :volume, "Volume" %><br />
+  <%= f.text_field :volume, :size => 5 %>
+</p>
   
-  <p id="subtitle">
-    <%= f.label :subtitle, "Subtítulo" %><br />
-    <%= f.text_field :subtitle %>
-  </p>
-  
-  <p id="volume">
-    <%= f.label :volume, "Volume" %><br />
-    <%= f.text_field :volume, :size => 5 %>
-  </p>
-  
-  <div id="author">  
+<div id="author">  
+  <% if @params['authors'] %>
+    <% @params['authors'].each do |a| %>
+      <%= f.fields_for :authors do |builder| %>  
+        <%= render :partial => "author_fields", :locals => {:f => builder, :name => a} %>
+      <% end %>
+    <% end %>
+  <% else %>
     <%= f.fields_for :authors do |builder| %>  
-      <%= render :partial => "author_fields", :locals => {:f => builder} %>
+      <%= render :partial => "author_fields", :locals => {:f => builder, :name => nil} %>
     <% end %>
-    <p><%= link_to_add_fields "Add Author", f, :authors %></p> 
-  </div>
+  <% end %>
+  <p><%= link_to_add_fields "Add Author", f, :authors %></p> 
+</div>
   
-  <div id="tag">  
-    <%= f.fields_for :tags do |builder| %>  
-      <%= render :partial => "tag_fields", :locals => {:f => builder} %>
-    <% end %>
-    <p><%= link_to_add_fields "Add Tag", f, :tags %></p> 
-  </div>
+<div id="tag">  
+  <%= f.fields_for :tags do |builder| %>  
+    <%= render :partial => "tag_fields", :locals => {:f => builder} %>
+  <% end %>
+  <p><%= link_to_add_fields "Add Tag", f, :tags %></p> 
+</div>
   
-  <p id="editor">
-    <%= f.label :editor, "Editor" %><br />
-    <%= f.autocomplete_field :editor, autocomplete_book_editor_books_path %>
-  </p>
+<p id="editor">
+  <%= f.label :editor, "Editor" %><br />
+  <%= f.autocomplete_field :editor, autocomplete_book_editor_books_path, :value => @params['editor'] %>
+</p>
   
-  <p id="year">
-    <%= f.label :year, "Ano" %><br />
-    <%= f.text_field :year, :size => 5 %>
-  </p>
+<p id="year">
+  <%= f.label :year, "Ano" %><br />
+  <%= f.text_field :year, :size => 5, :value => @params['year'] %>
+</p>  
 
-  <p id="language">
-      <%= f.label :language, "Língua" %><br />
-      <%= f.text_field :language, :size => 5 %>
-  </p>
+<p id="language">
+  <%= f.label :language, "Língua" %><br />
+  <%= f.text_field :language, :size => 5, :value => @params['language'] %>
+</p>
 
-  <p id="page_number">
-    <%= f.label :page_number, "Número de Páginas" %><br />
-    <%= f.text_field :page_number, :size => 5 %>
-  </p>
+<p id="page_number">
+  <%= f.label :page_number, "Número de Páginas" %><br />
+  <%= f.text_field :page_number, :size => 5, :value => @params['page_number'] %>
+</p>
 
-  <p id="subject">
-    <%= f.label :subject, "Assunto" %><br />
-    <%= f.autocomplete_field :subject, autocomplete_book_subject_books_path %>
-  </p>
+<p id="subject">
+  <%= f.label :subject, "Assunto" %><br />
+  <%= f.autocomplete_field :subject, autocomplete_book_subject_books_path, :value => @params['subject'] %>
+</p>
   
-  <p id="collection">
-    <%= f.label :collection, "Acervo" %><br />
-    <%= f.autocomplete_field :collection, autocomplete_book_collection_books_path %>
-  </p>
+<p id="collection">
+  <%= f.label :collection, "Acervo" %><br />
+  <%= f.autocomplete_field :collection, autocomplete_book_collection_books_path, :value => (@book.collection || "Terra Livre"), %>
+</p>
   
-  <p id="city">
-    <%= f.label :city, "Cidade" %><br />
-    <%= f.autocomplete_field :city, autocomplete_book_city_books_path %>
-  </p>
+<p id="city">
+  <%= f.label :city, "Cidade" %><br />
+  <%= f.autocomplete_field :city, autocomplete_book_city_books_path %>
+</p>
   
-  <p id="country">
-    <%= f.label :country, "País" %><br />
-    <%= f.autocomplete_field :country, autocomplete_book_country_books_path %>
-  </p>
+<p id="country">
+  <%= f.label :country, "País" %><br />
+  <%= f.autocomplete_field :country, autocomplete_book_country_books_path %>
+</p>
   
-  <p id="cdd">
-    <%= f.label :cdd, "CDD" %><br />
-    <%= f.text_field :cdd %>
-  </p>
+<p id="cdd">
+  <%= f.label :cdd, "CDD" %><br />
+  <%= f.text_field :cdd %>
+</p>
   
-   <p id="pdflink">
-    <%= f.label :pdflink, "PDF" %><br />
-    <%= f.text_field :pdflink %>
-  </p>
+<p id="pdflink">
+ <%= f.label :pdflink, "PDF" %><br />
+ <%= f.text_field :pdflink %>
+</p>
   
-   <p id="imglink">
-    <%= f.label :imglink, "Imagem" %><br />
-    <%= f.text_field :imglink %>
-  </p>
+<p id="imglink">
+ <%= f.label :imglink, "Imagem" %><br />
+ <%= f.text_field :imglink %>
+</p>
   
-  <p id="description">
-    <%= f.label :description, "Descrição" %><br />
-    <%= f.text_area :description %>
-  </p>
+<p id="description">
+  <%= f.label :description, "Descrição" %><br />
+  <%= f.text_area :description %>
+</p>
   
      
-  <p><%= f.submit "Salvar" %></p>
-<% end %>
+<p><%= f.submit "Salvar" %></p>
+

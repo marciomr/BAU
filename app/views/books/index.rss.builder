@@ -22,29 +22,24 @@ xml.rss :version => "2.0", 'xmlns:dc' => 'http://purl.org/dc/terms', 'xmlns:tl' 
             xml.category tag.title
           end
         
-          # informacoes dublic core
-          xml.tag!("dc:title", book.title)
-          xml.tag!("dc:title", book.subtitle) if !book.subtitle.blank?
-          xml.tag!("dc:date", book.year) if book.year && book.year != 0
-          xml.tag!("dc:description", book.description) if !book.description.blank?
-          xml.tag!("dc:publisher", book.editor) if !book.editor.blank?
-          xml.tag!("dc:format", "#{book.page_number} pages") if book.page_number && book.page_number != 0 
-          xml.tag!("dc:subject", book.subject) if !book.subject.blank?
-          xml.tag!("dc:identifier", "ISBN:#{book.isbn}") if !book.isbn.blank?
-          
+          (Book.dc_fields + Book.tl_fields).each do |field|
+            value = book.send field
+            if (value.class == String && !value.blank? ||
+                value.class == Fixnum && value && value != 0)
+                case field
+                when 'page_number'
+                  value = "#{value} pages"
+                when 'isbn'
+                  value = "ISBN:#{value}"
+                end
+                xml.tag!("#{rss_type(field)}:#{field}", value) 
+            end
+          end
+
           book.authors.each do |author|
             xml.tag!("dc:creator", author.name)
           end
           
-          #informacoes extras para a biblioteca
-          xml.tag!("tl:tombo", book.tombo)
-          xml.tag!("tl:cidade", book.city) if !book.city.blank?
-          xml.tag!("tl:pais", book.country) if !book.country.blank?
-          xml.tag!("tl:acervo", book.collection) if !book.collection.blank?
-          xml.tag!("tl:img", book.imglink) if !book.imglink.blank?
-          xml.tag!("tl:pdf", book.pdflink) if !book.pdflink.blank?
-          xml.tag!("tl:cdd", book.cdd) if !book.cdd.blank?
-        	xml.tag!("tl:volume", book.volume) if book.volume && book.volume != 0
         end
       end
     end

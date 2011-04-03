@@ -7,13 +7,6 @@ class BooksController < ApplicationController
   for attribute in [:editor, :subject, :collection, :city, :country] do
     autocomplete :book, attribute
   end
-    
-  def gbook  
-    @params = Book.gbook(params[:isbn])
-    @isbn = params[:isbn]
-    @book = Book.find(params[:book_id]) if params[:book_id]
-    @book.authors = [] unless @book.nil?
-  end  
   
   def index
     respond_to do |format|
@@ -31,12 +24,13 @@ class BooksController < ApplicationController
                   :per_page => APP_CONFIG['per_page']
         
         @books.order_by_relevance_title          
-       
-        @books.by_title(params['title_filter']) if !params['title_filter'].blank? 
-        @books.by_author(params['author_filter']) if !params['author_filter'].blank?
-        @books.by_author(params['editor_filter']) if !params['editor_filter'].blank?
-        @books.by_language(params['language_filter']) if !params['language_filter'].blank?
-        @books.by_collection(params['collection_filter']) if !params['collection_filter'].blank?
+   
+        # scopes    
+        ['title', 'author', 'editor', 'language', 'collection'].each do |field|
+          if !params["#{field}_filter"].blank? 
+            @books.send("by_#{field}", params["#{field}_filter"]) 
+          end
+        end
                 
         @books.with_pdflink if params['pdf_filter']
         
@@ -53,16 +47,17 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
   end
 
-  def new
+  def new    
+    @params = params[:isbn] ? Book.gbook(params[:isbn]) : {}
     @book = Book.new
-    @book.authors.build
+    @book.authors.build      
   end
 
   def create
     @book = Book.new(params[:book])
     @book.tombo = Book.last_tombo + 1
     if @book.save
-      redirect_to @book, :notice => "Successfully created book."
+      redirect_to @book, :notice => "Livro criado com sucesso."
     else
       render :action => 'new'
     end
@@ -75,7 +70,7 @@ class BooksController < ApplicationController
   def update
     @book = Book.find(params[:id])
     if @book.update_attributes(params[:book])
-      redirect_to @book, :notice  => "Successfully updated book."
+      redirect_to @book, :notice  => "Livro editado com sucesso."
     else
       render :action => 'edit'
     end
@@ -84,6 +79,6 @@ class BooksController < ApplicationController
   def destroy
     @book = Book.find(params[:id])
     @book.destroy
-    redirect_to books_url, :notice => "Successfully destroyed book."
+    redirect_to books_url, :notice => "Livro deletado com sucesso."
   end
 end

@@ -2,8 +2,8 @@
   Título: <%= text_field_tag :title_filter, params[:title_filter], :size => 30 %><br/> 
   Autor: <%= text_field_tag :author_filter, params[:author_filter], :size => 30 %><br/>
   Editor: <%= text_field_tag :editor_filter, params[:editor_filter], :size => 30 %><br/>
-  Língua: <%= select_tag :language_filter, "<option>#{Book.languages.join("</option><option>")}</option>" %> <br/>
-  Acervo: <%= select_tag :collection_filter, "<option>#{Book.collections.join("</option><option>")}</option>" %> <br/>
+  Língua: <%= select "language_filter", "", Book.languages, {:include_blank => true} %> <br/>
+  Acervo: <%= select "collection_filter", "", Book.collections, {:include_blank => true} %> <br/>
   PDF: <%= check_box_tag :pdf_filter %><br/>
   <%= submit_tag "Busca", :name => nil, :class => 'button'%><br/>
 </div>

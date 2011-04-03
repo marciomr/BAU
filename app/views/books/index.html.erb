@@ -4,17 +4,22 @@
 
 <%= render :partial => "search" %>
 
-<!--
 <p id="total">
-<%#= @total %> itens encontrados
+  <%= @total %> itens encontrados
 </p>
--->
 
-<ul>
+<ul id="books">
   <% for book in @books %>
     <% if book %>
       <li>
-        <span class="index_title"><%= link_to "#{book.title} #{book.volume}", book %></span><br/>
+        <%= link_to index_label(book), book, :class => 'index_title' %> 
+        <% if admin? %>
+          <span class="index_edit">
+            <%= link_to "Editar", edit_book_path(book), :class => "edit_link" %>
+            <%= button_to "Remover", book, :confirm => 'Tem certeza?', :method => :delete, :class => 'remove_button' %>
+          </span>
+        <% end %>
+        <br/>
         <span class="index_author"><%= book.authors_names %></span>
         <% if book.year && book.year > 0 %>
           <span class="index_year"><%= book.year %></span>

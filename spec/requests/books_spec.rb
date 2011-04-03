@@ -12,7 +12,7 @@ feature "Create Books", %q{
     login
   end
 
-  scenario "create a book with all atributes as admin", :focus => true, :js => true do
+  scenario "create a book with all atributes as admin", :js => true do
     visit new_book_path
     fill_in "isbn", :with => '7777777'
     click_button "Preencher" # isso não deveria ser necessário
@@ -35,10 +35,11 @@ feature "Create Books", %q{
     fill_in "Descrição", :with => "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
    
     click_button "Salvar"
-      
-#      save_and_open_page
-  
+        
     Book.should have(1).record
+    
+    page.should have_content("Livro criado com sucesso.")
+    
     page.should have_content('7777777')
     page.should have_content("A Conquista do Pão") 
     page.should have_content("como conquistar o pão") 
@@ -57,6 +58,54 @@ feature "Create Books", %q{
     page.should have_css('a[href^="http://www.example.com"]')
     page.should have_css('img[src^="http://bibliotecaterralivre.org"]')
   end
+  
+  scenario "delete", :js => true do
+    15.times{ Factory(:book) }
+    
+    visit books_path
+    
+    accept_js_confirm do
+      within(:css, "li:first-child") do
+        click_button "x"
+      end    
+    end
+    
+    page.should have_content "Livro deletado com sucesso"
+    Book.count.should == 14
+  end
+    
+  scenario "edit" do
+    visit edit_book_path(Factory(:book, :title => "Lorem Ipsum"))
+    fill_in "Título", :with => "A Conquista do Pão"
+      
+    click_button "Salvar"
+    page.should have_content("Livro editado com sucesso")
+    page.should have_content("A Conquista do Pão")
+  end  
+  
+  scenario "see edit link" do
+    book = Factory(:book, :title => "Lorem Ipsum")
+    
+    visit books_path
+    
+    page.should have_content "Editar"
+    
+    click_link "Editar"
+    current_path.should == edit_book_path(book)
+  end  
+    
+  scenario "delete without javascript" do
+    15.times{ Factory(:book) }
+    
+    visit books_path
+    
+    within(:css, "li:first-child") do
+      click_button "Remover"
+    end    
+    
+    page.should have_content "Livro deletado com sucesso"
+    Book.count.should == 14
+  end  
     
   scenario "tombo + 1" do
     visit new_book_path

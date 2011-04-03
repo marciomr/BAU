@@ -8,7 +8,7 @@ gem 'rails', '3.0.5'
 #gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'rails3-jquery-autocomplete' # trocar por http://loopj.com/jquery-tokeninput/
+gem 'rails3-jquery-autocomplete', :path => 'vendor/plugins/rails3-jquery-autocomplete'
 gem 'mysql2'
 gem 'thinking-sphinx', :git => 'git://github.com/freelancing-god/thinking-sphinx.git', :branch => 'rails3'
 # the very latest version is compliant with kaminari

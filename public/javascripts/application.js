@@ -2,9 +2,15 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 $(function () {  
-    adv_search = $('#advanced_search').html(); //global variable
+    adv_search = $('#advanced_search').html();
     $('#advanced_search').remove();
     $('#adv_search_hide').hide();
+    $('#adv_search_show').show();
+    
+    $('.remove_button').val("x");
+    $('.index_edit').wrapInner('<table>');
+    $('.edit_link').wrap('<td>');
+    $('.index_edit form').wrap('<td>');
 });  
 
 function remove_fields(link) {  

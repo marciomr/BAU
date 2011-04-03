@@ -1,27 +1,9 @@
 # coding: utf-8
 
+require "#{Rails.root}/app/helpers/books_helper.rb"
+include BooksHelper
+
 namespace :backup do
-
-def view(url_options = {}, *view_args)
-  view_args[0] ||= ActionController::Base.view_paths
-  view_args[1] ||= {}
-  
-  view = ActionView::Base.new(*view_args)
-  routes = Rails::Application.routes
-  routes.default_url_options = {:host => 'localhost'}.merge(url_options)
-
-  view.class_eval do
-    include ApplicationHelper
-    include routes.url_helpers
-  end
-
-  assigns = instance_variables.inject(Hash.new) do |hash, name|
-    hash.merge name[1..-1] => instance_variable_get(name)
-  end
-  view.assign assigns
-  
-  view
-end
 
 desc "Save the current version of the RSS file in backups directory"
   task :save => :environment do
@@ -95,68 +77,31 @@ desc "Save the current version of the RSS file in backups directory"
     xml.css("item").each_with_index do |item, i|
       params = {}
 
-      dc = ['date', 'format', 'publisher', 'description', 'publisher', 'subject', 'title']
-      tl = ['tombo', 'volume', 'cidade', 'pais', 'acervo', 'pdf', 'img']
-      
-      fields_number = ['date', 'format', 'tombo', 'volume']
-      fields_string = ['publisher', 'description', 'subject', 'cidade', 'pais']
-      fields_string += ['acervo', 'pdf', 'img', 'title']
-      
-      fields_number.each do |field|
-        type = (dc.include?(field) ? 'dc' : 'tl')
-        unless item.at_css("#{type}|#{field}").blank?
-          number = item.at_css("#{type}|#{field}").text.to_i
-          params[field.to_sym] = (number == 0 ? nil : number)
+      (Book.simple_fields - ['subtitle', 'language']).each do |field|
+        rss_name = rss_type(field) ? "#{rss_type(field)}|#{to_rss(field)}" : to_rss(field)
+        unless item.at_css(rss_name).blank?
+          params[field] = if ['year', 'page_number', 'tombo', 'volume'].include?(field)
+            number = item.at_css(rss_name).text.to_i
+            (number == 0 ? nil : number)
+          elsif field == 'isbn'
+            item.at_css(rss_name).text[/[0-9]+.*/] #idem
+          else 
+            item.at_css(rss_name).text 
+          end 
         end
       end
-      
-      fields_string.each do |field| 
-        type = (dc.include?(field) ? 'dc' : 'tl')
-        unless item.at_css("#{type}|#{field}").blank?
-          params[field.to_sym] = item.at_css("#{type}|#{field}").text
-        end
-      end
-      
+
       if item.css("dc|title").first != item.css("dc|title").last
-        params[:subtitle] = item.css("dc|title").last.text 
+        params['subtitle'] = item.css("dc|title").last.text 
       end      
-      params[:created_at] = DateTime.parse(item.at_css("pubDate").text)
-      params[:language] = item.at_css("language").text unless item.at_css("language").nil?
-      unless item.at_css("dc|identifier").nil?
-        params[:isbn] =  item.at_css("dc|identifier").text[/[0-9]+.*/] 
-      end
+
+      params["language"] = item.at_css("language").text unless  item.at_css("language").blank?
+      params['created_at'] = DateTime.parse(item.at_css("pubDate").text)
+
+      book = Book.new(params)      
       
-      book = Book.new(
-        :isbn => params[:isbn],
-        :tombo => params[:tombo],
-        :created_at => params[:created_at],
-        :title => params[:title],
-	      :subtitle => params[:subtitle],
-	      :volume => params[:volume],
-        :year => params[:date],
-        :editor => params[:publisher],
-        :description => params[:description],
-        :page_number => params[:format],
-        :subject => params[:subject],
-        :city => params[:cidade],
-        :country => params[:pais],
-        :collection => params[:acervo],
-        :language => params[:language],
-        :pdflink => params[:pdf],
-        :imglink => params[:img]
-      )
-      
-      authors = []
-      item.css("dc|creator").each do |author|
-        authors.push(Author.new(:name => author.text))
-      end
-      book.authors = authors
-      
-      tags = Array.new
-      item.css("category").each do |tag|
-        tags.push(Tag.new(:name => tag.text))
-      end
-      book.tags = tags
+      book.authors = item.css("dc|creator").collect{ |a| Author.new(:name => a.text) }
+      book.tags = item.css("category").collect{ |t| Tag.new(:title => t.text) }
       
       book.save
     

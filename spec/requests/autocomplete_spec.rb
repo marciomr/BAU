@@ -11,6 +11,16 @@ feature "Autocomplete", %q{
   background do
     login
   end
+
+  scenario "autocomplete without duplication", :js => true do
+    Factory(:book, :editor => "Autocomplete")
+    Factory(:book, :editor => "Autocomplete")
+    
+    visit new_book_path
+    fill_in "book_editor", :with => 'Aut'
+    
+    page.should have_css('li.ui-menu-item', :count => 1)
+  end
   
   scenario "autocomplete tag", :js => true do
     Factory(:book, :tags => [Factory(:tag, :title => "Autocomplete")] )

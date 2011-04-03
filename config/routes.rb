@@ -4,9 +4,6 @@ Terralivre::Application.routes.draw do
     get :autocomplete_tag_title, :on => :collection
     get :autocomplete_author_name, :on => :collection
 
-    get :gbook, :on => :collection
-#    get :gbook        
-    
     for attribute in ['editor', 'subject', 'collection', 'city', 'country'] do
       get "autocomplete_book_#{attribute}", :on => :collection
     end
@@ -16,7 +13,8 @@ Terralivre::Application.routes.draw do
 
   match 'login' => 'sessions#new'
   match 'logout' => 'sessions#destroy'
-  
+
+  root :to => "books#index"  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -64,10 +62,6 @@ Terralivre::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  root :to => "books#index"
 
   # See how all your routes lay out with "rake routes"
 

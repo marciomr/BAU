@@ -19,12 +19,18 @@ a img {
 }
 
 #container {
-  width: 65%;
+  width: 850px;
   margin: 0 auto;
   background-color: #FFF;
   padding: 20px 40px;
   border: solid 1px black;
   margin-top: 30px;
+}
+
+#content {
+  width: 700px;
+  margin: 0 auto;
+  padding: 20px 40px;
 }
 
 #flash_notice, #flash_error, #flash_alert {
@@ -99,6 +105,9 @@ li {
     margin-bottom: 20px;
 }
 
+#adv_search_show{ display: none }
+#adv_search_hide{ display: none }
+
 .index_title{
     font-size: 12pt;
 }
@@ -122,8 +131,52 @@ li {
     color: gray;
 }
 
-#content {
-  margin: 0 auto;
-  width: 650px;
-  padding: 20px 40px;
+.edit_link{
+    color: gray;
+    margin: 0 5px 0 5px;
 }
+
+.edit_link:hover{ color: black }
+
+.remove_button{
+    color: gray;
+    background: none;
+    border: none;
+    text-transform: lowercase;
+    font-size: 10pt;
+    padding: 0 0 0 0;
+    margin: 0 5px 0 5px;
+}
+
+.remove_button:hover{ 
+    color: black; 
+    cursor: pointer;
+}
+
+.index_edit{ 
+    float: right;
+    font-size:10pt;
+    text-transform: lowercase;
+}
+
+#book{
+    margin-left: -3px;
+}
+
+#books li{
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 5px 15px 5px 15px;
+}
+
+#books li:hover{
+    background: #ffffb3;
+}
+
+h1{ padding: 0 15px 0 15px }
+
+.nav{ padding: 0 15px 0 15px }
+
+.pagination{ padding: 0 15px 0 15px }
+
+#total{ padding: 0 15px 0 15px }

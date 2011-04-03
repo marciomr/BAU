@@ -1,5 +1,19 @@
-<% title "New Book" %>
+<% title "Novo Livro" %>
 
-<%= render 'form' %>
+<%= form_tag new_book_path, :remote => true, :method => :get do -%>
+  <%= label_tag :isbn, "ISBN" %><br/>
+  <%= text_field_tag :isbn, @book.isbn || @params['isbn'] %>
+  <%= submit_tag 'Preencher' %>
+<% end -%>
 
-<p><%= link_to "Back to List", books_path %></p>
+<%= form_for @book do |builder| %>
+  <%= builder.error_messages %>
+  <p id="isbn">
+    <%= builder.hidden_field :isbn %>
+  </p>
+
+  <%= render :partial => 'form', :locals => {:f => builder} %>
+
+<% end %>
+
+<p><%= link_to "Voltar para lista", books_path %></p>

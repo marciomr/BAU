@@ -12,20 +12,29 @@ feature "Google Book search and form complete", %q{
     login
   end
   
-  scenario "google books", :js => true do
-    visit new_book_path
-    fill_in "isbn", :with => 1606802127
-    click_button "Preencher"
-    
-    click_button "Salvar"
-    
-    page.should have_content "What Is Property"
-    page.should have_content "An Inquiry Into The Principle Of Right And Of Government"
-    page.should have_content "Pierre Joseph Proudhon"
-    page.should have_content "Amédée Jérôme Langlois"
-    page.should have_content "Forgotten Books"
-    page.should have_content "1969"
-    page.should have_content "en"
-    page.should have_content "446"
+  scenario "google books without javascript" do
+    google_book_test
+  end
+  
+  scenario "google books with javascript", :js => true do
+    google_book_test
   end
 end
+
+def google_book_test
+  visit new_book_path
+  fill_in "isbn", :with => 1606802127
+  click_button "Preencher"
+  
+  click_button "Salvar"
+  
+  page.should have_content "What Is Property"
+  page.should have_content "An Inquiry Into The Principle Of Right And Of Government"
+  page.should have_content "Pierre Joseph Proudhon"
+  page.should have_content "Amédée Jérôme Langlois"
+  page.should have_content "Forgotten Books"
+  page.should have_content "1969"
+  page.should have_content "en"
+  page.should have_content "446"
+end
+

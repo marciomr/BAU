@@ -1,25 +1,47 @@
 class Book < ActiveRecord::Base
-  attr_accessible :title, :editor, :city, :country, :year, :language
-  attr_accessible :description, :collection, :cdd, :subtitle, :page_number
-  attr_accessible :volume, :isbn, :subject, :pdflink, :imglink, :authors_attributes 
-  attr_accessible :tags_attributes, :tombo, :created_at
 
-  has_many :tags, :dependent => :destroy
-  has_many :authors, :dependent => :destroy
-  accepts_nested_attributes_for :tags, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true  
-  accepts_nested_attributes_for :authors, :reject_if => lambda { |a| a[:name].blank? }, :allow_destroy => true  
+  def self.dc_fields
+    ['isbn', 'title', 'subtitle', 'year', 'page_number', 'description', 'editor', 'subject', 'language']
+  end
+
+  def self.tl_fields
+    ['tombo', 'volume', 'city', 'country', 'collection', 'pdflink', 'imglink', 'cdd']
+  end
+
+  def self.complex_fields
+    {'tags' => 'title', 'authors' => 'name'}
+  end
+
+  def self.fields
+    Book.tl_fields + Book.dc_fields + ['created_at', 'tags', 'authors']
+  end
+  
+  def self.simple_fields
+    Book.fields - Book.complex_fields.keys
+  end 
+
+  Book.simple_fields.each do |field|
+    attr_accessible field.to_sym
+  end
+  
+  Book.complex_fields.keys.each do |field|
+    attr_accessible "#{field}_attributes".to_sym
+  end
+  
+  Book.complex_fields.each do |key, value|
+    has_many key.to_sym, :dependent => :destroy
+    accepts_nested_attributes_for key.to_sym, :reject_if => lambda{ |a| a[value.to_sym].blank? }, :allow_destroy => true
+  end
 
   define_index do
     indexes title, :sortable => true
-    indexes subtitle
-    indexes description
-    indexes subject
+    
+    [:subtitle, :description, :subject, :pdflink, :collection, :language].each do |field|
+      indexes field
+    end
+
     indexes tags.title, :as => :tag
     indexes authors.name, :as => :author
-    
-    indexes pdflink
-    indexes collection
-    indexes language
     
     set_property :enable_star => true
     set_property :min_infix_len => 3
@@ -27,26 +49,12 @@ class Book < ActiveRecord::Base
     set_property :delta => true
   end
 
-  sphinx_scope(:by_author) do | author |
-    {:conditions => { :author => author }}
-  end
-  
-  sphinx_scope(:by_title) do | title |
-    {:conditions => { :title => title }}
-  end
-  
-  sphinx_scope(:by_editor) do | editor |
-    {:conditions => { :editor => editor }}
+  ['author', 'title', 'editor', 'language', 'collection'].each do |field|
+    sphinx_scope("by_#{field}".to_sym) do | f |
+      {:conditions => { field.to_sym => f }}
+    end
   end
 
-  sphinx_scope(:by_language) do | language |
-    {:conditions => { :language => language }}
-  end
-  
-  sphinx_scope(:by_collection) do | collection |
-    {:conditions => { :collection => collection }}
-  end
-  
   sphinx_scope(:order_by_relevance_title) do
     {:sort_mode => :extended, :order => "title ASC, @relevance DESC"}
   end
@@ -55,24 +63,33 @@ class Book < ActiveRecord::Base
     {:conditions => { :pdflink => "http" }}
   end
 
+#  scope :no_duplication, lambda { where() }
+
   def self.last_tombo
     self.count == 0 ? 0 : all.map{ |b| b.tombo }.sort.last
   end
 
-  def authors_names
-    authors.map{ |a| a.name }.join(', ')
-  end
-
-  def tag_titles
-    tags.map{ |t| t.title }.join(', ')
+  Book.complex_fields.each do |k, v| 
+    define_method "#{k}_#{v}s" do
+      send(k).map{ |a| a.send(v) }.join(', ')
+    end
   end
   
-  def self.collections
-    all.map{ |b| b.collection }.uniq.delete_if{ |x| x.blank? }.unshift("")
+  Book.simple_fields.each do |field|
+    self.class.class_eval do
+      define_method "#{field}s" do
+        all.map{ |b| b.send(field) }.uniq.delete_if{ |x| x.blank? }
+      end
+    end
   end
   
-  def self.languages
-    all.map{ |b| b.language }.uniq.delete_if{|x| x.blank? }.unshift("")
+  def self.to_rss(field)
+    hash = {'year' => 'date', 'editor' => 'publisher', 'page_number' => 'format', 
+            'city' => 'cidade', 'country' => 'pais', 'collection' => 'acervo', 
+            'pdflink' => 'pdf', 'imglink' => 'img', 'subtitle' => 'title', 
+            'isbn' => 'identifier'}
+    return hash[field] if hash.keys.include? field
+    field
   end
   
   def self.gbook(isbn)
@@ -81,32 +98,30 @@ class Book < ActiveRecord::Base
     entry = xml.at_css("entry") 
     params = {}
    
-    params[:isbn] = isbn   
+    params['isbn'] = isbn   
    
     return params if entry.nil?
      
-    ['title', 'subject', 'language', 'date', 'publisher', 'format'].each do |token|
-      unless entry.at_css("dc|#{token}").nil?
-        params[token.to_sym] = entry.at_css("dc|#{token}").text
+    (Book.dc_fields - ['isbn', 'subtitle']).each do |field|
+      unless entry.at_css("dc|#{Book.to_rss(field)}").nil?
+        rss_field = entry.at_css("dc|#{Book.to_rss(field)}").text
+        if rss_field
+          params[field] = case field
+            when 'year' then rss_field[/[0-9]{4}/]
+            when 'page_number' then rss_field[/[0-9]+/]
+            when 'description' then rss_field.gsub(/\n/,"")
+            else rss_field.titleize 
+          end
+        end
       end
     end
     
     if entry.css('dc|title').size > 1 #the second dc:title is the subtitle
-      params[:subtitle] = entry.css('dc|title').last.text.titleize
+      params['subtitle'] = entry.css('dc|title').last.text.titleize
     end    
     
-    params[:authors] = []
-    entry.css("dc|creator").each do |author|
-      params[:authors] << author.text.titleize 
-    end
+    params['authors'] = entry.css("dc|creator").collect{ |a| a.text.titleize }
     
-    [:title, :subtitle, :subject, :publisher].each do |token|
-      params[token] = params[token].titleize if params[token]
-    end
-    
-    params[:date] = params[:date][/[0-9]{4}/] if params[:date]
-    params[:format] = params[:format][/[0-9]+/] if params[:format]
-
     params
   end
 end
