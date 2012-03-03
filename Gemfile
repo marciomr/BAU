@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.5'
+gem 'rails', '3.1.0.rc6'
+#gem "rake", "0.8.7"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -8,22 +9,32 @@ gem 'rails', '3.0.5'
 #gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'rails3-jquery-autocomplete', :path => 'vendor/plugins/rails3-jquery-autocomplete'
+gem 'rails3-jquery-autocomplete', :git => 'git://github.com/marciomr/rails3-jquery-autocomplete.git'
+#gem 'rails3-jquery-autocomplete', :git => 'git://github.com/marciomr/rails3-jquery-autocomplete.git'
 gem 'mysql2'
-gem 'thinking-sphinx', :git => 'git://github.com/freelancing-god/thinking-sphinx.git', :branch => 'rails3'
+gem 'thinking-sphinx', :git => 'https://github.com/sylogix/thinking-sphinx.git', :branch => 'rails3'
+# :git => 'git://github.com/freelancing-god/thinking-sphinx.git', 
 # the very latest version is compliant with kaminari
 gem 'kaminari'
 
 gem 'nokogiri'
 
-group :development, :test do
-  gem 'rspec-rails'
+gem 'rspec-rails', :group => [:development, :test]
+
+group :development do
+  gem 'rails3-generators'
+  gem 'nifty-generators'
+  gem 'pry'
+end
+
+group :test do
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'factory_girl'
-  gem 'rails3-generators'
-  gem 'nifty-generators'
+  gem 'rb-inotify'
+  gem 'libnotify'
+  gem 'guard-rspec'
+  gem 'factory_girl_rails'
   gem 'mocha'
 end
 
@@ -51,4 +62,6 @@ end
 # group :development, :test do
 #   gem 'webrat'
 # end
+
+# 11 43239917
 
