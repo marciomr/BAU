@@ -36,6 +36,7 @@ group :test do
   gem 'guard-rspec'
   gem 'factory_girl_rails'
   gem 'mocha'
+  gem 'fakeweb'
 end
 
 #gem 'auto_complete'
