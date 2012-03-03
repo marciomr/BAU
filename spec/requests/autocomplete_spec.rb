@@ -18,7 +18,8 @@ feature "Autocomplete", %q{
     
     visit new_book_path
     fill_in "book_editor", :with => 'Aut'
-    
+
+    sleep 5
     page.should have_css('li.ui-menu-item', :count => 1)
   end
   
@@ -29,9 +30,8 @@ feature "Autocomplete", %q{
     click_link 'Add Tag'      
     fill_in "Palavra Chave", :with => 'Aut'
     
-    wait_until do
-      page.should have_content('Autocomplete')
-    end
+    sleep 5
+    page.should have_content('Autocomplete')
   end
     
   scenario "autocomplete author", :js => true do
@@ -40,21 +40,18 @@ feature "Autocomplete", %q{
     visit new_book_path
     fill_in "Autor", :with => 'Aut'
     
-    wait_until do
-      page.should have_content('Autocomplete')
-    end
+    sleep 5
+    page.should have_content('Autocomplete')
   end
   
-  scenario "autocomplete", :js => true do
-    for attribute in ['editor', 'subject', 'collection', 'city', 'country'] do
+  scenario "autocomplete", :js => true do   
+   for attribute in ['editor', 'subject', 'collection', 'city', 'country'] do
       Factory(:book, attribute => 'Autocomplete')
 
       visit new_book_path
       fill_in "book_#{attribute}", :with => 'Aut'
-        
-      wait_until do
-        page.should have_content('Autocomplete')
-      end
+      sleep 5  
+      page.should have_content('Autocomplete')
     end
   end
   

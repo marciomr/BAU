@@ -1,11 +1,16 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-$(function () {  
-    adv_search = $('#advanced_search').html();
-    $('#advanced_search').remove();
-    $('#adv_search_hide').hide();
-    $('#adv_search_show').show();
+$(function () {
+    $.get("books/adv_search", function(data){
+        adv_search_data = data;
+    });
+    
+    adv_search_show();
+    
+    $('#isbn').focusout(function(){
+        $('#book_isbn').val($(this).val());
+    });
     
     $('.remove_button').val("x");
     $('.index_edit').wrapInner('<table>');
@@ -25,17 +30,21 @@ function add_fields(link, association, content) {
 }
 
 function adv_search_show(){
-    $('#search_form').append('<div id="advanced_search">'+adv_search+'</div>');
-    $('#advanced_search').hide();
-    $('#adv_search_show').hide();
-    $('#adv_search_hide').show();
-    $('#advanced_search').slideDown();
+    $('#adv_search_show').click(function () {
+        $('#advanced_search').append(adv_search_data).hide().slideDown();
+        adv_search_hide();
+
+        $('#adv_search_show').hide();
+        return false;           
+    }); 
 }  
 
 function adv_search_hide(){
-    $('#adv_search_hide').hide();
-    $('#adv_search_show').show(); 
-    $('#advanced_search').slideUp().delay().queue(function() {
-        $(this).remove();
+    $('#adv_search_hide').click(function () {
+        $('#adv_search_content').slideUp().delay().queue(function() {
+            $(this).remove();
+        });
+        $('#adv_search_show').show();        
+        return false;           
     });
 }

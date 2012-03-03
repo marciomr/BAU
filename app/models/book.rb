@@ -12,12 +12,12 @@ class Book < ActiveRecord::Base
     {'tags' => 'title', 'authors' => 'name'}
   end
 
-  def self.fields
-    Book.tl_fields + Book.dc_fields + ['created_at', 'tags', 'authors']
+  def self.simple_fields
+    Book.tl_fields + Book.dc_fields + ['created_at']
   end
   
-  def self.simple_fields
-    Book.fields - Book.complex_fields.keys
+  def self.fields
+    Book.simple_fields + Book.complex_fields.keys
   end 
 
   Book.simple_fields.each do |field|
@@ -63,18 +63,18 @@ class Book < ActiveRecord::Base
     {:conditions => { :pdflink => "http" }}
   end
 
-#  scope :no_duplication, lambda { where() }
-
   def self.last_tombo
     self.count == 0 ? 0 : all.map{ |b| b.tombo }.sort.last
   end
 
+  # get the authors names and tags titles joined with ,  
   Book.complex_fields.each do |k, v| 
     define_method "#{k}_#{v}s" do
       send(k).map{ |a| a.send(v) }.join(', ')
     end
   end
   
+  # get the fields concatenated with ,
   Book.simple_fields.each do |field|
     self.class.class_eval do
       define_method "#{field}s" do

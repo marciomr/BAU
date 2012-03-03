@@ -1,11 +1,19 @@
 <p id="title">
   <%= f.label :title, "Título" %><br />
-  <%= f.text_field :title, :value => @params['title'] %>
+  <% if @params %>
+    <%= f.text_field :title, :value => @params['title'] %>
+  <% else %>
+    <%= f.text_field :title %>
+  <% end %>  
 </p>
   
 <p id="subtitle">
   <%= f.label :subtitle, "Subtítulo" %><br />
-  <%= f.text_field :subtitle, :value => @params['subtitle'] %>
+  <% if @params %>
+    <%= f.text_field :subtitle, :value => @params['subtitle'] %>
+  <% else %>
+    <%= f.text_field :subtitle %>
+  <% end %>  
 </p>
   
 <p id="volume">
@@ -14,16 +22,23 @@
 </p>
   
 <div id="author">  
-  <% if @params['authors'] %>
-    <% @params['authors'].each do |a| %>
+  <% if @params %>
+    <% if @params['authors'] %>
+     <% @params['authors'].each do |a| %>
+        <%= f.fields_for :authors do |builder| %>  
+          <%= render :partial => "author_fields", :locals => {:f => builder, :name => a} %>
+        <% end %>
+     <% end %>
+    <% else %>
       <%= f.fields_for :authors do |builder| %>  
-        <%= render :partial => "author_fields", :locals => {:f => builder, :name => a} %>
+        <%= render :partial => "author_fields", :locals => {:f => builder, :name => nil}  %>
       <% end %>
     <% end %>
   <% else %>
-    <%= f.fields_for :authors do |builder| %>  
-      <%= render :partial => "author_fields", :locals => {:f => builder, :name => nil} %>
-    <% end %>
+    <%= @book.authors.second.name %>
+       <%= f.fields_for :authors do |builder| %>  
+        <%= render :partial => "author_fields", :locals => {:f => builder, :name => nil}  %>
+      <% end %>
   <% end %>
   <p><%= link_to_add_fields "Add Author", f, :authors %></p> 
 </div>
@@ -37,32 +52,52 @@
   
 <p id="editor">
   <%= f.label :editor, "Editor" %><br />
-  <%= f.autocomplete_field :editor, autocomplete_book_editor_books_path, :value => @params['editor'] %>
+  <% if @params %>
+    <%= f.autocomplete_field :editor, autocomplete_book_editor_books_path, :value => @params['editor'] %>
+  <% else %>
+    <%= f.autocomplete_field :editor, autocomplete_book_editor_books_path %>
+  <% end %>
 </p>
   
 <p id="year">
   <%= f.label :year, "Ano" %><br />
-  <%= f.text_field :year, :size => 5, :value => @params['year'] %>
+  <% if @params %>
+    <%= f.text_field :year, :size => 5, :value => @params['year'] %>
+  <% else %>
+    <%= f.text_field :year, :size => 5 %>
+  <% end %>
 </p>  
 
 <p id="language">
   <%= f.label :language, "Língua" %><br />
-  <%= f.text_field :language, :size => 5, :value => @params['language'] %>
+  <% if @params %>
+    <%= f.text_field :language, :size => 5, :value => @params['language'] %>
+  <% else %>
+    <%= f.text_field :language, :size => 5 %>
+  <% end %>
 </p>
 
 <p id="page_number">
   <%= f.label :page_number, "Número de Páginas" %><br />
-  <%= f.text_field :page_number, :size => 5, :value => @params['page_number'] %>
+  <% if @params %>
+    <%= f.text_field :page_number, :size => 5, :value => @params['page_number'] %>
+  <% else %>
+    <%= f.text_field :page_number, :size => 5 %>
+  <% end %>
 </p>
 
 <p id="subject">
   <%= f.label :subject, "Assunto" %><br />
-  <%= f.autocomplete_field :subject, autocomplete_book_subject_books_path, :value => @params['subject'] %>
+  <% if @params %>
+    <%= f.autocomplete_field :subject, autocomplete_book_subject_books_path, :value => @params['subject'] %>
+  <% else %>
+    <%= f.autocomplete_field :subject, autocomplete_book_subject_books_path %>
+  <% end %>
 </p>
   
 <p id="collection">
   <%= f.label :collection, "Acervo" %><br />
-  <%= f.autocomplete_field :collection, autocomplete_book_collection_books_path, :value => (@book.collection || "Terra Livre"), %>
+  <%= f.autocomplete_field :collection, autocomplete_book_collection_books_path, :value => (@book.collection || APP_CONFIG['collection']), %>
 </p>
   
 <p id="city">

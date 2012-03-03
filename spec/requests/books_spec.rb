@@ -15,8 +15,6 @@ feature "Create Books", %q{
   scenario "create a book with all atributes as admin", :js => true do
     visit new_book_path
     fill_in "isbn", :with => '7777777'
-    click_button "Preencher" # isso não deveria ser necessário
-    
     fill_in "Título", :with => "A Conquista do Pão"
     fill_in "Subtítulo", :with => "como conquistar o pão"
     fill_in "Volume", :with => "222"

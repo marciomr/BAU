@@ -1,10 +1,11 @@
-<div id="advanced_search">
+<div id="adv_search_content">
   Título: <%= text_field_tag :title_filter, params[:title_filter], :size => 30 %><br/> 
   Autor: <%= text_field_tag :author_filter, params[:author_filter], :size => 30 %><br/>
   Editor: <%= text_field_tag :editor_filter, params[:editor_filter], :size => 30 %><br/>
   Língua: <%= select "language_filter", "", Book.languages, {:include_blank => true} %> <br/>
   Acervo: <%= select "collection_filter", "", Book.collections, {:include_blank => true} %> <br/>
   PDF: <%= check_box_tag :pdf_filter %><br/>
-  <%= submit_tag "Busca", :name => nil, :class => 'button'%><br/>
+  <%#= submit_tag "Busca", :name => nil, :class => 'button'%><br/>
+  
+  <%= link_to "esconder busca avançada", books_path, :remote => true, :id => :adv_search_hide %>
 </div>
-<%= link_to_function "esconder busca avançada", "adv_search_hide()", :id => :adv_search_hide %>

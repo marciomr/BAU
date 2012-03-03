@@ -1,16 +1,21 @@
 class BooksController < ApplicationController
   protect_from_forgery :only => [:create, :update, :destroy]
-  before_filter :authorize, :except => [:index, :show, :root]
+  before_filter :authorize, :except => [:index, :show, :adv_search]
   
   autocomplete :author, :name
   autocomplete :tag, :title
   for attribute in [:editor, :subject, :collection, :city, :country] do
     autocomplete :book, attribute
   end
-  
+
+  def adv_search
+    render :partial => 'adv_search', :layout => false  
+  end
+
   def index
     respond_to do |format|
       format.html do
+        @adv_search = !params[:adv_search].nil?
         @books = Book.search params[:search], 
                   :star => true,       # Automatic Wildcard
                   :field_weights => {  # Order of relevance
@@ -64,6 +69,7 @@ class BooksController < ApplicationController
   end
 
   def edit
+    @params = {}
     @book = Book.find(params[:id])
   end
 

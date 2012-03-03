@@ -7,13 +7,15 @@ Terralivre::Application.routes.draw do
     for attribute in ['editor', 'subject', 'collection', 'city', 'country'] do
       get "autocomplete_book_#{attribute}", :on => :collection
     end
+    
+    get :adv_search, :on => :collection
   end
 
   resources :sessions, :only => [:new, :create, :destroy]
 
   match 'login' => 'sessions#new'
-  match 'logout' => 'sessions#destroy'
-
+  match 'logout' => 'sessions#destroy'  
+  
   root :to => "books#index"  
 
   # The priority is based upon order of creation:

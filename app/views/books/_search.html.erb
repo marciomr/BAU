@@ -2,7 +2,14 @@
   <%= form_tag books_path, :method => :get, :id => :search_form do %>
       <%= text_field_tag :search, params[:search], :size => 30 %>
       <%= submit_tag "Busca", :name => nil, :class => 'button', :id => "search_button" %><br/>
-      <%= render :partial => 'adv_search' %>
+      <div id="advanced_search">
+        <% if @adv_search %>
+          <%= render 'adv_search' %>
+        <% end %>
+      </div>
   <% end %>
-  <%= link_to_function "busca avançada", "adv_search_show()", :id => :adv_search_show %> 
+  
+  <% if !@adv_search %>
+    <%= link_to "busca avançada", books_path(:adv_search => true), :remote => true, :id => :adv_search_show %>
+  <% end %>
 </div>

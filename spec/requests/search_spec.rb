@@ -52,6 +52,8 @@ feature "Advanced search", %q{
     Factory(:book, :title => "Com PDF", :pdflink => "http://www.example.com")
     visit books_path
     
+    click_link "busca avançada"
+    
     check "pdf_filter"
     click_button "Busca"
     
