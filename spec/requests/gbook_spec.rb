@@ -12,14 +12,14 @@ feature "Google Book search and form complete", %q{
     login
   end
 
-  scenario "google books without javascript", :focus => true do
+  scenario "google books without javascript" do
     page = Rails.root.join("spec/fakeweb/gbook-proudhon.xml")
     FakeWeb.register_uri(:get, "http://books.google.com/books/feeds/volumes?q=isbn:1606802127", :response => page)
     
     google_book_test
   end
   
-  scenario "google books with javascript", :js => true, :focus => true do
+  scenario "google books with javascript", :js do
     google_book_test
   end
 end

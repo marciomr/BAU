@@ -12,7 +12,7 @@ feature "Autocomplete", %q{
     login
   end
 
-  scenario "autocomplete without duplication", :js => true do
+  scenario "autocomplete without duplication", :js do
     Factory(:book, :editor => "Autocomplete")
     Factory(:book, :editor => "Autocomplete")
     
@@ -23,7 +23,7 @@ feature "Autocomplete", %q{
     page.should have_css('li.ui-menu-item', :count => 1)
   end
   
-  scenario "autocomplete tag", :js => true do
+  scenario "autocomplete tag", :js do
     Factory(:book, :tags => [Factory(:tag, :title => "Autocomplete")] )
     
     visit new_book_path
@@ -34,7 +34,7 @@ feature "Autocomplete", %q{
     page.should have_content('Autocomplete')
   end
     
-  scenario "autocomplete author", :js => true do
+  scenario "autocomplete author", :js do
     Factory(:book, :authors => [Factory(:author, :name => "Autocomplete")] )
     
     visit new_book_path
@@ -44,7 +44,7 @@ feature "Autocomplete", %q{
     page.should have_content('Autocomplete')
   end
   
-  scenario "autocomplete", :js => true do   
+  scenario "autocomplete", :js do   
    for attribute in ['editor', 'subject', 'collection', 'city', 'country'] do
       Factory(:book, attribute => 'Autocomplete')
 

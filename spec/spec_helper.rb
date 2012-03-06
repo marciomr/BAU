@@ -24,6 +24,8 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
 #  config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
+  config.treat_symbols_as_metadata_keys_with_true_values = true
+
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
   config.color_enabled = true
@@ -36,8 +38,8 @@ RSpec.configure do |config|
     
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
-    ThinkingSphinx::Test.init
-    ThinkingSphinx::Test.start_with_autostop
+    #ThinkingSphinx::Test.init
+    #ThinkingSphinx::Test.start_with_autostop
   end
   
   config.before(:each) do
@@ -49,13 +51,17 @@ RSpec.configure do |config|
   end
 end
 
+# queria que isso fosse mais rapido
 def login
-   visit login_path
+#  post login_path, :password => APP_CONFIG['password']
+  visit login_path
       
-   fill_in "password", :with => APP_CONFIG['password']
-   click_button "Entrar"
+  fill_in "password", :with => APP_CONFIG['password']
+  click_button "Entrar"
 end
 
+
+# these lines are usefull for testing delete with js.
 def js_confirm(status)
   page.evaluate_script 'window.original_confirm_function = window.confirm;'
   page.evaluate_script "window.confirm = function(msg) { return #{status == 'accept'}; }"

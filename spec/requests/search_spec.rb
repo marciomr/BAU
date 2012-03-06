@@ -61,7 +61,7 @@ feature "Advanced search", %q{
     page.should have_no_content "Sem PDF"  
   end
   
-  scenario "PDF filter", :js => true do
+  scenario "PDF filter", :js do
     Factory(:book, :title => "Sem PDF") 
     Factory(:book, :title => "Com PDF", :pdflink => "http://www.example.com")
     visit books_path
@@ -78,7 +78,7 @@ feature "Advanced search", %q{
     page.should have_no_content "Sem PDF" 
   end
   
-  scenario "Language filter", :js => true do
+  scenario "Language filter", :js do
     Factory(:book, :title => "English", :language => 'en') 
     Factory(:book, :title => "Portuguese", :language => 'pt')
     visit books_path

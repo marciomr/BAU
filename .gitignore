@@ -10,3 +10,4 @@ db/sphinx/*
 db/sphinx/development/*
 db/sphinx/test/*
 public/backups/*
+.sass-cache/

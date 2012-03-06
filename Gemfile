@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0.rc6'
+gem 'rails', '3.1.0'
 #gem "rake", "0.8.7"
 
 # Bundle edge Rails instead:
@@ -21,6 +21,12 @@ gem 'nokogiri'
 
 gem 'rspec-rails', :group => [:development, :test]
 
+group :assets do
+  gem 'sass-rails', "  ~> 3.1.0"
+  gem 'coffee-rails', "  ~> 3.1.0"
+  gem 'uglifier'
+end
+
 group :development do
   gem 'rails3-generators'
   gem 'nifty-generators'
@@ -31,9 +37,9 @@ group :test do
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'rb-inotify'
-  gem 'libnotify'
-  gem 'guard-rspec'
+#  gem 'rb-inotify'
+#  gem 'libnotify'
+#  gem 'guard-rspec'
   gem 'factory_girl_rails'
   gem 'mocha'
   gem 'fakeweb'
