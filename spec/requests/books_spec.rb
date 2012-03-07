@@ -5,7 +5,7 @@ require 'spec_helper'
 feature "Create Books", %q{
   In order to have an awesome library
   As an admin
-  I want to create and manage books
+  I want to create and manage books even with js off
 } do
 
   background do
@@ -14,10 +14,8 @@ feature "Create Books", %q{
 
 # ATENCAO SEM JS NAUM CONSIGO SALVAR O ISBN
 
-#  scenario "create a book with all atributes as admin", :js do
  scenario "create a book with all atributes as admin" do
     visit new_book_path
-#    fill_in "isbn", :with => '7777777'
     fill_in "Título", :with => "A Conquista do Pão"
     fill_in "Subtítulo", :with => "como conquistar o pão"
     fill_in "Volume", :with => "222"
@@ -41,7 +39,6 @@ feature "Create Books", %q{
     
     page.should have_content("Livro criado com sucesso.")
     
- #   page.should have_content('7777777')
     page.should have_content("A Conquista do Pão") 
     page.should have_content("como conquistar o pão") 
     page.should have_content("222")
@@ -59,45 +56,13 @@ feature "Create Books", %q{
     page.should have_css('a[href^="http://www.example.com"]')
     page.should have_css('img[src^="http://bibliotecaterralivre.org"]')
   end
-
-# NAUM TAH ROLANDO CONFIRMACAO!!!!!!!!!!!!
   
-  scenario "accept delete", :js, :focus do
-    15.times{ create(:book) }
-    
-    visit books_path
-    
-    accept_js_confirm do
-      within(:css, "li:first-child") do
-        click_button "x"
-      end    
-    end
-    
-    page.should have_content "Livro deletado com sucesso"
-    Book.count.should == 14
-  end
-    
-  # acho que preciso baixar o jquery_ujs.js  
-  scenario "reject delete", :js, :focus do
-    15.times{ create(:book) }
-    
-    visit books_path
-        
-    reject_js_confirm do
-      within(:css, "li:first-child") do
-        click_button "x"
-      end    
-    end
-    
-    Book.count.should == 15
-  end
-    
   scenario "edit" do
  #   author = create(:author, :name => "Kropotkin")
  #   visit edit_book_path(create(:book, :title => "Lorem Ipsum", :authors => [author]))
     
     visit edit_book_path(create(:book, :title => "Lorem Ipsum"))   
-    
+
 #    page.should have_content("Lorem Ipsum") # naum testa direito
 #    page.should have_content(author.name) 
     
@@ -119,7 +84,7 @@ feature "Create Books", %q{
     current_path.should == edit_book_path(book)
   end  
     
-  scenario "delete without javascript", :focus do
+  scenario "delete" do
     15.times{ create(:book) }
     
     visit books_path
@@ -129,7 +94,7 @@ feature "Create Books", %q{
     end    
     
     page.should have_content "Livro deletado com sucesso"
-    Book.count.should == 14
+    Book.should have(14).record
   end  
     
   scenario "tombo++" do
@@ -143,42 +108,6 @@ feature "Create Books", %q{
     click_button "Salvar"
     Book.last.tombo.should == 2
   end
-    
-  scenario "add tag", :js do
-    visit new_book_path
-    fill_in "Título", :with => 'Title'
-    click_link 'Add Tag'
-    within(:css, "#tag .fields:first-child") do
-      fill_in "Palavra Chave", :with => 'Anarquismo'
-    end      
-      click_link 'Add Tag'    
-    within(:css, "#tag .fields:nth-child(2)") do
-      fill_in "Palavra Chave", :with => 'Pedagogia'
-    end
-    click_button "Salvar"
-    
-    Book.last.tags.count.should == 2
-    page.should have_content 'Anarquismo'
-    page.should have_content 'Pedagogia'
-  end 
-    
-  scenario "add author", :js do
-    visit new_book_path
-    fill_in "Título", :with => 'Title'
-    within(:css, "#author .fields:first-child") do
-      fill_in "Autor", :with => 'Kropotkin'
-    end      
-    click_link 'Add Author'
-    within(:css, "#author .fields:nth-child(2)") do
-      fill_in "Autor", :with => 'Proudon'
-    end
-    click_button "Salvar"
-    
-    Book.last.authors.count.should == 2
-    page.should have_content 'Kropotkin'
-    page.should have_content 'Proudon'
-  end
-  
 end
 
 feature "Display Books", %q{

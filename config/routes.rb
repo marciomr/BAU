@@ -1,5 +1,7 @@
 Terralivre::Application.routes.draw do
 
+  get "users/new"
+
   resources :books do
     get :autocomplete_tag_title, :on => :collection
     get :autocomplete_author_name, :on => :collection
@@ -12,7 +14,9 @@ Terralivre::Application.routes.draw do
   end
 
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :users
 
+  match 'signup' => 'users#new'
   match 'login' => 'sessions#new'
   match 'logout' => 'sessions#destroy'  
   
