@@ -58,13 +58,12 @@ feature "Create Books", %q{
   end
   
   scenario "edit" do
- #   author = create(:author, :name => "Kropotkin")
- #   visit edit_book_path(create(:book, :title => "Lorem Ipsum", :authors => [author]))
+    author = create(:author, :name => "Kropotkin")
+    book = create(:book, :title => "Lorem Ipsum", :authors => [author])
+    visit edit_book_path(book)
     
-    visit edit_book_path(create(:book, :title => "Lorem Ipsum"))   
-
-#    page.should have_content("Lorem Ipsum") # naum testa direito
-#    page.should have_content(author.name) 
+    find(:field, 'book_title').value.should have_content(book.title)
+    find(:css, '.book_author').value.should have_content(author.name)
     
     fill_in "Título", :with => "A Conquista do Pão"
       

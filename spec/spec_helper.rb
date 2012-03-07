@@ -42,7 +42,9 @@ RSpec.configure do |config|
     #ThinkingSphinx::Test.start_with_autostop
   end
   
+  # reset the factories sequences
   config.before(:each) do
+    FactoryGirl.reload
     DatabaseCleaner.start
   end
 
