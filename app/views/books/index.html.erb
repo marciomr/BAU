@@ -1,7 +1,16 @@
 <% rss books_path(:rss) %>
 
-<% title "Biblioteca Terra Livre" %>
+<% if current_user %>
+  <% title current_user.name %>
+<% else %>
+  <% title "Bibliotecas Autonomas Unificadas" %>
+<% end %>
 
+<% if current_user %>
+  <%= link_to "Deslogar", logout_path %>
+<% else %>
+  <%= link_to "Logar", login_path %>
+<% end %>
 
 <%= render :partial => "search" %>
 
@@ -33,7 +42,7 @@
 <%= paginate @books %>  
 
 <div id="admin">
-<% if admin? %>
+<% if current_user %>
     <%= link_to "Novo Livro", new_book_path %> | 
     <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
 <% end %>  

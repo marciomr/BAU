@@ -12,7 +12,8 @@ gem 'jquery-rails'
 gem 'rails3-jquery-autocomplete', :git => 'git://github.com/marciomr/rails3-jquery-autocomplete.git'
 #gem 'rails3-jquery-autocomplete', :git => 'git://github.com/marciomr/rails3-jquery-autocomplete.git'
 gem 'mysql2'
-gem 'thinking-sphinx', :git => 'https://github.com/sylogix/thinking-sphinx.git', :branch => 'rails3'
+#gem 'thinking-sphinx', :git => 'https://github.com/sylogix/thinking-sphinx.git', :branch => 'rails3'
+gem 'thinking-sphinx'
 # :git => 'git://github.com/freelancing-god/thinking-sphinx.git', 
 # the very latest version is compliant with kaminari
 gem 'kaminari'
@@ -43,6 +44,8 @@ group :test do
   gem 'factory_girl_rails'
   gem 'mocha'
   gem 'fakeweb'
+  gem 'spork'
+  gem 'guard-spork'
 end
 
 #gem 'auto_complete'

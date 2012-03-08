@@ -1,5 +1,15 @@
 <% title "Login" %>
-
-<%= form_tag :controller => :sessions, :action => :create do %>
-  <%= password_field_tag 'password' %><%= submit_tag 'Entrar', :class => 'button' %><br/>
-<% end %> 
+<%= form_tag sessions_path do %>
+  <div class="field">
+    <%= label_tag :username, "Usuário" %>
+    <%= text_field_tag :username, params[:username] %>
+  </div>
+  <div class="field">
+    <%= label_tag :password, "Senha" %>
+    <%= password_field_tag :password %>
+  </div>
+  <div class="actions"><%= submit_tag "Entrar" %></div>
+<% end %>
+<%#= form_tag :controller => :sessions, :action => :create do %>
+  <%#= password_field_tag 'password' %><%#= submit_tag 'Entrar', :class => 'button' %><br/>
+<%# end %> 
