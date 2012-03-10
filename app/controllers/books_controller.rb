@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   protect_from_forgery :only => [:create, :update, :destroy]
-  before_filter :authorize, :except => [:index, :show, :adv_search]
+#  before_filter :authorize, :except => [:index, :show, :adv_search]
   
   autocomplete :author, :name
   autocomplete :tag, :title
@@ -14,8 +14,9 @@ class BooksController < ApplicationController
 
   def index
     respond_to do |format|
+      
       format.html do
-        @adv_search = !params[:adv_search].nil?
+        @adv_search = !params[:adv_search].nil? 
         @books = Book.search params[:search], 
                   :star => true,       # Automatic Wildcard
                   :field_weights => {  # Order of relevance
@@ -25,6 +26,8 @@ class BooksController < ApplicationController
                     :subject => 5, 
                     :description => 1
                     },
+                  :include => :authors,
+                  :include => :tags,
                   :page => params[:page], 
                   :per_page => APP_CONFIG['per_page']
         
@@ -37,30 +40,44 @@ class BooksController < ApplicationController
           end
         end
                 
-        @books.with_pdflink if params['pdf_filter']
+        @books.with_pdflink if params[:pdf_filter]
+        @books.with_user_id(params[:user_id]) if params[:user_id]
         
         @total ||= @books.total_entries
       end
-      format.rss do             
-        @books = Book.all
+
+      format.rss do  
+        if params[:user_id]
+          @books = Book.search.with_user_id(params[:user_id]) 
+        else
+          @books = Book.all
+        end
       end
     end
-    
   end
 
   def show
     @book = Book.find(params[:id])
   end
 
-  def new    
+  def new
+    if !current_user
+      unauthorized!
+    end
+        
     @params = params[:isbn] ? Book.gbook(params[:isbn]) : {}
     @book = Book.new
     @book.authors.build      
   end
 
   def create
+    if !current_user
+      unauthorized!
+    end
+    
     @book = Book.new(params[:book])
-    @book.tombo = Book.last_tombo + 1
+    @book.user = current_user
+    @book.tombo = current_user.books.last_tombo + 1
     if @book.save
       redirect_to @book, :notice => "Livro criado com sucesso."
     else
@@ -69,13 +86,17 @@ class BooksController < ApplicationController
   end
 
   def edit
-#    @params = {}
     @book = Book.find(params[:id])
+    if current_user != @book.user && !admin?
+      unauthorized!
+    end
   end
 
-  def update
+  def update    
     @book = Book.find(params[:id])
-    if @book.update_attributes(params[:book])
+    if current_user != @book.user && !admin?
+      unauthorized!
+    elsif @book.update_attributes(params[:book])
       redirect_to @book, :notice  => "Livro editado com sucesso."
     else
       render :action => 'edit'
@@ -84,7 +105,11 @@ class BooksController < ApplicationController
 
   def destroy
     @book = Book.find(params[:id])
-    @book.destroy
-    redirect_to books_url, :notice => "Livro deletado com sucesso."
+    if current_user != @book.user && !admin?
+      unauthorized!
+    else
+      @book.destroy
+      redirect_to books_url, :notice => "Livro deletado com sucesso."
+    end
   end
 end

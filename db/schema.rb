@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307002615) do
+ActiveRecord::Schema.define(:version => 20120309120516) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20120307002615) do
     t.string   "subtitle"
     t.string   "isbn"
     t.boolean  "delta",       :default => true, :null => false
+    t.integer  "user_id"
   end
 
   create_table "tags", :force => true do |t|

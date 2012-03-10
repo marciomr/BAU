@@ -10,6 +10,11 @@
   <body>
     <div id="container">
       <div id="content">
+        <% if current_user %>
+          <%= link_to "Deslogar", logout_path %>
+        <% else %>
+          <%= link_to "Logar", login_path %>
+        <% end %>
         <% flash.each do |name, msg| %>
           <%= content_tag :div, msg, :id => "flash_#{name}" %>
         <% end %>

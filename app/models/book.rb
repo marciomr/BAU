@@ -1,4 +1,5 @@
 class Book < ActiveRecord::Base
+  belongs_to :user
 
   def self.dc_fields
     ['isbn', 'title', 'subtitle', 'year', 'page_number', 'description', 'editor', 'subject', 'language']
@@ -43,6 +44,8 @@ class Book < ActiveRecord::Base
     indexes tags.title, :as => :tag
     indexes authors.name, :as => :author
     
+    has user_id
+    
     set_property :enable_star => true
     set_property :min_infix_len => 3
     
@@ -61,6 +64,10 @@ class Book < ActiveRecord::Base
 
   sphinx_scope(:with_pdflink) do
     {:conditions => { :pdflink => "http" }}
+  end
+
+  sphinx_scope(:with_user_id) do |f|
+    {:with => { :user_id => f }}
   end
 
   def self.last_tombo

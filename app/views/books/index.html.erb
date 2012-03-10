@@ -6,12 +6,6 @@
   <% title "Bibliotecas Autonomas Unificadas" %>
 <% end %>
 
-<% if current_user %>
-  <%= link_to "Deslogar", logout_path %>
-<% else %>
-  <%= link_to "Logar", login_path %>
-<% end %>
-
 <%= render :partial => "search" %>
 
 <p id="total">
@@ -23,10 +17,12 @@
     <% if book %>
       <li>
         <%= link_to index_label(book), book, :class => 'index_title' %> 
-        <% if admin? %>
+        <% if current_user %>
           <span class="index_edit">
-            <%= link_to "Editar", edit_book_path(book), :class => "edit_link" %>
-            <%= button_to "Remover", book, :confirm => 'Tem certeza?', :method => :delete, :class => 'remove_button' %>
+            <% if current_user == book.user || admin? %>
+              <%= link_to "Editar", edit_book_path(book), :class => "edit_link" %>
+              <%= button_to "Remover", book, :confirm => 'Tem certeza?', :method => :delete, :class => 'remove_button' %>
+            <% end %>
           </span>
         <% end %>
         <br/>
@@ -47,6 +43,3 @@
     <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
 <% end %>  
 </div>
-
-
-

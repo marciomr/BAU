@@ -56,7 +56,6 @@ describe Book do
     book.authors_names.should == "First, Second"
   end
 
-
   it "should get values from google book" do
     page = Rails.root.join("spec/fakeweb/gbook-proudhon.xml")
     isbn = '1606802127'
@@ -74,4 +73,12 @@ describe Book do
     params['language'].should == "En"
     params['page_number'].should == "457"
   end
+  
+  it "should belong to an user", :focus do
+    book = create(:book)
+    user = create(:user, :books => [book])
+    
+    book.user.should == user
+  end
+  
 end

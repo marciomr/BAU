@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'rubygems'
 require 'spork'
 
@@ -31,7 +33,7 @@ Spork.prefork do
     # config.mock_with :rspec
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  #  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+    config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
     config.treat_symbols_as_metadata_keys_with_true_values = true
 
@@ -41,7 +43,7 @@ Spork.prefork do
     # If you're not using ActiveRecord, or you'd prefer not to run each of your
     # examples within a transaction, remove the following line or assign false
     # instead of true.
-    config.use_transactional_fixtures = false
+    #config.use_transactional_fixtures = false
 
     config.include Factory::Syntax::Methods
     
@@ -70,14 +72,13 @@ Spork.each_run do
 end
 
 # queria que isso fosse mais rapido
-def login
-#  post login_path, :password => APP_CONFIG['password']
+def login(user)
   visit login_path
-      
-  fill_in "password", :with => APP_CONFIG['password']
-  click_button "Entrar"
+  
+  fill_in "Usuário", :with => user.username
+  fill_in "Senha", :with => user.password
+  click_button "Entrar" 
 end
-
 
 # these lines are usefull for testing delete with js.
 def js_confirm(status)

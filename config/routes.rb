@@ -14,7 +14,9 @@ Terralivre::Application.routes.draw do
   end
 
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :users
+  resources :users do
+    resources :books
+  end
 
   match 'signup' => 'users#new'
   match 'login' => 'sessions#new'

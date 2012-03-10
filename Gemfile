@@ -10,14 +10,12 @@ gem 'rails', '3.1.0'
 
 gem 'jquery-rails'
 gem 'rails3-jquery-autocomplete', :git => 'git://github.com/marciomr/rails3-jquery-autocomplete.git'
-#gem 'rails3-jquery-autocomplete', :git => 'git://github.com/marciomr/rails3-jquery-autocomplete.git'
 gem 'mysql2'
-#gem 'thinking-sphinx', :git => 'https://github.com/sylogix/thinking-sphinx.git', :branch => 'rails3'
 gem 'thinking-sphinx'
 # :git => 'git://github.com/freelancing-god/thinking-sphinx.git', 
 # the very latest version is compliant with kaminari
 gem 'kaminari'
-
+gem 'cancan'
 gem 'nokogiri'
 
 gem 'rspec-rails', :group => [:development, :test]
@@ -48,8 +46,6 @@ group :test do
   gem 'guard-spork'
 end
 
-#gem 'auto_complete'
-
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -72,6 +68,3 @@ end
 # group :development, :test do
 #   gem 'webrat'
 # end
-
-# 11 43239917
-

@@ -107,10 +107,12 @@
 </p>
 
 <div id="admin">
-  <% if admin? %> 
-    <%= link_to "Novo Livro", new_book_path %> | 
-    <%= link_to "Editar", edit_book_path(@book) %> |
-    <%= link_to "Remover", @book, :confirm => 'Tem certeza?', :method => :delete %> |
+  <% if current_user %> 
+    <%= link_to "Novo Livro", new_book_path %> 
+  <% end %>
+  <% if current_user == @book.user || admin?%>
+    | <%= link_to "Editar", edit_book_path(@book) %> 
+    | <%= link_to "Remover", @book, :confirm => 'Tem certeza?', :method => :delete %> |
   <% end %>
   
   <%= link_to "Ver Todos", books_path %>
