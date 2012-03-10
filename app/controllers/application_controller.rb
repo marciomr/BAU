@@ -8,17 +8,11 @@ class ApplicationController < ActionController::Base
   
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
-  end
+  end 
 
-#  helper_method :current_user
-  
-  def admin?
-    current_user && current_user.admin?
-  end
- 
-  def unauthorized!
+  rescue_from CanCan::AccessDenied do |exception|
     session[:return_to] = request.url
     redirect_to login_path, :alert => "Acesso negado!"
-  end 
-  
+  end   
+
 end

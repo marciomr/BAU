@@ -17,14 +17,14 @@
     <% if book %>
       <li>
         <%= link_to index_label(book), book, :class => 'index_title' %> 
-        <% if current_user %>
           <span class="index_edit">
-            <% if current_user == book.user || admin? %>
+            <% if can? :update, book %>
               <%= link_to "Editar", edit_book_path(book), :class => "edit_link" %>
+            <% end %>
+            <% if can? :destroy, book %>
               <%= button_to "Remover", book, :confirm => 'Tem certeza?', :method => :delete, :class => 'remove_button' %>
             <% end %>
           </span>
-        <% end %>
         <br/>
         <span class="index_author"><%= book.authors_names %></span>
         <% if book.year && book.year > 0 %>
@@ -37,9 +37,12 @@
 
 <%= paginate @books %>  
 
-<div id="admin">
 <% if current_user %>
-    <%= link_to "Novo Livro", new_book_path %> | 
+  <div id="admin">
+    <% if can? :create, Book.new %>
+        <%= link_to "Novo Livro", new_book_path %> |
+    <% end %>     
     <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
+  </div>
 <% end %>  
-</div>
+

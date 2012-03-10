@@ -107,10 +107,10 @@
 </p>
 
 <div id="admin">
-  <% if current_user %> 
+  <% if can? :create, Book.new %> 
     <%= link_to "Novo Livro", new_book_path %> 
   <% end %>
-  <% if current_user == @book.user || admin?%>
+  <% if can? :update, @book%>
     | <%= link_to "Editar", edit_book_path(@book) %> 
     | <%= link_to "Remover", @book, :confirm => 'Tem certeza?', :method => :delete %> |
   <% end %>

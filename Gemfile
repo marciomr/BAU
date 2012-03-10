@@ -19,6 +19,7 @@ gem 'cancan'
 gem 'nokogiri'
 
 gem 'rspec-rails', :group => [:development, :test]
+gem 'factory_girl_rails', :group => [:development, :test]
 
 group :assets do
   gem 'sass-rails', "  ~> 3.1.0"
@@ -39,7 +40,6 @@ group :test do
   gem 'rb-inotify'
   gem 'libnotify'
   gem 'guard-rspec'
-  gem 'factory_girl_rails'
   gem 'mocha'
   gem 'fakeweb'
   gem 'spork'

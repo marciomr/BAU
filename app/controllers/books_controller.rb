@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
+  load_and_authorize_resource
   protect_from_forgery :only => [:create, :update, :destroy]
-#  before_filter :authorize, :except => [:index, :show, :adv_search]
   
   autocomplete :author, :name
   autocomplete :tag, :title
@@ -57,14 +57,9 @@ class BooksController < ApplicationController
   end
 
   def show
-    @book = Book.find(params[:id])
   end
 
   def new
-    if !current_user
-      unauthorized!
-    end
-        
     @params = params[:isbn] ? Book.gbook(params[:isbn]) : {}
     @book = Book.new
     @book.authors.build      
@@ -86,17 +81,10 @@ class BooksController < ApplicationController
   end
 
   def edit
-    @book = Book.find(params[:id])
-    if current_user != @book.user && !admin?
-      unauthorized!
-    end
   end
 
   def update    
-    @book = Book.find(params[:id])
-    if current_user != @book.user && !admin?
-      unauthorized!
-    elsif @book.update_attributes(params[:book])
+    if @book.update_attributes(params[:book])
       redirect_to @book, :notice  => "Livro editado com sucesso."
     else
       render :action => 'edit'
@@ -104,12 +92,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    @book = Book.find(params[:id])
-    if current_user != @book.user && !admin?
-      unauthorized!
-    else
-      @book.destroy
-      redirect_to books_url, :notice => "Livro deletado com sucesso."
-    end
+    @book.destroy
+    redirect_to books_url, :notice => "Livro deletado com sucesso."
   end
 end
