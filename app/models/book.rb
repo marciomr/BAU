@@ -1,12 +1,28 @@
+# coding: utf-8
+
 class Book < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :tombo
+  
+  attr_accessible :user_id
+  
   belongs_to :user
+  validates_presence_of :user_id
+  validates_presence_of :title, :message => "O livro precisa ter um título."
+  # validates_format_of :pdflink, :imglink
+  # validates_integer year, page_number, volume
+
+  before_save do |book| 
+    t = book.user.last_tombo + 1
+    book.tombo = t.to_s if book.tombo.nil?
+  end
 
   def self.dc_fields
     ['isbn', 'title', 'subtitle', 'year', 'page_number', 'description', 'editor', 'subject', 'language']
   end
 
   def self.tl_fields
-    ['tombo', 'volume', 'city', 'country', 'collection', 'pdflink', 'imglink', 'cdd']
+    ['tombo', 'volume', 'city', 'country', 'pdflink', 'imglink', 'cdd']
   end
 
   def self.complex_fields
@@ -37,7 +53,7 @@ class Book < ActiveRecord::Base
   define_index do
     indexes title, :sortable => true
     
-    [:subtitle, :description, :subject, :pdflink, :collection, :language].each do |field|
+    [:editor, :subtitle, :description, :subject, :pdflink, :language].each do |field|
       indexes field
     end
 
@@ -63,15 +79,11 @@ class Book < ActiveRecord::Base
   end
 
   sphinx_scope(:with_pdflink) do
-    {:conditions => { :pdflink => "http" }}
+    {:conditions => { :pdflink => 'http'}}
   end
 
   sphinx_scope(:with_user_id) do |f|
     {:with => { :user_id => f }}
-  end
-
-  def self.last_tombo
-    self.count == 0 ? 0 : all.map{ |b| b.tombo }.sort.last
   end
 
   # get the authors names and tags titles joined with ,  
@@ -99,21 +111,24 @@ class Book < ActiveRecord::Base
     field
   end
   
-  def self.gbook(isbn)
+  def self.get_attributes_from_gbook(isbn)
     uri = "http://books.google.com/books/feeds/volumes?q=isbn:#{isbn}"
     xml = Nokogiri::XML(open(uri))
     entry = xml.at_css("entry") 
-    params = {}
+    
+    return nil if entry.nil?
+      
+    attributes = {}
    
-    params['isbn'] = isbn   
+    attributes['isbn'] = isbn   
    
-    return params if entry.nil?
+    return attributes if entry.nil?
      
     (Book.dc_fields - ['isbn', 'subtitle']).each do |field|
       unless entry.at_css("dc|#{Book.to_rss(field)}").nil?
         rss_field = entry.at_css("dc|#{Book.to_rss(field)}").text
         if rss_field
-          params[field] = case field
+          attributes[field] = case field
             when 'year' then rss_field[/[0-9]{4}/]
             when 'page_number' then rss_field[/[0-9]+/]
             when 'description' then rss_field.gsub(/\n/,"")
@@ -124,11 +139,29 @@ class Book < ActiveRecord::Base
     end
     
     if entry.css('dc|title').size > 1 #the second dc:title is the subtitle
-      params['subtitle'] = entry.css('dc|title').last.text.titleize
+      attributes['subtitle'] = entry.css('dc|title').last.text.titleize
     end    
     
-    params['authors'] = entry.css("dc|creator").collect{ |a| a.text.titleize }
+    attributes['authors'] = entry.css("dc|creator").collect{ |a| a.text.titleize }
     
-    params
+    attributes
   end
+  
+  def self.get_attributes_from_library(isbn)
+    book = Book.find_by_isbn(isbn)
+    if book
+      attributes = book.attributes
+      attributes['authors'] = Author.find_all_by_book_id(book.id).map(&:name)
+    end
+    attributes
+  end
+  
+  def self.get_attributes(isbn)
+#    attributes = Book.get_attributes_from_library(isbn)
+#    attributes ||= Book.get_attributes_from_gbook(isbn)
+#    attributes ||= {'isbn' => isbn}
+    Book.get_attributes_from_library(isbn) || Book.get_attributes_from_gbook(isbn) || { 'isbn' => isbn }
+  end
+    
+  
 end

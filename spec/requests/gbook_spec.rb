@@ -1,43 +1,65 @@
 # coding: utf-8
 
-require 'spec_helper'
+require File.dirname(__FILE__) + '/../spec_helper'
 
-feature "Google Book search and form complete", %q{
+feature "Auto-fill form", %q{
   In order to have an awesome library
-  As an admin
-  When the book exists in google books the form should complete itself
+  As a logged user
+  When the book exists in google books or in the library the form should be auto-filled
   } do
 
   background do
-    login
+    @user = create(:user)
+    login(@user)
   end
 
   scenario "google books without javascript" do
-    page = Rails.root.join("spec/fakeweb/gbook-proudhon.xml")
-    FakeWeb.register_uri(:get, "http://books.google.com/books/feeds/volumes?q=isbn:1606802127", :response => page)
-    
+    faweb_register_book('gbook-proudhon.xml', '1606802127')
     google_book_test
   end
   
   scenario "google books with javascript", :js do
     google_book_test
   end
+  
+  scenario "auto-fill with other user's books without javascript" do
+    faweb_register_book('gbook-empty.xml', '1234567890')
+    auto_fill_test
+  end
+  
+  scenario "auto-fill with other user's books with javascript", :js do
+    auto_fill_test
+  end
+end
+
+def auto_fill_test
+  book = create(:book, :isbn => 1234567890)
+  author = create(:author, :book_id => book.id)
+  visit new_user_book_path(@user)
+    
+  fill_in "isbn", :with => book.isbn
+  click_button "Preencher"
+
+  sleep 2
+
+  %w(title subtitle country city).each do |f|
+    find(:field, "book_#{f}").value.should have_content(book.send(f))
+  end
+  find(:css, '.book_author').value.should have_content(book.authors.first.name)
 end
 
 def google_book_test
-  visit new_book_path
+  visit new_user_book_path(@user)
   fill_in "isbn", :with => 1606802127
   click_button "Preencher"
   
-  click_button "Salvar"
+  sleep 2
   
-  page.should have_content "What Is Property"
-  page.should have_content "An Inquiry Into The Principle Of Right And Of Government"
-  page.should have_content "Pierre Joseph Proudhon"
-#  page.should have_content "Amédée Jérôme Langlois"
-  page.should have_content "Forgotten Books"
-#  page.should have_content "1969"
-  page.should have_content "en"
-  page.should have_content "457"
+  find(:field, 'book_title').value.should have_content("What Is Property")
+  find(:field, 'book_subtitle').value.should have_content("An Inquiry Into The Principle Of Right And Of Government")
+  find(:css, '.book_author').value.should have_content("Pierre Joseph Proudhon")
+  find(:field, 'book_editor').value.should have_content("Forgotten Books")
+  find(:field, 'book_language').value.should have_content("En")
+  find(:field, 'book_page_number').value.should have_content("457")
 end
 

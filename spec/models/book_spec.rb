@@ -3,12 +3,17 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Book do
-  it "should get last tombo" do
-    create(:book, :tombo => 1)
-    create(:book, :tombo => 10)
-    create(:book, :tombo => 6)
+  
+  it "should increment tombo before saving" do
+    user = create(:user)
+    3.times{ create(:book, :user_id => user.id) }
+    book = create(:book, :user_id => user.id)
+    book.tombo.should == '4'
     
-    Book.last_tombo.should == 10
+    user = create(:user)
+    create(:book, :user_id => user.id)
+    book = create(:book, :user_id => user.id)
+    book.tombo.should == '2'
   end
   
   (Book.columns.select{|b| b.type == :string}.collect{|b| b.name}).each do |field|
@@ -57,28 +62,58 @@ describe Book do
   end
 
   it "should get values from google book" do
-    page = Rails.root.join("spec/fakeweb/gbook-proudhon.xml")
     isbn = '1606802127'
-    FakeWeb.register_uri(:get, "http://books.google.com/books/feeds/volumes?q=isbn:#{isbn}", :response => page)
+    faweb_register_book('gbook-proudhon.xml', isbn)
     
-    params = Book.gbook(isbn)
+    attributes = Book.get_attributes_from_gbook(isbn)
     
-    params['isbn'].should == isbn
-    params['title'].should == "What Is Property"
-    params['subtitle'].should == "An Inquiry Into The Principle Of Right And Of Government"
-#   params['authors'].should == ["Pierre Joseph Proudhon", "Amédée Jérôme Langlois"]
-    params['authors'].should == ["Pierre Joseph Proudhon"] 
-    params['editor'].should == "Forgotten Books"
-#    params['year'].should == "1969"
-    params['language'].should == "En"
-    params['page_number'].should == "457"
+    attributes['isbn'].should == isbn
+    attributes['title'].should == "What Is Property"
+    attributes['subtitle'].should == "An Inquiry Into The Principle Of Right And Of Government"
+#   attributes['authors'].should == ["Pierre Joseph Proudhon", "Amédée Jérôme Langlois"]
+    attributes['authors'].should == ["Pierre Joseph Proudhon"] 
+    attributes['editor'].should == "Forgotten Books"
+#    attributes['year'].should == "1969"
+    attributes['language'].should == "En"
+    attributes['page_number'].should == "457"
   end
   
-  it "should belong to an user", :focus do
-    book = create(:book)
-    user = create(:user, :books => [book])
+  it "should belong to an user" do
+    user = create(:user)
+    book = create(:book, :user_id => user.id)
     
     book.user.should == user
+  end
+  
+  it "should give an error if no user is given" do
+    book = build(:book, :user_id => nil)
+    book.should_not be_valid
+    book.should have(1).error_on(:user_id)
+  end
+
+  it "should return the attributes of a book if the book is found in the database" do
+    book = create(:book, :isbn => 111)
+    author1 = create(:author, :book_id => book.id, :name => "Foo Bar 1")
+    author2 = create(:author, :book_id => book.id, :name => "Foo Bar 2")
+    
+    attributes = Book.get_attributes_from_library(111)
+      
+    attributes['title'].should == book.title
+    attributes['authors'].should == [author1.name, author2.name]
+  end
+  
+  it "should return the attributes of book if found by google book or in the database" do
+    isbn = '1606802127'
+    faweb_register_book('gbook-proudhon.xml', isbn)
+    
+    attributes = Book.get_attributes(isbn)
+    attributes['isbn'].should == isbn
+    attributes['title'].should == "What Is Property"
+
+    book = create(:book, :isbn => isbn, :title => "Title")
+    attributes = Book.get_attributes(isbn)
+    attributes['isbn'].should == isbn
+    attributes['title'].should == book.title 
   end
   
 end

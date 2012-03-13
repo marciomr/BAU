@@ -1,22 +1,22 @@
 # coding: utf-8
 
 require 'spec_helper'
-
+  
 feature "Autocomplete", %q{
-  In order to have an awesome library
-  As an admin
+  As logged user
   Repeated fields should autocomplete in forms
 } do
   
   background do
-    login
+    @user = create(:user)
+    login(@user)
   end
 
   scenario "autocomplete without duplication", :js do
-    Factory(:book, :editor => "Autocomplete")
-    Factory(:book, :editor => "Autocomplete")
+    create(:book, :editor => "Autocomplete")
+    create(:book, :editor => "Autocomplete")
     
-    visit new_book_path
+    visit new_user_book_path(@user)
     fill_in "book_editor", :with => 'Aut'
 
     sleep 5
@@ -24,10 +24,10 @@ feature "Autocomplete", %q{
   end
   
   scenario "autocomplete tag", :js do
-    Factory(:book, :tags => [Factory(:tag, :title => "Autocomplete")] )
+    create(:book, :tags => [create(:tag, :title => "Autocomplete")] )
     
-    visit new_book_path
-    click_link 'Add Tag'      
+    visit new_user_book_path(@user)
+    click_link 'Adicionar palavra chave'      
     fill_in "Palavra Chave", :with => 'Aut'
     
     sleep 5
@@ -35,9 +35,9 @@ feature "Autocomplete", %q{
   end
     
   scenario "autocomplete author", :js do
-    Factory(:book, :authors => [Factory(:author, :name => "Autocomplete")] )
+    create(:book, :authors => [create(:author, :name => "Autocomplete")] )
     
-    visit new_book_path
+    visit new_user_book_path(@user)
     fill_in "Autor", :with => 'Aut'
     
     sleep 5
@@ -46,9 +46,9 @@ feature "Autocomplete", %q{
   
   scenario "autocomplete", :js do   
    for attribute in ['editor', 'subject', 'collection', 'city', 'country'] do
-      Factory(:book, attribute => 'Autocomplete')
+      create(:book, attribute => 'Autocomplete')
 
-      visit new_book_path
+      visit new_user_book_path(@user)
       fill_in "book_#{attribute}", :with => 'Aut'
       sleep 5  
       page.should have_content('Autocomplete')

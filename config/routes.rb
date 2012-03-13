@@ -1,8 +1,6 @@
 Terralivre::Application.routes.draw do
 
-  get "users/new"
-
-  resources :books do
+  resources :books, :only => [:index] do
     get :autocomplete_tag_title, :on => :collection
     get :autocomplete_author_name, :on => :collection
 
@@ -14,15 +12,20 @@ Terralivre::Application.routes.draw do
   end
 
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :users do
-    resources :books
-  end
-
-  match 'signup' => 'users#new'
+  
   match 'login' => 'sessions#new'
   match 'logout' => 'sessions#destroy'  
+
+  match ':id/profile' => 'users#show', :as => :user
+  match 'users' => 'users#index', :as => :users  
+  match 'signup' => 'users#new'
+      
+  root :to => "books#index", :via => :get 
   
-  root :to => "books#index"  
+  resources :users, :path => '', :except => [:show, :index, :new]
+  resources :users, :path => '', :only => [] do
+    resources :books, :path => ''
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

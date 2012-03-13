@@ -1,6 +1,6 @@
 <% title "Editar \"#{@book.title}\"" %>
 
-<%= form_for @book do |builder| %>
+<%= form_for [@user, @book] do |builder| %>
   <%= builder.error_messages %>
   <p id="isbn">
     <%= builder.label :isbn, "ISBN" %><br />
@@ -102,6 +102,6 @@
 <% end %>
 
 <p>
-  <%= link_to "Mostrar", @book %> |
+  <%= link_to "Mostrar", user_book_path(@book.user, @book) %> |
   <%= link_to "Voltar para lista", books_path %>
 </p>

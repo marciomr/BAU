@@ -1,4 +1,8 @@
-<% rss books_path(:rss) %>
+<% if @user %>
+  <% rss user_books_path(@user, :rss) %>
+<% else %>
+  <% rss books_path(:rss) %>
+<% end %>
 
 <% if current_user %>
   <% title current_user.name %>
@@ -6,7 +10,11 @@
   <% title "Bibliotecas Autonomas Unificadas" %>
 <% end %>
 
-<%= render :partial => "search" %>
+<% if @user %>
+  <%= render :partial => "user_books_search" %>
+<% else %>
+  <%= render :partial => "books_search" %>
+<% end %>
 
 <p id="total">
   <%= @total %> itens encontrados
@@ -16,13 +24,13 @@
   <% for book in @books %>
     <% if book %>
       <li>
-        <%= link_to index_label(book), book, :class => 'index_title' %> 
+        <%= link_to index_label(book), user_book_path(book.user, book), :class => 'index_title' %>
           <span class="index_edit">
             <% if can? :update, book %>
-              <%= link_to "Editar", edit_book_path(book), :class => "edit_link" %>
+              <%= link_to "Editar", edit_user_book_path(book.user, book), :class => "edit_link" %>
             <% end %>
             <% if can? :destroy, book %>
-              <%= button_to "Remover", book, :confirm => 'Tem certeza?', :method => :delete, :class => 'remove_button' %>
+              <%= button_to "Remover", [book.user, book], :confirm => 'Tem certeza?', :method => :delete, :class => 'remove_button' %>
             <% end %>
           </span>
         <br/>
@@ -40,7 +48,7 @@
 <% if current_user %>
   <div id="admin">
     <% if can? :create, Book.new %>
-        <%= link_to "Novo Livro", new_book_path %> |
+        <%= link_to "Novo Livro", new_user_book_path(current_user) %> |
     <% end %>     
     <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
   </div>

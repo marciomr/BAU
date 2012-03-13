@@ -95,3 +95,8 @@ end
 def reject_js_confirm
   js_confirm('reject'){ yield }
 end
+
+def faweb_register_book(file, isbn)
+  page = Rails.root.join("spec/fakeweb/#{file}")
+  FakeWeb.register_uri(:get, "http://books.google.com/books/feeds/volumes?q=isbn:#{isbn}", :response => page)
+end

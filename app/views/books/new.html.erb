@@ -1,35 +1,35 @@
 <% title "Novo Livro" %>
 
-<%= form_tag new_book_path, :remote => true, :method => :get do -%>
+<%= form_tag new_user_book_path(@user), :remote => true, :method => :get do -%>
   <%= label_tag :isbn, "ISBN" %><br/>
-  <%= text_field_tag :isbn, @book.isbn || @params['isbn'] %>
+  <%= text_field_tag :isbn %>
   <%= submit_tag 'Preencher' %>
 <% end -%>
 
-<%= form_for @book do |builder| %>
+<%= form_for [@user, @book] do |builder| %>
   <%= builder.error_messages %>
   <p id="isbn">
-    <%= builder.hidden_field :isbn %>
+    <%= builder.hidden_field :isbn, :value => @attributes['isbn'] %>
   </p>
-
+  
 <p id="title">
   <%= builder.label :title, "Título" %><br />
-  <%= builder.text_field :title, :value => @params['title'] %>
+  <%= builder.text_field :title, :value => @attributes['title'] %>
 </p>
   
 <p id="subtitle">
   <%= builder.label :subtitle, "Subtítulo" %><br />
-  <%= builder.text_field :subtitle, :value => @params['subtitle'] %>
+  <%= builder.text_field :subtitle, :value => @attributes['subtitle'] %>
 </p>
   
 <p id="volume">
   <%= builder.label :volume, "Volume" %><br />
-  <%= builder.text_field :volume, :size => 5 %>
+  <%= builder.text_field :volume, :size => 5, :valure => @attributes['volume'] %>
 </p>
   
 <div id="author">  
-  <% if @params['authors'] %>
-   <% @params['authors'].each do |a| %>
+  <% if @attributes['authors'] %>
+   <% @attributes['authors'].each do |a| %>
       <%= builder.fields_for :authors do |builder| %>  
         <%= render :partial => "author_fields", :locals => {:f => builder, :name => a} %>
       <% end %>
@@ -39,69 +39,64 @@
       <%= render :partial => "author_fields", :locals => {:f => builder, :name => nil}  %>
     <% end %>
   <% end %>
-  <p><%= link_to_add_fields "Add Author", builder, :authors %></p> 
+  <p><%= link_to_add_fields "Adicionar autor", builder, :authors %></p> 
 </div>
   
 <div id="tag">  
   <%= builder.fields_for :tags do |builder| %>  
     <%= render :partial => "tag_fields", :locals => {:f => builder} %>
   <% end %>
-  <p><%= link_to_add_fields "Add Tag", builder, :tags %></p> 
+  <p><%= link_to_add_fields "Adicionar palavra chave", builder, :tags %></p> 
 </div>
   
 <p id="editor">
   <%= builder.label :editor, "Editor" %><br />
-  <%= builder.autocomplete_field :editor, autocomplete_book_editor_books_path, :value => @params['editor'] %>
+  <%= builder.autocomplete_field :editor, autocomplete_book_editor_books_path, :value => @attributes['editor'] %>
 </p>
   
 <p id="year">
   <%= builder.label :year, "Ano" %><br />
-  <%= builder.text_field :year, :size => 5, :value => @params['year'] %>
+  <%= builder.text_field :year, :size => 5, :value => @attributes['year'] %>
 </p>  
 
 <p id="language">
   <%= builder.label :language, "Língua" %><br />
-  <%= builder.text_field :language, :size => 5, :value => @params['language'] %>
+  <%= builder.text_field :language, :size => 5, :value => @attributes['language'] %>
 </p>
 
 <p id="page_number">
   <%= builder.label :page_number, "Número de Páginas" %><br />
-  <%= builder.text_field :page_number, :size => 5, :value => @params['page_number'] %>
+  <%= builder.text_field :page_number, :size => 5, :value => @attributes['page_number'] %>
 </p>
 
 <p id="subject">
   <%= builder.label :subject, "Assunto" %><br />
-  <%= builder.autocomplete_field :subject, autocomplete_book_subject_books_path, :value => @params['subject'] %>
-</p>
-  
-<p id="collection">
-  <%= builder.label :collection, "Acervo" %><br />
-  <%= builder.autocomplete_field :collection, autocomplete_book_collection_books_path, :value => (@book.collection || APP_CONFIG['collection']), %>
+  <%= builder.autocomplete_field :subject, autocomplete_book_subject_books_path, :value => @attributes['subject'] %>
 </p>
   
 <p id="city">
   <%= builder.label :city, "Cidade" %><br />
-  <%= builder.autocomplete_field :city, autocomplete_book_city_books_path %>
+  <%= builder.autocomplete_field :city, autocomplete_book_city_books_path, :value => @attributes['city'] %>
 </p>
   
 <p id="country">
   <%= builder.label :country, "País" %><br />
-  <%= builder.autocomplete_field :country, autocomplete_book_country_books_path %>
+  <%= builder.autocomplete_field :country, autocomplete_book_country_books_path, :value => @attributes['country'] %>
 </p>
   
 <p id="cdd">
   <%= builder.label :cdd, "CDD" %><br />
-  <%= builder.text_field :cdd %>
+  <%= builder.text_field :cdd, :value => @attributes['cdd'] %>
 </p>
   
 <p id="pdflink">
  <%= builder.label :pdflink, "PDF" %><br />
- <%= builder.text_field :pdflink %>
+ <%= builder.text_field :pdflink, :value => @attributes['pdflink'] %>
 </p>
   
 <p id="imglink">
  <%= builder.label :imglink, "Imagem" %><br />
- <%= builder.text_field :imglink %>
+ <%= builder.text_field :imglink, :value => @attributes['imglink'] %>
 </p>
   
 <p id="description">

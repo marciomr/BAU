@@ -10,7 +10,7 @@ module BooksHelper
   end
   
   def index_label(book)
-    book.title + (book.volume ? " - Vol. #{(book.volume).to_roman}" : "")
+    book.title + (book.volume ? " - Vol. #{(book.volume).to_roman}" : "") if book.title
   end
   
 end

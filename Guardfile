@@ -12,9 +12,9 @@ guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAIL
   watch('spec/factories.rb')
 end
 
-guard 'rspec', :version => 2, :cli => '--drb -f nested', :all_on_start => false, :all_after_pass => false do
+guard 'rspec', :version => 2, :cli => '--drb -f nested --tag focus', :all_on_start => false, :all_after_pass => false do
 #  watch(%r{^spec/.+_spec\.rb$})
-  watch(%r{^spec/(requests|models)/.+_spec\.rb$}) # watch requests and models specs, but not the controller (too slow)
+  watch(%r{^spec/(requests|models|routing|views)/.+_spec\.rb$}) # watch requests and models specs, but not the controller (too slow)
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec/" }
 

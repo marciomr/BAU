@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120309120516) do
+ActiveRecord::Schema.define(:version => 20120311175617) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(:version => 20120309120516) do
     t.string   "imglink"
     t.string   "subject"
     t.integer  "page_number"
-    t.integer  "tombo"
     t.integer  "volume"
     t.string   "subtitle"
     t.string   "isbn"
     t.boolean  "delta",       :default => true, :null => false
     t.integer  "user_id"
+    t.string   "tombo"
   end
 
   create_table "tags", :force => true do |t|

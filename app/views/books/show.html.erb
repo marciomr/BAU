@@ -108,13 +108,14 @@
 
 <div id="admin">
   <% if can? :create, Book.new %> 
-    <%= link_to "Novo Livro", new_book_path %> 
+    <%= link_to "Novo Livro", new_user_book_path(@user) %> 
   <% end %>
-  <% if can? :update, @book%>
-    | <%= link_to "Editar", edit_book_path(@book) %> 
-    | <%= link_to "Remover", @book, :confirm => 'Tem certeza?', :method => :delete %> |
+  <% if can? :update, @book %>
+    | <%= link_to "Editar", edit_user_book_path(@user, @book) %> 
   <% end %>
-  
+  <% if can? :destroy, @book %>
+    | <%= link_to "Remover", [@user, @book], :confirm => 'Tem certeza?', :method => :delete %> |
+  <% end %> 
   <%= link_to "Ver Todos", books_path %>
 </div>
 

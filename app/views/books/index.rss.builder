@@ -14,8 +14,8 @@ xml.rss :version => "2.0", 'xmlns:dc' => 'http://purl.org/dc/terms', 'xmlns:tl' 
           xml.title book.title
           xml.description "<h3>#{authors_names}</h3> #{book.description}"
           xml.pubDate book.created_at.to_s(:rfc822)
-          xml.link book_url(book)
-          xml.guid book_url(book)
+          xml.link user_book_url(book.user, book)
+          xml.guid user_book_url(book.user, book)
           xml.language book.language
         
           book.tags.each do |tag|

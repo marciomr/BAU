@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
   
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
+  
+  def admin
+    User.find(1)
   end 
 
   rescue_from CanCan::AccessDenied do |exception|

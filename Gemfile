@@ -17,6 +17,7 @@ gem 'thinking-sphinx'
 gem 'kaminari'
 gem 'cancan'
 gem 'nokogiri'
+gem 'friendly_id'
 
 gem 'rspec-rails', :group => [:development, :test]
 gem 'factory_girl_rails', :group => [:development, :test]

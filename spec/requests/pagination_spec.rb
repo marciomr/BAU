@@ -3,13 +3,12 @@
 require 'spec_helper'
 
 feature "Pagination", %q{
-  In order to have an awesome library
   As an guest
   I want to display books in pages
 } do
   
   scenario "pagination" do
-    41.times{ Factory(:book) }
+    41.times{ create(:book) }
     visit books_path
     
     page.should have_content "Next"
@@ -21,7 +20,7 @@ feature "Pagination", %q{
   end
 
   scenario "pagination with few books" do
-    Factory(:book)
+    create(:book)
     visit books_path
     
     page.should have_no_content "Next"
