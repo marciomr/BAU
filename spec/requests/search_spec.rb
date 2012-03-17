@@ -7,20 +7,24 @@ feature "Simple search", %q{
   I should be able to search books 
 } do
   
-  scenario "simple title search" do
+  background do
+    create(:admin)
+  end
+  
+  scenario "simple title search", :focus do
     ['Primeiro', 'Segundo'].each do |title|
       create(:book, :title => title)
     end
         
     visit books_path
     fill_in "search", :with => 'Prim'
-    click_button "Busca"
+    submit_form('simple_search') 
 
     page.should have_content('Primeiro')
     page.should_not have_content('Segundo')
   end
   
-  scenario "simple title search in user page" do
+  scenario "simple title search in user page", :focus do
     user = create(:user)        
     ['Primeiro', 'Segundo'].each do |title|
       create(:book, :title => title, :user => user)
@@ -28,13 +32,13 @@ feature "Simple search", %q{
         
     visit user_books_path(user)
     fill_in "search", :with => 'Prim'
-    click_button "Busca"
+    submit_form('simple_search')
 
     page.should have_content('Primeiro')
     
     visit user_books_path(create(:user))
     fill_in "search", :with => 'Prim'
-    click_button "Busca"
+    submit_form('simple_search')
     
     page.should_not have_content('Primeiro')
   end
@@ -44,6 +48,10 @@ feature "Advanced search", %q{
   As an guest
   I should be able to make advanced searches  
 } do
+
+  background do
+    create(:admin)
+  end
 
   scenario "PDF filter without javascript" do
     create(:book, :title => "No PDF", :pdflink => '') 

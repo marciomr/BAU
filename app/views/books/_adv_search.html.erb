@@ -1,9 +1,40 @@
-<div id="adv_search_content">
-  Título: <%= text_field_tag :title_filter, params[:title_filter], :size => 30 %><br/> 
-  Autor: <%= text_field_tag :author_filter, params[:author_filter], :size => 30 %><br/>
-  Editor: <%= text_field_tag :editor_filter, params[:editor_filter], :size => 30 %><br/>
-  Língua: <%= select "language_filter", "", Book.languages, {:include_blank => true} %> <br/>
-  PDF: <%= check_box_tag :pdf_filter %><br/>
-  
-  <%= link_to "esconder busca avançada", books_path, :remote => true, :id => :adv_search_hide %>
-</div>
+<fieldset>
+  <br/>
+  <legend>Busca Avançada</legend>
+  <%= form_tag books_path, :method => :get, :id => 'advanced_search' do %>
+    <div class="control-group">
+      Título 
+      <div class="controls">
+      <%= text_field_tag :title_filter, params[:title_filter] %>
+      </div>
+    </div>
+    <div class="control-group">
+      Autor 
+      <div class="controls">
+      <%= text_field_tag :author_filter, params[:author_filter] %>
+      </div>
+    </div>
+    <div class="control-group">
+      Editor 
+      <div class="controls">
+      <%= text_field_tag :editor_filter, params[:editor_filter] %>
+      </div>
+    </div>
+    <div class="control-group">
+      Língua
+      <div class="controls">
+      <%= select "language_filter", "", Book.languages, {:include_blank => true} %> 
+      </div>
+    </div>
+    <div class="control-group">
+      PDF 
+      <div class="controls">
+      <%= check_box_tag :pdf_filter %>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <%= submit_tag "Busca", :class => 'btn btn-primary'%>
+    </div>  
+  <% end %>
+</fieldset>  

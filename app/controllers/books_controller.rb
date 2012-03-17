@@ -4,10 +4,21 @@ class BooksController < ApplicationController
   load_and_authorize_resource
   protect_from_forgery :only => [:create, :update, :destroy]
   
-  autocomplete :author, :name
-  autocomplete :tag, :title
-  for attribute in [:editor, :subject, :collection, :city, :country] do
-    autocomplete :book, attribute
+    %w(editor subject city country).each do |field| 
+    define_method "typeahead_#{field}" do
+      @books = Book.order(field.to_sym).where("#{field} like ?", "%#{params[:query]}%")
+      render :json => @books.map(&(field.to_sym)).uniq
+    end
+  end  
+  
+  def typeahead_authors  
+    @authors = Author.order(:name).where("name like ?", "%#{params[:query]}%")
+    render :json => @authors.map(&:name).uniq
+  end
+
+  def typeahead_tags  
+    @tags = Tag.order(:title).where("title like ?", "%#{params[:query]}%")
+    render :json => @tags.map(&:title).uniq
   end
 
   def adv_search
@@ -18,8 +29,12 @@ class BooksController < ApplicationController
     respond_to do |format|
       
       format.html do
-        @adv_search = !params[:adv_search].nil?
+        @adv_search = params[:adv_search] if params[:adv_search]
          
+        if params[:book] && params[:user]
+          user = User.find_by_username(params[:user])  
+          @book = user.books.find_by_tombo(params[:book])
+        end         
         @books = Book.search params[:search], 
                   :star => true,       # Automatic Wildcard
                   :field_weights => {  # Order of relevance
@@ -66,27 +81,37 @@ class BooksController < ApplicationController
 
   def show
     @user = User.find_by_username(params[:user_id])
+    @book = @user.books.find_by_tombo(params[:id])
+    raise("not found") if @book.nil?
   end
 
   def new
     @user = User.find_by_username(params[:user_id])
-    if (@user.try(:admin?))
-      redirect_to root_path, :alert => "O admin não pode possuir livros." 
+    if @user != current_user
+      redirect_to new_user_book_path(current_user), :alert => "Acesso Negado!" if !current_user.admin?
+    end
+    if @user.nil?
+      redirect_to root_path, :alert => "Erro: você precisa estar no seu site para criar um livro." 
     else
-      @attributes = {}
-      @attributes = Book.get_attributes(params[:isbn]) if params[:isbn]
-      @book = Book.new
-      @book.authors.build
+      
+      if params[:isbn]
+        @attributes = Book.get_attributes(params[:isbn]) || { 'isbn' => params[:isbn] } 
+        @book = Book.new @attributes
+      else
+        @book = Book.new
+      end 
+
+      @book.authors.build          
     end
   end
 
   def create    
     @book = Book.new(params[:book])
-    user = User.find_by_username(params[:user_id])
-    @book.user_id = user.try(:id)
+    @user = User.find_by_username(params[:user_id])
+    @book.user_id = @user.try(:id)
     
     if @book.save
-      redirect_to user_book_path(user, @book), :notice => "Livro criado com sucesso."
+      redirect_to user_book_path(@user, @book), :notice => "Livro criado com sucesso."
     else
       render :action => 'new'
     end
@@ -106,6 +131,6 @@ class BooksController < ApplicationController
 
   def destroy
     @book.destroy
-    redirect_to books_url, :notice => "Livro deletado com sucesso."
+    redirect_to root_path, :notice => "Livro deletado com sucesso." # queria voltar pra onde eu estava...
   end
 end

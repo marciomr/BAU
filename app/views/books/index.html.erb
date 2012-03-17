@@ -1,56 +1,58 @@
-<% if @user %>
-  <% rss user_books_path(@user, :rss) %>
-<% else %>
-  <% rss books_path(:rss) %>
-<% end %>
+<% title @user.name if @user %>
 
-<% if current_user %>
-  <% title current_user.name %>
-<% else %>
-  <% title "Bibliotecas Autonomas Unificadas" %>
-<% end %>
-
-<% if @user %>
-  <%= render :partial => "user_books_search" %>
-<% else %>
-  <%= render :partial => "books_search" %>
-<% end %>
-
-<p id="total">
-  <%= @total %> itens encontrados
-</p>
-
-<ul id="books">
-  <% for book in @books %>
-    <% if book %>
-      <li>
-        <%= link_to index_label(book), user_book_path(book.user, book), :class => 'index_title' %>
-          <span class="index_edit">
-            <% if can? :update, book %>
-              <%= link_to "Editar", edit_user_book_path(book.user, book), :class => "edit_link" %>
-            <% end %>
-            <% if can? :destroy, book %>
-              <%= button_to "Remover", [book.user, book], :confirm => 'Tem certeza?', :method => :delete, :class => 'remove_button' %>
-            <% end %>
-          </span>
-        <br/>
-        <span class="index_author"><%= book.authors_names %></span>
-        <% if book.year && book.year > 0 %>
-          <span class="index_year"><%= book.year %></span>
+<% content_for :sidebar do %>
+  <div class="span1">&nbsp;</div>
+    <div class="span4">
+      <div class="well sidebar-nav"> 
+        <% if @book %>
+          <%= render :template => 'books/show' %>
+        <% else %>
+          <%= render :partial => "adv_search" %>
         <% end %>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
+      </div>
+   </div>
+ </div>
+<% end %>
 
-<%= paginate @books %>  
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Autores</th>
+      <th><% if current_user %>Ações<% end %></th>
+      <th><% if @user.nil? %>Acervo<% end %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each do |book| %>
+    <% if book %>
+      <tr>
+        <td>
+        <%= link_to "#{book.title} #{book.volume}", params.merge({:book => book.tombo, :user => book.user.username}) %>
+        </td>
+        <td><%= book.authors.map(&:name).join(', ') %></td>
+        <td>
+          <% if can? :update, book %>
+            <%= link_to 'Editar', edit_user_book_path(book.user, book), :class => 'btn btn-mini' %>
+          <% end %>
+          <% if can? :destroy, book %>
+            <%= link_to 'Deletar', user_book_path(book.user, book), :method => :delete, :confirm => 'Tem certeza?', :class => 'btn btn-mini btn-danger' %>
+          <% end %>
+        </td>
+        <td><% if @user.nil? %><%= link_to book.user.name, user_books_path(book.user) %><% end %></td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="pagination">
+  <%= paginate @books %>
+</div>
 
 <% if current_user %>
-  <div id="admin">
-    <% if can? :create, Book.new %>
-        <%= link_to "Novo Livro", new_user_book_path(current_user) %> |
-    <% end %>     
-    <%= link_to "Deslogar", :controller => 'sessions', :action => 'destroy' %>
-  </div>
-<% end %>  
-
+  <% if @user == current_user || (current_user.admin? && @user)  %>
+  <%= link_to 'Novo livro', new_user_book_path(@user), :class => 'btn btn-primary' %>
+  <% end %>
+<% end %>

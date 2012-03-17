@@ -7,6 +7,7 @@ feature "Login and logout", %q{
 } do
 
   background do
+    create(:admin)
     @user = create(:user, :password => 'secret')
   end
 
@@ -45,6 +46,7 @@ feature "Access Restriction", %q{
 } do
 
   background do
+    create(:admin)
     @user = create(:user, :password => 'secret')
   end
 

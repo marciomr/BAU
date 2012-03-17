@@ -80,6 +80,11 @@ def login(user)
   click_button "Entrar" 
 end
 
+def submit_form(form_id)
+  element = find_by_id(form_id)
+  Capybara::RackTest::Form.new(page.driver, element.native).submit :name => nil
+end
+  
 # these lines are usefull for testing delete with js.
 def js_confirm(status)
   page.evaluate_script 'window.original_confirm_function = window.confirm;'

@@ -6,6 +6,10 @@ feature "Pagination", %q{
   As an guest
   I want to display books in pages
 } do
+
+  background do
+    create(:admin)
+  end
   
   scenario "pagination" do
     41.times{ create(:book) }

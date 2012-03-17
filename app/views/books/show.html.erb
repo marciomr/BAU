@@ -106,18 +106,19 @@
   <%=h @book.description %>
 </p>
 
-<div id="admin">
-  <% if can? :create, Book.new %> 
-    <%= link_to "Novo Livro", new_user_book_path(@user) %> 
+<div class="form-actions">
+  <%# if @user %>
+    <%#= link_to 'Voltar', user_books_path(@user), :class => 'btn'  %>
+  <%# else %>
+    <%#= link_to 'Voltar', books_path, :class => 'btn'  %>
+  <%# end %>
+  <% params.delete(:book) %>
+  <% params.delete(:user) %>
+  <%= link_to 'Voltar', params, :class => 'btn'  %>
+  <% if can? :update, @book%>
+    <%= link_to 'Editar', edit_user_book_path(@book.user, @book), :class => 'btn' %>
   <% end %>
-  <% if can? :update, @book %>
-    | <%= link_to "Editar", edit_user_book_path(@user, @book) %> 
+  <% if can? :destroy, @book%>
+    <%= link_to 'Deletar', user_book_path(@book.user, @book), :method => 'delete', :confirm => 'Tem certeza?', :class => 'btn btn-danger' %>
   <% end %>
-  <% if can? :destroy, @book %>
-    | <%= link_to "Remover", [@user, @book], :confirm => 'Tem certeza?', :method => :delete %> |
-  <% end %> 
-  <%= link_to "Ver Todos", books_path %>
 </div>
-
-
-

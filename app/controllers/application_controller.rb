@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :admin?, :unauthorized!
+  helper_method :current_user, :admin
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '5f2f9061bb334aa869d4717f2779655e'

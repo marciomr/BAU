@@ -1,17 +1,15 @@
 Terralivre::Application.routes.draw do
 
   resources :books, :only => [:index] do
-    get :autocomplete_tag_title, :on => :collection
-    get :autocomplete_author_name, :on => :collection
-
-    for attribute in ['editor', 'subject', 'collection', 'city', 'country'] do
-      get "autocomplete_book_#{attribute}", :on => :collection
-    end
+    %w(editor subject city country authors tags).each do |field|
+      get "typeahead_#{field}", :on => :collection
+    end  
     
     get :adv_search, :on => :collection
   end
 
-  resources :sessions, :only => [:new, :create, :destroy]
+
+  resources :sessions, :only => [:create]
   
   match 'login' => 'sessions#new'
   match 'logout' => 'sessions#destroy'  
@@ -19,8 +17,8 @@ Terralivre::Application.routes.draw do
   match ':id/profile' => 'users#show', :as => :user
   match 'users' => 'users#index', :as => :users  
   match 'signup' => 'users#new'
-      
-  root :to => "books#index", :via => :get 
+
+  root :to => "books#index", :via => :get  
   
   resources :users, :path => '', :except => [:show, :index, :new]
   resources :users, :path => '', :only => [] do

@@ -26,12 +26,7 @@ group :assets do
   gem 'sass-rails', "  ~> 3.1.0"
   gem 'coffee-rails', "  ~> 3.1.0"
   gem 'uglifier'
-end
-
-group :development do
-  gem 'rails3-generators'
-  gem 'nifty-generators'
-  gem 'pry'
+  gem 'twitter-bootstrap-rails', :git => 'git://github.com/marciomr/twitter-bootstrap-rails.git'
 end
 
 group :test do

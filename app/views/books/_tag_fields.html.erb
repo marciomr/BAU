@@ -1,5 +1,7 @@
-<p class="fields">  
-    <%= f.label :title, "Palavra Chave" %><br />  
-    <%= f.autocomplete_field :title, autocomplete_tag_title_books_path %>
-    <%= link_to_remove_fields "remove", f %>  
-</p>  
+<div class="control-group">  
+    <%= f.label :title, "Palavra Chave", :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :title, :class => "book_tags text_field" %>
+    <span class="help-inline"><%= link_to_remove_fields raw("&times;"), f %></span>
+    </div> 
+</div>  

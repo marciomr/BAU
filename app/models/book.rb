@@ -1,5 +1,5 @@
 # coding: utf-8
-
+require 'open-uri'
 class Book < ActiveRecord::Base
   extend FriendlyId
   friendly_id :tombo
@@ -68,7 +68,7 @@ class Book < ActiveRecord::Base
     set_property :delta => true
   end
 
-  ['author', 'title', 'editor', 'language', 'collection'].each do |field|
+  %w(author title editor language collection).each do |field|
     sphinx_scope("by_#{field}".to_sym) do | f |
       {:conditions => { field.to_sym => f }}
     end
@@ -142,7 +142,10 @@ class Book < ActiveRecord::Base
       attributes['subtitle'] = entry.css('dc|title').last.text.titleize
     end    
     
-    attributes['authors'] = entry.css("dc|creator").collect{ |a| a.text.titleize }
+    attributes['authors_attributes'] = {}
+    entry.css("dc|creator").each_with_index do |author, i|
+      attributes['authors_attributes'][i.to_s] = { 'name' => author.text.titleize }
+    end
     
     attributes
   end
@@ -151,16 +154,16 @@ class Book < ActiveRecord::Base
     book = Book.find_by_isbn(isbn)
     if book
       attributes = book.attributes
-      attributes['authors'] = Author.find_all_by_book_id(book.id).map(&:name)
+      attributes['authors_attributes'] = {}
+      Author.find_all_by_book_id(book.id).each_with_index do |author, i|
+        attributes['authors_attributes'][i.to_s] = { 'name' => author.name.titleize }
+      end
     end
     attributes
   end
   
   def self.get_attributes(isbn)
-#    attributes = Book.get_attributes_from_library(isbn)
-#    attributes ||= Book.get_attributes_from_gbook(isbn)
-#    attributes ||= {'isbn' => isbn}
-    Book.get_attributes_from_library(isbn) || Book.get_attributes_from_gbook(isbn) || { 'isbn' => isbn }
+    Book.get_attributes_from_library(isbn) || Book.get_attributes_from_gbook(isbn)
   end
     
   

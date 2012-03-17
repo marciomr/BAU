@@ -1,107 +1,144 @@
-<% title "Editar \"#{@book.title}\"" %>
+<% title @book.title %>
 
 <%= form_for [@user, @book] do |builder| %>
-  <%= builder.error_messages %>
-  <p id="isbn">
-    <%= builder.label :isbn, "ISBN" %><br />
-    <%= builder.text_field :isbn %>
-  </p>
+  <fieldset>
+    <legend>Editar Livro</legend>
+    <!-- por em algum lugar bonito -->
+    <%= builder.error_messages %>
+<div class="row-fluid">
+  <div class="span6">
+  <br/>
+    <div class="control-group">
+      <%= builder.label :isbn, 'ISBN', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :isbn, :class => 'text_field' %>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <%= builder.label :title, 'Título', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :title, :class => 'text_field' %>
+      </div>
+    </div>
 
-<p id="title">
-  <%= builder.label :title, "Título" %><br />
-  <%= builder.text_field :title %>
-</p>
-  
-<p id="subtitle">
-  <%= builder.label :subtitle, "Subtítulo" %><br />
-  <%= builder.text_field :subtitle %>
-</p>
-  
-<p id="volume">
-  <%= builder.label :volume, "Volume" %><br />
-  <%= builder.text_field :volume, :size => 5 %>
-</p>
-  
-<div id="author">  
-  <%= builder.fields_for :authors do |builder| %>  
-    <%= render :partial => "author_fields", :locals => {:f => builder, :name => nil}  %>
-  <% end %>
-  <p><%= link_to_add_fields "Add Author", builder, :authors %></p> 
-</div>
-  
-<div id="tag">  
-  <%= builder.fields_for :tags do |builder| %>  
-    <%= render :partial => "tag_fields", :locals => {:f => builder} %>
-  <% end %>
-  <p><%= link_to_add_fields "Add Tag", builder, :tags %></p> 
-</div>
-  
-<p id="editor">
-  <%= builder.label :editor, "Editor" %><br />
-  <%= builder.autocomplete_field :editor, autocomplete_book_editor_books_path %>
-</p>
-  
-<p id="year">
-  <%= builder.label :year, "Ano" %><br />
-  <%= builder.text_field :year, :size => 5 %>
-</p>  
+    <div class="control-group">
+      <%= builder.label :subtitle, 'Sub-título', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :subtitle, :class => 'text_field' %>
+      </div>
+    </div>
+        
+    <div class="control-group">
+      <%= builder.label :volume, 'Volume', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.number_field :volume, :class => 'number_field' %>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <%= builder.label :editor, 'Editora', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :editor, :class => 'text_field' %>
+      </div>
+    </div>
 
-<p id="language">
-  <%= builder.label :language, "Língua" %><br />
-  <%= builder.text_field :language, :size => 5 %>
-</p>
 
-<p id="page_number">
-  <%= builder.label :page_number, "Número de Páginas" %><br />
-  <%= builder.text_field :page_number, :size => 5 %>
-</p>
+    <div class="control-group">
+      <%= builder.label :year, 'Ano', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.number_field :year, :class => 'number_field' %>
+      </div>
+    </div>
 
-<p id="subject">
-  <%= builder.label :subject, "Assunto" %><br />
-  <%= builder.autocomplete_field :subject, autocomplete_book_subject_books_path %>
-</p>
-  
-<p id="collection">
-  <%= builder.label :collection, "Acervo" %><br />
-  <%= builder.autocomplete_field :collection, autocomplete_book_collection_books_path, :value => (@book.collection || APP_CONFIG['collection']), %>
-</p>
-  
-<p id="city">
-  <%= builder.label :city, "Cidade" %><br />
-  <%= builder.autocomplete_field :city, autocomplete_book_city_books_path %>
-</p>
-  
-<p id="country">
-  <%= builder.label :country, "País" %><br />
-  <%= builder.autocomplete_field :country, autocomplete_book_country_books_path %>
-</p>
-  
-<p id="cdd">
-  <%= builder.label :cdd, "CDD" %><br />
-  <%= builder.text_field :cdd %>
-</p>
-  
-<p id="pdflink">
- <%= builder.label :pdflink, "PDF" %><br />
- <%= builder.text_field :pdflink %>
-</p>
-  
-<p id="imglink">
- <%= builder.label :imglink, "Imagem" %><br />
- <%= builder.text_field :imglink %>
-</p>
-  
-<p id="description">
-  <%= builder.label :description, "Descrição" %><br />
-  <%= builder.text_area :description %>
-</p>
-  
-     
-<p><%= builder.submit "Salvar" %></p>
+    <div class="control-group">
+      <%= builder.label :language, 'Língua', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :language, :class => 'text_field' %>
+      </div>
+    </div>
 
+    <div class="control-group">
+      <%= builder.label :page_number, 'Páginas', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.number_field :page_number, :class => 'number_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= builder.label :subject, 'Assunto', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :subject, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= builder.label :city, 'Cidade', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :city, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= builder.label :country, 'País', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :country, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= builder.label :cdd, 'CDD', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :cdd, :class => 'text_field' %>
+      </div>
+    </div>
+    
+    
+  </div>
+
+  <div class='span6'>
+  <br/>
+    <%= builder.fields_for :authors do |b| %>  
+      <%= render :partial => "author_fields", :locals => {:f => b} %>
+    <% end %>
+    <div class="controls"><%= link_to_add_fields "Adicionar autor", builder, :authors %></div>
+    <br/>
+      
+    <%= builder.fields_for :tags do |b| %>  
+      <%= render :partial => "tag_fields", :locals => {:f => b} %>
+    <% end %>
+    <div class="controls"><%= link_to_add_fields "Adicionar palavra chave", builder, :tags %></div>
+    <br/>
+    <div class="control-group">
+      <%= builder.label :pdflink, 'PDF', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :pdflink, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= builder.label :imglink, 'Imagem', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_field :imglink, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= builder.label :description, 'Descrição', :class => 'control-label' %>
+      <div class="controls">
+        <%= builder.text_area :description, :class => 'text_area' %>
+      </div>
+    </div>
+
+    
+</div>    
+<div class="span12">
+<div class="form-actions">
+      <%= builder.submit 'Salvar', :class => 'btn btn-primary' %>
+      <%= link_to 'Cancel', books_path, :class => 'btn' %>
+    </div>
+    
+    </div>
+  </fieldset>
 <% end %>
 
-<p>
-  <%= link_to "Mostrar", user_book_path(@book.user, @book) %> |
-  <%= link_to "Voltar para lista", books_path %>
-</p>

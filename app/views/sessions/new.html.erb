@@ -1,15 +1,23 @@
 <% title "Login" %>
+
 <%= form_tag sessions_path do %>
-  <div class="field">
-    <%= label_tag :username, "Usuário" %>
-    <%= text_field_tag :username, params[:username] %>
-  </div>
-  <div class="field">
-    <%= label_tag :password, "Senha" %>
-    <%= password_field_tag :password %>
-  </div>
-  <div class="actions"><%= submit_tag "Entrar" %></div>
+  <fieldset>
+    <legend>Login</legend>
+      <div class="control-group">
+        <%= label_tag :username, "Usuário" %>
+        <div class="controls">
+          <%= text_field_tag :username, params[:username], :class => 'text_field' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= label_tag :password, "Senha" %>
+        <div class="controls">
+          <%= password_field_tag :password, params[:username], :class => 'password_field' %>
+        </div>
+      </div>
+      <div class="form-actions">
+        <%= submit_tag "Entrar", :class => 'btn btn-primary' %>
+      </div>
+  </fieldset>
 <% end %>
-<%#= form_tag :controller => :sessions, :action => :create do %>
-  <%#= password_field_tag 'password' %><%#= submit_tag 'Entrar', :class => 'button' %><br/>
-<%# end %> 
+

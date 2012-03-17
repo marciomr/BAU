@@ -8,6 +8,7 @@ feature "Manage books as logged user without js", %q{
 } do
 
   background do
+    create(:admin)
     @user = create(:user)
     login(@user)
   end
@@ -49,7 +50,7 @@ feature "Manage books as logged user without js", %q{
     
     fill_in "Título", :with => "Título"
     click_button "Salvar"
-    
+
     page.should have_content("1234567890")
   end
   
@@ -59,9 +60,9 @@ feature "Manage books as logged user without js", %q{
     visit edit_user_book_path(@user, book)
     
     find(:field, 'book_title').value.should have_content(book.title)
-    find(:css, '.book_author').value.should have_content(author.name)
-    
-    fill_in "ISBN", :with => "123"
+    find(:css, '.book_authors').value.should have_content(author.name)
+    # seria bom testar se os autores aparecem
+    fill_in "ISBN", :with => 123
     fill_in "Título", :with => "A Conquista do Pão"
       
     click_button "Salvar"
@@ -115,7 +116,7 @@ feature "Manage books as logged user without js", %q{
     
     visit user_book_path(user, book)
     
-    page.should_not have_content "Editar" # not passing
+    page.should_not have_content "Editar"
   end    
     
   scenario "delete own book in index" do
@@ -124,9 +125,7 @@ feature "Manage books as logged user without js", %q{
     visit books_path
     
     lambda do
-      within(:css, "li:first-child") do
-        click_button "Remover"
-      end    
+      click_link "Deletar"
     end.should change(@user.books, :count).by(-1)
     
     page.should have_flash_notice
@@ -136,9 +135,9 @@ feature "Manage books as logged user without js", %q{
     book = create(:book, :user => @user)
     
     visit user_book_path(@user, book)
-    
+
     lambda do
-      click_link "Remover"
+      click_link "Deletar"
     end.should change(@user.books, :count).by(-1)
     
     page.should have_flash_notice
@@ -158,6 +157,10 @@ feature "Manage Books as Admin", %q{
   scenario "create a book" do
     user = create(:user)
     visit new_user_book_path(user)
+    
+    @admin.password.should == 'secret'
+    
+    current_path.should == new_user_book_path(user)
     
     lambda do
       fill_in 'Título', :with => "Título"
@@ -181,7 +184,7 @@ feature "Manage Books as Admin", %q{
     visit edit_user_book_path(book.user, book)
     
     find(:field, 'book_title').value.should have_content(book.title)
-    find(:css, '.book_author').value.should have_content(author.name)
+    find(:css, '.book_authors').value.should have_content(author.name)
     
     fill_in "Título", :with => "A Conquista do Pão"
       
@@ -208,9 +211,7 @@ feature "Manage Books as Admin", %q{
     visit books_path
     
     lambda do
-      within(:css, "li:first-child") do
-        click_button "Remover"
-      end
+      click_link "Deletar"
     end.should change(Book, :count).by(-1)  
     
     page.should have_flash_notice
@@ -223,6 +224,7 @@ feature "Manage books as guest", %q{
 } do
 
   background do
+    create(:admin)
     @user = create(:user)
   end
 
@@ -251,7 +253,7 @@ feature "Manage books as guest", %q{
     
     visit books_path
     
-    page.should_not have_content "Remover"
+    page.should_not have_content "Deletar"
   end    
 end
 
@@ -261,6 +263,7 @@ feature "Display Books", %q{
 } do
   
   background do
+    create(:admin)
     @user = create(:user)
     @book = create(:book, :user => @user)
   end
