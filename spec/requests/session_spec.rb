@@ -11,19 +11,47 @@ feature "Login and logout", %q{
     @user = create(:user, :password => 'secret')
   end
 
-  scenario "login successfully" do
+  scenario "login successfully via login page" do
     visit login_path
     
-    fill_in "Usuário", :with => @user.username
-    fill_in "Senha", :with => @user.password
+    within('#main-div') do
+      fill_in "Usuário", :with => @user.username
+      fill_in "Senha", :with => @user.password
     
-    click_button "Entrar"
+      click_button "Entrar"  
+    end    
      
     page.should have_flash_notice
   end
   
-  scenario "login unsuccessfully" do
+  scenario "login unsuccessfully via login page" do
     visit login_path
+    
+    within('#main-div') do
+      fill_in "Usuário", :with => @user.username
+      fill_in "Senha", :with => "wrong_pass"
+    
+      click_button "Entrar"
+    end
+    
+    page.should have_flash_alert
+  end
+
+  scenario "login successfully via modal" do
+    visit root_path
+    click_link 'Login'
+    
+    fill_in "Usuário", :with => @user.username
+    fill_in "Senha", :with => @user.password
+    
+    click_button "Entrar"  
+     
+    page.should have_flash_notice
+  end
+  
+  scenario "login unsuccessfully via modal" do
+    visit root_path
+    click_link 'Login'
     
     fill_in "Usuário", :with => @user.username
     fill_in "Senha", :with => "wrong_pass"
@@ -35,10 +63,10 @@ feature "Login and logout", %q{
 
   scenario "logout" do
     login(@user)
-    visit logout_path
+    click_link 'Logout'
     
     page.should have_flash_notice
-  end 
+  end
 end
 
 feature "Access Restriction", %q{
@@ -54,7 +82,7 @@ feature "Access Restriction", %q{
     visit new_user_book_path(@user)
 
     page.should have_flash_alert
-    current_path.should == login_path    
+    current_path.should == login_path
   end
   
   scenario "redirect back to new book page" do
@@ -74,6 +102,7 @@ feature "Access Restriction", %q{
   scenario "redirect back to edit book page" do
     book = create(:book, :user => @user)
     visit edit_user_book_path(@user, book)
+
     login(@user)
     
     current_path.should == edit_user_book_path(@user, book)
@@ -90,8 +119,13 @@ feature "Access Restriction", %q{
     user = create(:user)
     visit edit_user_path(user)
     
-    login(user)
-        
+    within '#main-div' do
+      fill_in "Usuário", :with => user.username
+      fill_in "Senha", :with => user.password
+      click_button "Entrar"   
+    end  
+   
     current_path.should == edit_user_path(user)
   end
+  
 end

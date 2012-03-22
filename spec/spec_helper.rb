@@ -74,10 +74,12 @@ end
 # queria que isso fosse mais rapido
 def login(user)
   visit login_path
-  
-  fill_in "Usuário", :with => user.username
-  fill_in "Senha", :with => user.password
-  click_button "Entrar" 
+    
+  within '#main-div' do
+    fill_in "Usuário", :with => user.username
+    fill_in "Senha", :with => user.password
+    click_button "Entrar"   
+  end  
 end
 
 def submit_form(form_id)

@@ -21,6 +21,13 @@
     <link href="images/favicon.ico" rel="shortcut icon">
   </head>
   <body>
+  
+  <div class="modal fade" id="login-modal">
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">×</a>
+    </div>
+    <%= render :template => 'sessions/new' %>
+  </div>
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -68,8 +75,9 @@
             <ul class="nav pull-right">
               <% if current_user %>
                 <li><%= link_to "Logout", logout_path %></li>
-              <% else %>   
-                <li><%= link_to "Login", login_path %></li>
+              <% else %>
+                <li><a data-toggle="modal" href="#login-modal">Login</a></li>   
+                <!--<li><%#= link_to "Login", login_path %></li>-->
               <% end %>
             </ul>
           </div><!--/.nav-collapse -->
@@ -83,19 +91,20 @@
           <div id="main-div" class="span8">
             <% flash.each do |name, msg| %>
               <% if name == :alert %>
-                <div class="alert alert-error">
+                <div class="alert alert-error fade in">
               <% elsif name == :notice %>
-                <div class="alert alert-success">
+                <div class="alert alert-success fade in">
               <% end %>
                 <a class="close" data-dismiss="alert">&times;</a>
                   <%= msg %>
                 </div>
-                <%#= content_tag :div, msg, :id => "flash_#{name}" %>
               <% end %>
               
             <%= yield %>
           </div>
-          <%= yield(:sidebar) %>
+          <div data-pjax-container>
+            <%= yield(:sidebar) %>
+          </div>
         </div><!--/row-->
       </div><!--/content-->
 

@@ -11,7 +11,7 @@ feature "Simple search", %q{
     create(:admin)
   end
   
-  scenario "simple title search", :focus do
+  scenario "simple title search" do
     ['Primeiro', 'Segundo'].each do |title|
       create(:book, :title => title)
     end
@@ -24,7 +24,7 @@ feature "Simple search", %q{
     page.should_not have_content('Segundo')
   end
   
-  scenario "simple title search in user page", :focus do
+  scenario "simple title search in user page" do
     user = create(:user)        
     ['Primeiro', 'Segundo'].each do |title|
       create(:book, :title => title, :user => user)
@@ -58,8 +58,6 @@ feature "Advanced search", %q{
     create(:book, :title => "With PDF", :pdflink => "http://www.example.com")
     visit books_path
 
-    click_link "busca avançada"
-    
     check "pdf_filter"
     click_button "Busca"
 
@@ -67,30 +65,10 @@ feature "Advanced search", %q{
     page.should_not have_content "No PDF"  
   end
   
-  scenario "PDF filter with javascript", :js do
-    create(:book, :title => "No PDF", :pdflink => '') 
-    create(:book, :title => "With PDF", :pdflink => "http://www.example.com")
-    visit books_path
-    
-    page.should have_no_content "Língua"
-    click_link "busca avançada"
-  
-    sleep 1
-
-    page.should have_content "Língua"
-    check "pdf_filter"
-    click_button "Busca"
-    
-    page.should have_content "With PDF"
-    page.should_not have_content "No PDF"
-  end
-  
   scenario "Language filter without javascript" do
     create(:book, :title => "English", :language => 'en') 
     create(:book, :title => "Portuguese", :language => 'pt')
     visit books_path
-    
-    click_link "busca avançada"
     
     select "en", :from => 'language_filter[]'
     click_button "Busca"
@@ -104,8 +82,6 @@ feature "Advanced search", %q{
     create(:book, :title => 'First', :authors => [create(:author, :name => 'Second')])
     visit books_path
     
-    click_link "busca avançada"
-    
     fill_in 'author_filter', :with => 'First'
     click_button "Busca"
     
@@ -118,8 +94,6 @@ feature "Advanced search", %q{
     create(:book, :title => 'Second', :authors => [create(:author, :name => 'First')])
     visit books_path
     
-    click_link "busca avançada"
-    
     fill_in 'title_filter', :with => 'First'
     click_button "Busca"
     
@@ -131,8 +105,6 @@ feature "Advanced search", %q{
     create(:book, :title => 'Title', :editor => 'First') 
     create(:book, :title => 'First', :editor => 'Second')
     visit books_path
-    
-    click_link "busca avançada"
     
     fill_in 'editor_filter', :with => 'First'
     click_button "Busca"

@@ -9,15 +9,13 @@ gem 'rails', '3.1.0'
 #gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'rails3-jquery-autocomplete', :git => 'git://github.com/marciomr/rails3-jquery-autocomplete.git'
 gem 'mysql2'
-gem 'thinking-sphinx'
-# :git => 'git://github.com/freelancing-god/thinking-sphinx.git', 
-# the very latest version is compliant with kaminari
+gem 'thinking-sphinx' # queria aposentar esse
 gem 'kaminari'
-gem 'cancan'
-gem 'nokogiri'
+#gem 'cancan'          # vou aposentar esse
+gem 'nokogiri'        # esse vou aposentar na proxima versao
 gem 'friendly_id'
+gem 'rack-pjax'
 
 gem 'rspec-rails', :group => [:development, :test]
 gem 'factory_girl_rails', :group => [:development, :test]
@@ -26,6 +24,7 @@ group :assets do
   gem 'sass-rails', "  ~> 3.1.0"
   gem 'coffee-rails', "  ~> 3.1.0"
   gem 'uglifier'
+  # using my version of bootstrap because of the autocompletion
   gem 'twitter-bootstrap-rails', :git => 'git://github.com/marciomr/twitter-bootstrap-rails.git'
 end
 

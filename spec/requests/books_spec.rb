@@ -41,6 +41,18 @@ feature "Manage books as logged user without js", %q{
     page.should have_img(book.imglink)
   end
 
+  scenario "create a book with wrong pdf" do
+    visit new_user_book_path(@user)
+
+    lambda do
+      fill_in "Título", :with => 'Title'
+      fill_in "PDF", :with => 'wrong link'
+      click_button 'Salvar'
+    end.should_not change(Book, :count)
+      
+    page.should have_content "Link inválido."
+  end
+
   scenario "create book with isbn" do
     faweb_register_book('gbook-empty.xml', '1234567890')
     visit new_user_book_path(@user)
@@ -128,6 +140,7 @@ feature "Manage books as logged user without js", %q{
       click_link "Deletar"
     end.should change(@user.books, :count).by(-1)
     
+    current_path.should == user_books_path(@user)
     page.should have_flash_notice
   end  
   
@@ -157,10 +170,6 @@ feature "Manage Books as Admin", %q{
   scenario "create a book" do
     user = create(:user)
     visit new_user_book_path(user)
-    
-    @admin.password.should == 'secret'
-    
-    current_path.should == new_user_book_path(user)
     
     lambda do
       fill_in 'Título', :with => "Título"
@@ -193,7 +202,6 @@ feature "Manage Books as Admin", %q{
     page.should have_content("A Conquista do Pão")
   end  
   
-  # esse poderia ser feito no views test
   scenario "see book edit link in index" do
     book = create(:book)
       

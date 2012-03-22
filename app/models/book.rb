@@ -8,13 +8,15 @@ class Book < ActiveRecord::Base
   
   belongs_to :user
   validates_presence_of :user_id
+  validates_uniqueness_of :tombo, :scope => :user_id
   validates_presence_of :title, :message => "O livro precisa ter um título."
-  # validates_format_of :pdflink, :imglink
-  # validates_integer year, page_number, volume
+  validates_format_of :pdflink, :imglink, :allow_blank => true, :with => /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix, :message => "Link inválido."
+  # talvez eu devesse verificar se o link é válido - http://joshuawood.net/validating-url-in-ruby-on-rails-3/
+  validates_numericality_of :year, :page_number, :volume, :only_integer => true, :allow_blank => true, :message => "Preencha com um número."
 
   before_save do |book| 
     t = book.user.last_tombo + 1
-    book.tombo = t.to_s if book.tombo.nil?
+    book.tombo ||= t.to_s if book.tombo.nil?
   end
 
   def self.dc_fields

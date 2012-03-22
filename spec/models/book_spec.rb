@@ -16,14 +16,12 @@ describe Book do
     book.tombo.should == '2'
   end
   
-  (Book.columns.select{|b| b.type == :string}.collect{|b| b.name}).each do |field|
-    it "should get concatenated #{field}s" do
-      create(:book, field.to_sym => 'First')
-      create(:book, field.to_sym => 'Second')
-      create(:book, field.to_sym => 'Second')
+  it "should get concatenated titles" do
+    create(:book, :title => 'First')
+    create(:book, :title => 'Second')
+    create(:book, :title => 'Second')
     
-      (Book.send "#{field}s").should == ["First", "Second"]
-    end
+    Book.titles.should == ["First", "Second"]
   end
   
   # Example of the above usage
@@ -71,7 +69,7 @@ describe Book do
     attributes['title'].should == "What Is Property"
     attributes['subtitle'].should == "An Inquiry Into The Principle Of Right And Of Government"
 #   attributes['authors'].should == ["Pierre Joseph Proudhon", "Amédée Jérôme Langlois"]
-    attributes['authors'].should == ["Pierre Joseph Proudhon"] 
+    attributes['authors_attributes']['0']['name'].should == "Pierre Joseph Proudhon"
     attributes['editor'].should == "Forgotten Books"
 #    attributes['year'].should == "1969"
     attributes['language'].should == "En"
@@ -91,6 +89,42 @@ describe Book do
     book.should have(1).error_on(:user_id)
   end
 
+  it "should give an error if wrong link in pdf is given" do
+    book = build(:book, :pdflink => 'foo bar')
+    book.should_not be_valid
+    book.should have(1).error_on(:pdflink)
+  end
+
+  it "should give an error if wrong link in img is given" do
+    book = build(:book, :imglink => 'foo bar')
+    book.should_not be_valid
+    book.should have(1).error_on(:imglink)
+  end
+  
+  it "should give an error if pages is not a number" do
+    book = build(:book, :page_number => 'foo bar')
+    book.should_not be_valid
+    book.should have(1).error_on(:page_number)
+  end
+  
+  it "should give an error if year is not a number" do
+    book = build(:book, :year => 'foo bar')
+    book.should_not be_valid
+    book.should have(1).error_on(:year)
+  end
+  
+  it "should give an error if volume is not a number" do
+    book = build(:book, :volume => 'foo bar')
+    book.should_not be_valid
+    book.should have(1).error_on(:volume)
+  end
+  
+  it "should give an error if no title is given" do
+    book = build(:book, :title => '')
+    book.should_not be_valid
+    book.should have(1).error_on(:title)
+  end
+
   it "should return the attributes of a book if the book is found in the database" do
     book = create(:book, :isbn => 111)
     author1 = create(:author, :book_id => book.id, :name => "Foo Bar 1")
@@ -99,7 +133,8 @@ describe Book do
     attributes = Book.get_attributes_from_library(111)
       
     attributes['title'].should == book.title
-    attributes['authors'].should == [author1.name, author2.name]
+    attributes['authors_attributes']['0']['name'].should == author1.name
+    attributes['authors_attributes']['1']['name'].should == author2.name
   end
   
   it "should return the attributes of book if found by google book or in the database" do

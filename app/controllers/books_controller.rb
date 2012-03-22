@@ -1,21 +1,22 @@
 # coding: utf-8
 
 class BooksController < ApplicationController
-  load_and_authorize_resource
   protect_from_forgery :only => [:create, :update, :destroy]
   
-    %w(editor subject city country).each do |field| 
+  %w(editor subject city country).each do |field| 
     define_method "typeahead_#{field}" do
       @books = Book.order(field.to_sym).where("#{field} like ?", "%#{params[:query]}%")
       render :json => @books.map(&(field.to_sym)).uniq
     end
   end  
   
+  # autocomplete para autores
   def typeahead_authors  
     @authors = Author.order(:name).where("name like ?", "%#{params[:query]}%")
     render :json => @authors.map(&:name).uniq
   end
 
+  # autocomplete para tags
   def typeahead_tags  
     @tags = Tag.order(:title).where("title like ?", "%#{params[:query]}%")
     render :json => @tags.map(&:title).uniq
@@ -76,61 +77,96 @@ class BooksController < ApplicationController
           @books.with_user_id(@user.id) 
         end
       end
+      
+      format.xml do 
+        if params[:user_id]
+          @user = User.find_by_username(params[:user_id])
+          render :xml => @user.books, :except => [:user_id, :id, :created_at, :updated_at], 
+                                      :include => {:authors => {:only => [:name]}, :tags => {:only => [:title]}}
+        else
+          render :xml => @books, :except => [:user_id, :id, :created_at, :updated_at], 
+                                 :include => {:authors => {:only => [:name]}, :tags => {:only => [:title]}}
+        end
+      end
     end
   end
 
   def show
     @user = User.find_by_username(params[:user_id])
     @book = @user.books.find_by_tombo(params[:id])
-    raise("not found") if @book.nil?
+    
+    # se o livro não for encontrado 404
+    raise ActionController::RoutingError.new('Not Found')if @book.nil?
   end
 
   def new
     @user = User.find_by_username(params[:user_id])
-    if @user != current_user
-      redirect_to new_user_book_path(current_user), :alert => "Acesso Negado!" if !current_user.admin?
-    end
-    if @user.nil?
-      redirect_to root_path, :alert => "Erro: você precisa estar no seu site para criar um livro." 
-    else
-      
-      if params[:isbn]
-        @attributes = Book.get_attributes(params[:isbn]) || { 'isbn' => params[:isbn] } 
-        @book = Book.new @attributes
-      else
-        @book = Book.new
-      end 
 
-      @book.authors.build          
-    end
+    # tem que estar no site de alguma biblio para criar livro
+    if @user.nil? || @user.admin?
+      redirect_to root_path, :alert => "Você precisa estar no site de um biblioteca para criar um livro." 
+    
+    # guest não pode criar livros
+    elsif guest? 
+      unautorized!
+            
+    # só o admin pode criar na conta de outro usuário
+    elsif @user != current_user && !admin?
+      unautorized!(new_user_book_path(current_user))
+    
+    elsif params[:isbn]
+      # tenta preencher os campos automaticamente
+      @attributes = Book.get_attributes(params[:isbn]) || { 'isbn' => params[:isbn] } 
+      @book = Book.new @attributes
+    else
+      @book = Book.new
+      # um campo de autor aparece sem precisar clicar em "adicionar autor"
+      @book.authors.build 
+    end 
   end
 
   def create    
     @book = Book.new(params[:book])
     @user = User.find_by_username(params[:user_id])
-    @book.user_id = @user.try(:id)
     
-    if @book.save
-      redirect_to user_book_path(@user, @book), :notice => "Livro criado com sucesso."
-    else
-      render :action => 'new'
+    access_restricted_to([@user, admin]) do    
+      @book.user_id = @user.try(:id)
+    
+      if @book.save
+        redirect_to [@user, @book], :notice => "Livro criado com sucesso."
+      else
+        render :new
+      end
     end
   end
 
   def edit
     @user = User.find_by_username(params[:user_id])
+    @book = @user.books.find_by_tombo(params[:id])
+
+    access_restricted_to([@user, admin])
   end
 
   def update    
-    if @book.update_attributes(params[:book])
-      redirect_to [@book.user, @book], :notice  => "Livro editado com sucesso."
-    else
-      render :action => 'edit'
+    @book = Book.find(params[:id])
+    @user = User.find_by_username(params[:user_id])
+    
+    access_restricted_to([@user, admin]) do
+      if @book.update_attributes(params[:book])
+        redirect_to [@book.user, @book], :notice  => "Livro editado com sucesso."
+      else
+        render :action => 'edit'
+      end
     end
   end
 
   def destroy
-    @book.destroy
-    redirect_to root_path, :notice => "Livro deletado com sucesso." # queria voltar pra onde eu estava...
+    @user = User.find_by_username(params[:user_id])
+    @book = @user.books.find_by_tombo(params[:id])
+    
+    access_restricted_to([@user, admin]) do
+      @book.destroy
+      redirect_to user_books_path(@user), :notice => "Livro deletado com sucesso."
+    end
   end
 end

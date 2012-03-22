@@ -16,6 +16,8 @@ end
 module Terralivre
   class Application < Rails::Application
     
+    config.middleware.use Rack::Pjax
+    
     # Enable the asset pipeline
     config.assets.enabled = true
 

@@ -22,8 +22,13 @@ Terralivre::Application.routes.draw do
   
   resources :users, :path => '', :except => [:show, :index, :new]
   resources :users, :path => '', :only => [] do
+    resources :backups, :only => [:index, :create] do
+      post "recover", :on => :member
+      post "upload", :on => :collection
+    end 
     resources :books, :path => ''
   end
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

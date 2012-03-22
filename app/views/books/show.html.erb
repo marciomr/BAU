@@ -7,11 +7,15 @@
 <% end %>
 
 <p>
+  <strong>Acervo:</strong>
+  <%=h @book.user.name %>
+</p>
+<p>
   <strong>Tombo:</strong>
   <%=h @book.tombo %>
 </p>
 <p>
-  <strong>Título:</strong>
+<strong>Título:</strong>
   <%=h @book.title %>
 </p>
 <% if !@book.subtitle.blank? %>
@@ -107,18 +111,12 @@
 </p>
 
 <div class="form-actions">
-  <%# if @user %>
-    <%#= link_to 'Voltar', user_books_path(@user), :class => 'btn'  %>
-  <%# else %>
-    <%#= link_to 'Voltar', books_path, :class => 'btn'  %>
-  <%# end %>
   <% params.delete(:book) %>
   <% params.delete(:user) %>
   <%= link_to 'Voltar', params, :class => 'btn'  %>
-  <% if can? :update, @book%>
+
+  <% restricted_to([@user, admin]) do %>
     <%= link_to 'Editar', edit_user_book_path(@book.user, @book), :class => 'btn' %>
-  <% end %>
-  <% if can? :destroy, @book%>
     <%= link_to 'Deletar', user_book_path(@book.user, @book), :method => 'delete', :confirm => 'Tem certeza?', :class => 'btn btn-danger' %>
   <% end %>
 </div>

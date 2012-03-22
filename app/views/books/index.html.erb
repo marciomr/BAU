@@ -14,14 +14,13 @@
  </div>
 <% end %>
 
-
 <table class="table table-striped">
   <thead>
     <tr>
       <th>Título</th>
       <th>Autores</th>
-      <th><% if current_user %>Ações<% end %></th>
-      <th><% if @user.nil? %>Acervo<% end %></th>
+      <% if current_user %><th>Ações</th><% end %>
+      <% if @user.nil? %><th>Acervo</th><% end %>
     </tr>
   </thead>
   <tbody>
@@ -29,18 +28,18 @@
     <% if book %>
       <tr>
         <td>
-        <%= link_to "#{book.title} #{book.volume}", params.merge({:book => book.tombo, :user => book.user.username}) %>
+        <%= link_to "#{book.title} #{book.volume}", params.merge({:book => book.tombo, :user => book.user.username}), :class => 'book-title' %>
         </td>
-        <td><%= book.authors.map(&:name).join(', ') %></td>
-        <td>
-          <% if can? :update, book %>
+        <td><a href="#" rel="tooltip" title="<%= book.authors.map(&:name).join(', ') %>"><%= truncate(book.authors.map(&:name).join(', ')) %></a></td>
+        <% restricted_to([book.user, admin]) do %>
+          <td>
             <%= link_to 'Editar', edit_user_book_path(book.user, book), :class => 'btn btn-mini' %>
-          <% end %>
-          <% if can? :destroy, book %>
             <%= link_to 'Deletar', user_book_path(book.user, book), :method => :delete, :confirm => 'Tem certeza?', :class => 'btn btn-mini btn-danger' %>
-          <% end %>
-        </td>
-        <td><% if @user.nil? %><%= link_to book.user.name, user_books_path(book.user) %><% end %></td>
+          </td>
+        <% end %>
+        <% if @user.nil? %>
+          <td><%= link_to book.user.name, user_books_path(book.user) %></td>
+        <% end %>
       </tr>
       <% end %>
     <% end %>
@@ -51,8 +50,8 @@
   <%= paginate @books %>
 </div>
 
-<% if current_user %>
-  <% if @user == current_user || (current_user.admin? && @user)  %>
-  <%= link_to 'Novo livro', new_user_book_path(@user), :class => 'btn btn-primary' %>
+<% restricted_to([@user, admin]) do %>
+  <% if  @user  %>
+    <%= link_to 'Novo livro', new_user_book_path(@user), :class => 'btn btn-primary' %>
   <% end %>
 <% end %>
