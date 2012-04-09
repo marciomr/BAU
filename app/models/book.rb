@@ -70,7 +70,7 @@ class Book < ActiveRecord::Base
     set_property :delta => true
   end
 
-  %w(author title editor language collection).each do |field|
+  %w(author title editor language subject tag).each do |field|
     sphinx_scope("by_#{field}".to_sym) do | f |
       {:conditions => { field.to_sym => f }}
     end
@@ -167,6 +167,9 @@ class Book < ActiveRecord::Base
   def self.get_attributes(isbn)
     Book.get_attributes_from_library(isbn) || Book.get_attributes_from_gbook(isbn)
   end
-    
+  
+  def title_volume
+    title + (volume? ? volume.to_s : '')
+  end  
   
 end

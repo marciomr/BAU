@@ -1,57 +1,62 @@
 <% title @user.name if @user %>
 
-<% content_for :sidebar do %>
-  <div class="span1">&nbsp;</div>
-    <div class="span4">
-      <div class="well sidebar-nav"> 
-        <% if @book %>
-          <%= render :template => 'books/show' %>
-        <% else %>
-          <%= render :partial => "adv_search" %>
-        <% end %>
-      </div>
+<% present Book.new do |book_presenter| %>
+  <% content_for :sidebar do %>
+    <div class="span1">&nbsp;</div>
+      <div class="span4">
+        <div class="well sidebar-nav"> 
+          <% if @book %>
+            <%= render :template => 'books/show' %>
+          <% else %>
+            <%= render :partial => 'adv_search' %>
+          <% end %>
+        </div>
+     </div>
    </div>
- </div>
-<% end %>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Título</th>
-      <th>Autores</th>
-      <% if current_user %><th>Ações</th><% end %>
-      <% if @user.nil? %><th>Acervo</th><% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @books.each do |book| %>
-    <% if book %>
-      <tr>
-        <td>
-        <%= link_to "#{book.title} #{book.volume}", params.merge({:book => book.tombo, :user => book.user.username}), :class => 'book-title' %>
-        </td>
-        <td><a href="#" rel="tooltip" title="<%= book.authors.map(&:name).join(', ') %>"><%= truncate(book.authors.map(&:name).join(', ')) %></a></td>
-        <% restricted_to([book.user, admin]) do %>
-          <td>
-            <%= link_to 'Editar', edit_user_book_path(book.user, book), :class => 'btn btn-mini' %>
-            <%= link_to 'Deletar', user_book_path(book.user, book), :method => :delete, :confirm => 'Tem certeza?', :class => 'btn btn-mini btn-danger' %>
-          </td>
-        <% end %>
-        <% if @user.nil? %>
-          <td><%= link_to book.user.name, user_books_path(book.user) %></td>
-        <% end %>
-      </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
-
-<div class="pagination">
-  <%= paginate @books %>
-</div>
-
-<% restricted_to([@user, admin]) do %>
-  <% if  @user  %>
-    <%= link_to 'Novo livro', new_user_book_path(@user), :class => 'btn btn-primary' %>
   <% end %>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Autores</th>
+        <th><% if current_user %>Ações<% end %></th>
+        <th><% if @user.nil? %>Acervo<% end %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @books.each do |book| %>
+        <% if book %>
+          <tr>
+            <td>
+              <%= book_presenter.book_link(book) %>
+            </td>
+            <td>
+              <%= book_presenter.authors_with_tooltip(book) %>
+            </td>
+            <td>
+              <% restricted_to([book.user, admin]) do %>
+                <%= btn_mini('Editar', edit_user_book_path(book.user, book)) %>
+                <%= btn_mini_danger('Deletar', user_book_path(book.user, book)) %>
+              <% end %>
+            </td>
+            <td>
+              <% if @user.nil? %><%= link_to book.user.name, user_books_path(book.user) %><% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% restricted_to([@user, admin]) do %>
+    <% if  @user  %>
+      <%= btn_primary 'Novo livro', new_user_book_path(@user) %>
+    <% end %>
+  <% end %>
+
+  <div class="pagination">
+    <%= paginate @books %>
+  </div>
+
 <% end %>

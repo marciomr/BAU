@@ -1,7 +1,7 @@
 Terralivre::Application.routes.draw do
 
   resources :books, :only => [:index] do
-    %w(editor subject city country authors tags).each do |field|
+    %w(editor subject city country authors tags title).each do |field|
       get "typeahead_#{field}", :on => :collection
     end  
     
@@ -23,8 +23,9 @@ Terralivre::Application.routes.draw do
   resources :users, :path => '', :except => [:show, :index, :new]
   resources :users, :path => '', :only => [] do
     resources :backups, :only => [:index, :create] do
-      post "recover", :on => :member
-      post "upload", :on => :collection
+      post :recover, :on => :member
+      post :upload, :on => :collection
+      get :download, :on => :member
     end 
     resources :books, :path => ''
   end

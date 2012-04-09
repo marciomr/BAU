@@ -40,8 +40,17 @@ class ApplicationController < ActionController::Base
   def restricted_to(users)
     users = [users] if !users.kind_of?(Array)
     
-    if !guest? && users.include?(current_user)
-      yield
+    users.each do |user|
+      if !guest? && user.try(:id) == current_user.id
+        yield
+      end
     end
+  end
+  
+  def call_rake(ns, task, options = {})
+    options[:rails_env] = Rails.env
+    args = options.map{ |n, v| "#{n.to_s.upcase}='#{v}'" }
+    # should put the complete path for rake
+    system "rake #{ns}:#{task} #{args.join(' ')} --trace >> #{Rails.root}/log/rake.log &" 
   end
 end

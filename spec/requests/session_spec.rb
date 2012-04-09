@@ -69,7 +69,7 @@ feature "Login and logout", %q{
   end
 end
 
-feature "Access Restriction", %q{
+feature "Access Restriction for guests", %q{
   The guest access should be restricted
 } do
 
@@ -127,5 +127,80 @@ feature "Access Restriction", %q{
    
     current_path.should == edit_user_path(user)
   end
+  
+  scenario "don't see book edit link in index" do
+    book = create(:book, :user => @user)
+    
+    visit user_book_path(@user, book)
+    
+    page.should_not have_content "Editar"
+  end    
+    
+  scenario "don't see book edit link in show" do
+    book = create(:book, :user => @user)
+    
+    visit user_book_path(@user, book)
+    
+    page.should_not have_content "Editar"
+  end    
+
+  scenario "don't see delete book link" do
+    user = create(:user)
+    create(:book, :user => user)
+    
+    visit books_path
+    
+    page.should_not have_content "Deletar"
+  end 
+  
+end
+
+feature "Access Restriction for logged users", %q{
+  The guest access should be restricted
+} do
+  
+  background do
+    create(:admin)
+    @user = create(:user)
+    login(@user)
+  end
+  
+  scenario "don't see other user's book edit link in index" do
+    user = create(:user)
+    book = create(:book, :user => user)
+    
+    @user.admin?.should be_false
+    visit user_book_path(user, book)
+   
+    page.should_not have_content "Editar"
+  end    
+  
+  scenario "don't see other's book edit link in show" do
+    user = create(:user)
+    book = create(:book, :user => user)
+    
+    visit user_book_path(user, book)
+    
+    page.should_not have_content "Editar"
+  end    
+  
+  scenario "don't see other user's book delete link in index" do
+    user = create(:user)
+    book = create(:book, :user => user)
+    
+    @user.admin?.should be_false
+    visit user_book_path(user, book)
+   
+    page.should_not have_content "Deletar"
+  end    
+  
+  scenario "don't see other's book delete link in show" do
+    user = create(:user)
+    book = create(:book, :user => user)
+    
+    visit user_book_path(user, book)
+    
+    page.should_not have_content "Deletar"
+  end    
   
 end

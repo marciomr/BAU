@@ -1,40 +1,22 @@
 <fieldset>
   <br/>
   <legend>Busca Avançada</legend>
-  <%= form_tag books_path, :method => :get, :id => 'advanced_search' do %>
-    <div class="control-group">
-      Título 
-      <div class="controls">
-      <%= text_field_tag :title_filter, params[:title_filter] %>
-      </div>
-    </div>
-    <div class="control-group">
-      Autor 
-      <div class="controls">
-      <%= text_field_tag :author_filter, params[:author_filter] %>
-      </div>
-    </div>
-    <div class="control-group">
-      Editor 
-      <div class="controls">
-      <%= text_field_tag :editor_filter, params[:editor_filter] %>
-      </div>
-    </div>
-    <div class="control-group">
-      Língua
-      <div class="controls">
-      <%= select "language_filter", "", Book.languages, {:include_blank => true} %> 
-      </div>
-    </div>
-    <div class="control-group">
-      PDF 
-      <div class="controls">
-      <%= check_box_tag :pdf_filter %>
-      </div>
-    </div>
+  <%= form_tag (@user ? user_books_path(@user) : books_path), :method => :get, :id => 'advanced_search' do %>
+    <%= hidden_field_tag :search, params[:search] %>
+    <%= twitter_bootstrap_text_field_tag :title_filter, 'Título', params %>
+    <%= twitter_bootstrap_text_field_tag :author_filter, 'Autor', params %>
     
-    <div class="form-actions">
-      <%= submit_tag "Busca", :class => 'btn btn-primary'%>
-    </div>  
+    <% if !params[:user_id] %>
+      <%= twitter_bootstrap_select :user_filter, 'Biblioteca', User.names %>
+    <% end %>
+
+    <%= twitter_bootstrap_text_field_tag :editor_filter, 'Editor', params %>
+    <%= twitter_bootstrap_select :language_filter, 'Língua', Book.languages %>
+
+    <%= twitter_bootstrap_text_field_tag :subject_filter, 'Assuntos', params %>
+    <%= twitter_bootstrap_text_field_tag :tag_filter, 'Palavra Chave', params %>
+    <%= twitter_bootstrap_check_box_tag :pdf_filter, 'PDF' %>
+
+    <%= twitter_bootstrap_submit_tag 'Busca'%>
   <% end %>
 </fieldset>  

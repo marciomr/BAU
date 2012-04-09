@@ -4,22 +4,10 @@
   <fieldset>
     <legend>Login</legend>
       <div class="modal-body">
-        <div class="control-group">
-          <%= label_tag :username, "Usuário" %>
-          <div class="controls">
-            <%= text_field_tag :username, params[:username], :class => 'text_field' %>
-          </div>
-        </div>
-        <div class="control-group">
-          <%= label_tag :password, "Senha" %>
-          <div class="controls">
-            <%= password_field_tag :password, params[:username], :class => 'password_field' %>
-          </div>
-        </div>
+        <%= twitter_bootstrap_text_field_tag(:username, 'Usuário', params) %>
+        <%= twitter_bootstrap_password_field_tag(:password, 'Senha', params) %>
       </div>
-      <div class="form-actions modal-footer">
-        <%= submit_tag "Entrar", :class => 'btn btn-primary', :id => 'login-button' %>
-      </div>
+      
+      <%= twitter_bootstrap_submit_tag 'Entrar', :class => 'modal-footer', :id => 'login-button' %>
   </fieldset>
 <% end %>
-

@@ -10,27 +10,28 @@ gem 'rails', '3.1.0'
 
 gem 'jquery-rails'
 gem 'mysql2'
-gem 'thinking-sphinx' # queria aposentar esse
-gem 'kaminari'
-#gem 'cancan'          # vou aposentar esse
-gem 'nokogiri'        # esse vou aposentar na proxima versao
+gem 'thinking-sphinx' # full text search
+gem 'kaminari'        # pagination
+gem 'nokogiri'        # xml parser
 gem 'friendly_id'
 gem 'rack-pjax'
 
 gem 'rspec-rails', :group => [:development, :test]
 gem 'factory_girl_rails', :group => [:development, :test]
+gem 'guard-livereload', :group => [:development, :test]
+gem 'rack-livereload', :group => [:development, :test]
 
 group :assets do
   gem 'sass-rails', "  ~> 3.1.0"
   gem 'coffee-rails', "  ~> 3.1.0"
   gem 'uglifier'
+  
   # using my version of bootstrap because of the autocompletion
   gem 'twitter-bootstrap-rails', :git => 'git://github.com/marciomr/twitter-bootstrap-rails.git'
 end
 
 group :test do
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
-  gem 'launchy'
   gem 'database_cleaner'
   gem 'rb-inotify'
   gem 'libnotify'
@@ -39,6 +40,7 @@ group :test do
   gem 'fakeweb'
   gem 'spork'
   gem 'guard-spork'
+  gem 'headless'
 end
 
 # Use unicorn as the web server

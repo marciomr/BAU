@@ -45,8 +45,8 @@ feature "Manage books as logged user without js", %q{
     visit new_user_book_path(@user)
 
     lambda do
-      fill_in "Título", :with => 'Title'
-      fill_in "PDF", :with => 'wrong link'
+      fill_in "book[title]", :with => 'Title'
+      fill_in "book[pdflink]", :with => 'wrong link'
       click_button 'Salvar'
     end.should_not change(Book, :count)
       
@@ -57,10 +57,10 @@ feature "Manage books as logged user without js", %q{
     faweb_register_book('gbook-empty.xml', '1234567890')
     visit new_user_book_path(@user)
     
-    fill_in "ISBN", :with => 1234567890
+    fill_in "isbn", :with => 1234567890
     click_button "Preencher"
     
-    fill_in "Título", :with => "Título"
+    fill_in "book[title]", :with => "Título"
     click_button "Salvar"
 
     page.should have_content("1234567890")
@@ -74,8 +74,8 @@ feature "Manage books as logged user without js", %q{
     find(:field, 'book_title').value.should have_content(book.title)
     find(:css, '.book_authors').value.should have_content(author.name)
     # seria bom testar se os autores aparecem
-    fill_in "ISBN", :with => 123
-    fill_in "Título", :with => "A Conquista do Pão"
+    fill_in "book[isbn]", :with => 123
+    fill_in "book[title]", :with => "A Conquista do Pão"
       
     click_button "Salvar"
     
@@ -86,7 +86,6 @@ feature "Manage books as logged user without js", %q{
     page.should have_content("123")
   end  
 
-  # esse deveria estar no view test    
   scenario "see own book edit link in index" do
     book = create(:book, :user => @user)
       
@@ -98,7 +97,6 @@ feature "Manage books as logged user without js", %q{
     current_path.should == edit_user_book_path(book.user, book)
   end  
   
-  # esse deveria estar no view test  
   scenario "see own book edit link in show" do
     book = create(:book, :user => @user)
     
@@ -110,26 +108,7 @@ feature "Manage books as logged user without js", %q{
     current_path.should == edit_user_book_path(@user, book)
   end  
   
-  # esse deveria estar no view test  
-  scenario "don't see other user's book edit link in index" do
-    user = create(:user)
-    book = create(:book, :user => user)
-    
-    @user.admin?.should be_false
-    visit user_book_path(user, book)
-   
-    page.should_not have_content "Editar"
-  end    
   
-  # esse deveria estar no view test  
-  scenario "don't see other's book edit link in show" do
-    user = create(:user)
-    book = create(:book, :user => user)
-    
-    visit user_book_path(user, book)
-    
-    page.should_not have_content "Editar"
-  end    
     
   scenario "delete own book in index" do
     create(:book, :user => @user)
@@ -172,7 +151,7 @@ feature "Manage Books as Admin", %q{
     visit new_user_book_path(user)
     
     lambda do
-      fill_in 'Título', :with => "Título"
+      fill_in 'book[title]', :with => "Título"
       click_button "Salvar"
     end.should change(user.books, :count).by(1)   
     
@@ -195,7 +174,7 @@ feature "Manage Books as Admin", %q{
     find(:field, 'book_title').value.should have_content(book.title)
     find(:css, '.book_authors').value.should have_content(author.name)
     
-    fill_in "Título", :with => "A Conquista do Pão"
+    fill_in "book[title]", :with => "A Conquista do Pão"
       
     click_button "Salvar"
     page.should have_flash_notice
@@ -224,45 +203,6 @@ feature "Manage Books as Admin", %q{
     
     page.should have_flash_notice
   end  
-end
-
-feature "Manage books as guest", %q{
-  As an guest
-  I want not to be allowed to manage any book
-} do
-
-  background do
-    create(:admin)
-    @user = create(:user)
-  end
-
-  # deveria testar no view
-  scenario "don't see book edit link in index" do
-    book = create(:book, :user => @user)
-    
-    visit user_book_path(@user, book)
-    
-    page.should_not have_content "Editar"
-  end    
-    
-  # deveria testar no view  
-  scenario "don't see book edit link in show" do
-    book = create(:book, :user => @user)
-    
-    visit user_book_path(@user, book)
-    
-    page.should_not have_content "Editar"
-  end    
-
-  # deveria testar no view
-  scenario "don't see delete book link" do
-    user = create(:user)
-    create(:book, :user => user)
-    
-    visit books_path
-    
-    page.should_not have_content "Deletar"
-  end    
 end
 
 feature "Display Books", %q{
@@ -312,6 +252,117 @@ feature "Display Books", %q{
     
     page.should_not have_content(@book.title)
   end
+  
 end
 
+feature "Manage books as logged user with js", %q{
+  As an logged user
+  I want to create and manage my books
+} do
+  
+  background do
+    create(:admin)
+    @user = create(:user)
+    login(@user)
+  end
 
+  scenario "create a book with all atributes as admin", :js do
+    visit new_user_book_path(@user)
+    
+    book = build(:book)
+    author = create(:author)
+    
+    fields = %w(title subtitle year page_number description editor)
+    fields += %w(subject language volume city country pdflink imglink cdd)
+    fields.each do |f|
+      fill_in "book[#{f}]", :with =>book.send(f)
+    end
+
+    fill_in "ISBN", :with => book.isbn
+    fill_in "Autor", :with => author.name
+    
+    lambda do
+      click_button "Salvar"
+    end.should change(@user.books, :count).by(1)
+            
+    page.should have_flash_notice
+    
+    (fields - %w(pdflink imglink)).each do |f|
+      page.should have_content(book.send(f))
+    end  
+    page.should have_content(author.name) 
+    page.should have_link_to(book.pdflink)
+    page.should have_img(book.imglink)
+  end
+  
+  scenario "accept delete in index", :js do
+    create(:book, :user => @user)
+    
+    visit books_path
+    
+    lambda do    
+      accept_js_confirm do
+        click_link "Deletar"
+      end
+    end.should change(Book, :count).by(-1)
+    page.should have_flash_notice
+  end
+    
+  scenario "reject delete in index", :js do
+    create(:book, :user => @user)
+    
+    visit books_path
+
+    lambda do    
+      reject_js_confirm do
+        click_link "Deletar"
+      end
+    end.should_not change(Book, :count)
+  end
+
+  scenario "accept delete in show", :js do
+    book = create(:book, :user => @user)
+    
+    visit user_book_path(@user, book)
+    
+    lambda do    
+      accept_js_confirm do
+        click_link "Deletar"
+      end
+    end.should change(Book, :count).by(-1)
+    page.should have_flash_notice
+  end
+    
+  scenario "reject delete in show", :js do
+    book = create(:book, :user => @user)
+    
+    visit user_book_path(@user, book)
+
+    lambda do    
+      reject_js_confirm do
+        click_link "Deletar"
+      end
+    end.should_not change(Book, :count)
+  end
+    
+  scenario "add tag", :js do
+    visit new_user_book_path(@user)
+
+    authors_input_numbers_before_click = all(:css, '.book_tags').count
+
+    click_link 'Adicionar palavra chave'
+    
+    (all(:css, '.book_tags').count - authors_input_numbers_before_click).should == 1
+  end 
+    
+  scenario "add author", :js do
+    visit new_user_book_path(@user)
+
+    authors_input_numbers_before_click = all(:css, '.book_authors').count
+
+    click_link 'Adicionar autor'
+    
+    (all(:css, '.book_authors').count - authors_input_numbers_before_click).should == 1
+  end
+  
+end

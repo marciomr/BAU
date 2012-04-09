@@ -62,13 +62,32 @@ Spork.prefork do
     config.after(:each) do
       DatabaseCleaner.clean
     end
-  
+    
     config.include(CustomMatcher)
   end
 end
 
 Spork.each_run do
+  require 'headless'
+  
+  headless = Headless.new
+  
   FactoryGirl.reload
+  
+  RSpec.configure do |config|
+    config.before(:each) do
+      headless.start if Capybara.current_driver == :selenium
+    end
+
+    config.after(:each) do
+      headless.stop if Capybara.current_driver == :selenium
+    end
+
+    config.after(:suite) do
+      headless.destroy
+    end
+  end
+
 end
 
 # queria que isso fosse mais rapido

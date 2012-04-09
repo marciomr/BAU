@@ -1,122 +1,64 @@
 <% title @book.title %>
 
-<% if !@book.imglink.blank? %>
-  <div id="capa">
-    <img id="imgcapa" src=<%= @book.imglink %> /> 
+<% present @book do |book_presenter| %>
+   <h1 class='book-title'>
+    <%= @book.title %>
+   </h1>
+
+   <% if @book.subtitle? %>
+    <h2 class='book-subtitle'>
+      <%= @book.subtitle %>
+    </h2>
+   <% end %>
+
+   <% if @book.imglink? %>
+    <div id='capa'>
+      <img id='imgcapa' width='150px' src=<%= @book.imglink %> > 
+    </div>
+   <% end %>
+
+
+  <%= book_presenter.field :tombo %>
+  <%= book_presenter.field :volume %>
+  
+  <%= book_presenter.authors %>
+  
+  <%= book_presenter.link_field :editor %>
+  <%= book_presenter.field :isbn, 'ISBN' %>
+  <%= book_presenter.field :year, 'Ano' %>
+  <%= book_presenter.field :language, 'Língua' %>
+  <%= book_presenter.field :page_number, 'Páginas' %>
+  <%= book_presenter.link_field :subject, 'Assunto' %>
+  <%= book_presenter.field :city, 'Cidade' %>
+  <%= book_presenter.field :country, 'País' %>
+  <%= book_presenter.field :cdd, 'CDD' %>  
+
+  <% if @book.pdflink? %>
+    <%= link_to 'PDF', @book.pdflink %>
+  <% end %>
+
+  <%= book_presenter.tags %>
+  
+  <%= book_presenter.field :description, "Descrição" %>
+
+  <div class="form-actions">
+    <% if params %>
+      <% params.delete(:book) %>
+      <% params.delete(:user) %>
+      <% params.delete(:_pjax) %>
+    <% end %>
+    
+    <% if @books %>
+      <% if params[:user_id] %>
+        <% params.delete(:user_id) %>
+        <%= btn 'Busca Avançada', user_books_path(@user, params) %>
+      <% else %>
+        <%= btn 'Busca Avançada', root_path(params) %>
+      <% end %>
+    <% end %>
+    <% restricted_to([@user, admin]) do %>
+      <%= btn 'Editar', edit_user_book_path(@book.user, @book) %>
+      <%= btn_danger 'Deletar', user_book_path(@book.user, @book) %>
+    <% end %>
   </div>
 <% end %>
-
-<p>
-  <strong>Acervo:</strong>
-  <%=h @book.user.name %>
-</p>
-<p>
-  <strong>Tombo:</strong>
-  <%=h @book.tombo %>
-</p>
-<p>
-<strong>Título:</strong>
-  <%=h @book.title %>
-</p>
-<% if !@book.subtitle.blank? %>
-  <p>
-    <strong>Subtítulo:</strong>
-    <%=h @book.subtitle %>
-  </p>
-<% end %>
-
-<% if @book.volume && @book.volume > 0%>
-  <strong>Volume:</strong>
-  <%=h @book.volume %>
-<% end %>
-
-<% for author in @book.authors %>
-  <p>
-    <strong>Autor:</strong>
-    <%=h author.name %>
-  </p>
-<% end %>
-<p>
-  <strong>Editor:</strong>
-  <%=h @book.editor %>
-</p>
-
-<% if !@book.isbn.blank? %>
-  <p>
-    <strong>ISBN:</strong>
-    <%=h @book.isbn %>
-  </p>
-<% end %>
-
-<% if @book.year && @book.year > 0 %>
-  <p>
-    <strong>Ano:</strong>
-    <%=h @book.year %>
-  </p>
-<% end %>
-
-<p>
-  <strong>Língua:</strong>
-  <%=h @book.language %>
-</p>
-<% if @book.page_number && @book.page_number != 0 %> 
-  <p>
-    <strong>Páginas:</strong>
-    <%=h @book.page_number %>
-  </p>
-<% end %>
-<p>
-  <strong>Assunto:</strong>
-  <%=h @book.subject %>
-</p>
-<p>
-  <strong>Acervo:</strong>
-  <%=h @book.collection %>
-</p>
-
-<% if !@book.city.blank? %>
-  <p>
-    <strong>Cidade:</strong>
-    <%=h @book.city %>
-  </p>
-<% end %>
-
-<% if !@book.country.blank? %>
-  <p>
-    <strong>País:</strong>
-    <%=h @book.country %>
-  </p>
-<% end %>
-
-<% if !@book.cdd.blank? %>
-  <p>
-    <strong>CDD:</strong>
-    <%=h @book.cdd %>
-  </p>
-<% end %>
-
-<% if !@book.pdflink.blank? %>
-  <p>
-    <%= link_to "PDF", @book.pdflink %>
-  <p>
-<% end %>
-
-<p>
-  <strong>Palavras Chave:</strong>
-  <%=h @book.tags_titles %>
-</p>
-
-  <strong>Descrição:</strong><br/>
-  <%=h @book.description %>
-</p>
-
-<div class="form-actions">
-  <% params.delete(:book) %>
-  <% params.delete(:user) %>
-  <%= link_to 'Voltar', params, :class => 'btn'  %>
-
-  <% restricted_to([@user, admin]) do %>
-    <%= link_to 'Editar', edit_user_book_path(@book.user, @book), :class => 'btn' %>
-    <%= link_to 'Deletar', user_book_path(@book.user, @book), :method => 'delete', :confirm => 'Tem certeza?', :class => 'btn btn-danger' %>
-  <% end %>
-</div>

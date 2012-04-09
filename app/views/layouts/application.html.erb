@@ -4,7 +4,11 @@
     <meta charset="utf-8">
     <title><%= content_for?(:title) ? yield(:title) : "Bibliotecas Autônomas Unificadas" %></title>
     <%= csrf_meta_tags %>
-
+    <% if @user %>
+      <%= auto_discovery_link_tag :rss, user_books_url(@user, :rss) %>
+    <% else %>
+      <%= auto_discovery_link_tag :rss, books_url(:rss) %>
+    <% end %>
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
@@ -21,13 +25,12 @@
     <link href="images/favicon.ico" rel="shortcut icon">
   </head>
   <body>
-  
-  <div class="modal fade" id="login-modal">
-    <div class="modal-header">
-      <a class="close" data-dismiss="modal">×</a>
+    <div class="modal fade" id="login-modal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+      </div>
+      <%= render :template => 'sessions/new' %>
     </div>
-    <%= render :template => 'sessions/new' %>
-  </div>
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -58,18 +61,17 @@
               <% else %>
                 <li><%= link_to "Apresentação", user_path(admin) %></li>
               <% end %>
-              <li data-no-collapse='true'>
-              <% if @user && !@user.new_record? %>
-                <%= form_tag user_books_path(@user), :method => :get, :class => "navbar-search" do %>
-                  <%= text_field_tag :search, params[:search], :class => 'search-query', :placeholder => 'Busca', :id => 'simple_search' %>
-                  <%= submit_tag "Busca", :id => "search_button", :type => 'hidden' %>
-                <% end %>
-              <% else %>
-                <%= form_tag books_path, :method => :get, :class => "navbar-search pull-left", :id => 'simple_search' do %>
+              <% if current_user && !admin? %>
+                <li><%= link_to "Backups", user_backups_path(current_user) %></li>  
+              <% end %>
+              <% if admin? %>
+                <li><%= link_to 'Administrar bibliotecas', users_path %></li>
+              <% end %>
+              <li>
+                <%= form_tag (@user ? user_books_path(@user) : books_path), :method => :get, :class => "navbar-search pull-left" do %>
                   <%= text_field_tag :search, params[:search], :class => 'search-query', :placeholder => 'Busca' %>
-                  <%= submit_tag "Busca", :id => "search_button", :type => 'hidden' %>
+                  <%= submit_tag "Busca", :id => "search_button", :type => 'hidden', :name => nil %>
                 <% end %> 
-              <% end %>  
               </li>  
             </ul>
             <ul class="nav pull-right">
@@ -77,7 +79,6 @@
                 <li><%= link_to "Logout", logout_path %></li>
               <% else %>
                 <li><a data-toggle="modal" href="#login-modal">Login</a></li>   
-                <!--<li><%#= link_to "Login", login_path %></li>-->
               <% end %>
             </ul>
           </div><!--/.nav-collapse -->
@@ -94,6 +95,8 @@
                 <div class="alert alert-error fade in">
               <% elsif name == :notice %>
                 <div class="alert alert-success fade in">
+              <% elsif name == :info %>
+                <div class="alert alert-info fade in">
               <% end %>
                 <a class="close" data-dismiss="alert">&times;</a>
                   <%= msg %>

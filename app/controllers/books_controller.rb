@@ -3,7 +3,7 @@
 class BooksController < ApplicationController
   protect_from_forgery :only => [:create, :update, :destroy]
   
-  %w(editor subject city country).each do |field| 
+  %w(editor subject city country title).each do |field| 
     define_method "typeahead_#{field}" do
       @books = Book.order(field.to_sym).where("#{field} like ?", "%#{params[:query]}%")
       render :json => @books.map(&(field.to_sym)).uniq
@@ -31,11 +31,7 @@ class BooksController < ApplicationController
       
       format.html do
         @adv_search = params[:adv_search] if params[:adv_search]
-         
-        if params[:book] && params[:user]
-          user = User.find_by_username(params[:user])  
-          @book = user.books.find_by_tombo(params[:book])
-        end         
+
         @books = Book.search params[:search], 
                   :star => true,       # Automatic Wildcard
                   :field_weights => {  # Order of relevance
@@ -47,13 +43,12 @@ class BooksController < ApplicationController
                     },
                   :include => :authors,
                   :include => :tags,
-                  :page => params[:page], 
-                  :per_page => APP_CONFIG['per_page']
+                  :page => params[:page]
         
         @books.order_by_relevance_title          
    
         # scopes    
-        ['title', 'author', 'editor'].each do |field|
+        %w(title author editor subject tag).each do |field|
           if !params["#{field}_filter"].blank? 
             @books.send("by_#{field}", params["#{field}_filter"]) 
           end
@@ -61,11 +56,20 @@ class BooksController < ApplicationController
 
         @books.by_language(params[:language_filter]) if params[:language_filter] && !params[:language_filter].first.blank?
         @books.with_pdflink if !params[:pdf_filter].blank?
-        if params[:user_id]
-          @user = User.find_by_username(params[:user_id])
-          @books.with_user_id(@user.id) 
-        end      
-        @total = @books.total_entries
+        
+        username = params[:user_filter].first if params[:user_filter] && !params[:user_filter].first.blank?
+        username = params[:user_id] if params[:user_id]
+        
+        if username
+          @user = User.find_by_username(username)
+          @books.with_user_id(@user.id)
+        end
+        
+        
+        @user = User.find_by_username(params[:user]) if params[:user]
+        @book = @user.books.find_by_tombo(params[:book]) if params[:book]
+        
+        flash.now[:info] = "#{@books.total_entries} livros encontrados"
       end
 
       format.rss do 
@@ -75,7 +79,7 @@ class BooksController < ApplicationController
         if params[:user_id]
           @user = User.find_by_username(params[:user_id])
           @books.with_user_id(@user.id) 
-        end
+        end  
       end
       
       format.xml do 
