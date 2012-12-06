@@ -45,7 +45,7 @@ describe Book do
     it "should get concatenated #{v} of #{k}" do
       values = [create(k.singular.to_sym, v.to_sym => 'First'), 
                 create(k.singular.to_sym, v.to_sym => 'Second')]
-      book = Factory(:book, k.to_sym => values)
+      book = create(:book, k.to_sym => values)
 
       (book.send "#{k}_#{v}s").should == "First, Second"
     end

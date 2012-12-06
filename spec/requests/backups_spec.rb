@@ -12,13 +12,14 @@ feature "Manage backups", %q{
   end
 
   scenario "create a backup" do
-    user = create(:user)
-    login(user)
-    
-    visit user_backups_path(user)
-    click_link 'Criar Backup'
+#    user = create(:user)
+#    login(user)
+#    
+#    visit user_backups_path(user)
+#    click_link 'Criar Backup'
 
-    page.should have_flash_notice
+#    page.should have_flash_notice
+    pending 
   end
   
   scenario "recover a backup" do

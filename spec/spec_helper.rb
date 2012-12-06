@@ -14,38 +14,21 @@ Spork.prefork do
   require 'thinking_sphinx/test'
   require 'open-uri'
 
-  #Dir[Rails.root.join("test/factories/*")].each {|f| require f}
-  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-
   require File.dirname(__FILE__) + "/custom_matchers"
   
 
   #FakeWeb.allow_net_connect = false
 
   RSpec.configure do |config|
-    # == Mock Framework
-    #
-    # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-    #
     config.mock_with :mocha
-    # config.mock_with :flexmock
-    # config.mock_with :rr
-    # config.mock_with :rspec
-
-    # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-    config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
     config.treat_symbols_as_metadata_keys_with_true_values = true
 
     config.filter_run :focus => true
     config.run_all_when_everything_filtered = true
     config.color_enabled = true
-    # If you're not using ActiveRecord, or you'd prefer not to run each of your
-    # examples within a transaction, remove the following line or assign false
-    # instead of true.
-    #config.use_transactional_fixtures = false
 
-    config.include Factory::Syntax::Methods
+    config.include FactoryGirl::Syntax::Methods
     
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation

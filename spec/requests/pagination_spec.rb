@@ -15,11 +15,11 @@ feature "Pagination", %q{
     41.times{ create(:book) }
     visit books_path
     
-    page.should have_content "Next"
+    page.should have_content "Próxima"
     [1..3].each{ |n| page.should have_link "#{1}"}
     
-    click_link "Next"
-    page.should have_content "Next"
+    click_link "Próxima"
+    page.should have_content "Próxima"
     [1..3].each{ |n| page.should have_link "#{1}"}
   end
 
@@ -27,7 +27,7 @@ feature "Pagination", %q{
     create(:book)
     visit books_path
     
-    page.should have_no_content "Next"
+    page.should have_no_content "Próxima"
   end
   
 end

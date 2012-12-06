@@ -15,9 +15,11 @@ class User < ActiveRecord::Base
   validates_format_of :username, :with => /^[\w\d_]+$/, :message => "Formato inválido para nome do Usuário."
   validates_exclusion_of :username, :in => %w(users books new edit signup login logout), :message => "Nome reservado."
 
-  before_save do |user| 
-    path = "public/backups/#{username}"
-    Dir::mkdir(path) if !FileTest::directory?(path)
+  before_save do 
+    if !admin?
+      path = "#{Backup.folder(username)}"
+      Dir::mkdir(path) if !FileTest::directory?(path)
+    end
   end
   
   def admin?

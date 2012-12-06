@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title><%= content_for?(:title) ? yield(:title) : "Bibliotecas Autônomas Unificadas" %></title>
     <%= csrf_meta_tags %>
-    <% if @user %>
+    <% if @user && !@user.new_record? %>
       <%= auto_discovery_link_tag :rss, user_books_url(@user, :rss) %>
     <% else %>
       <%= auto_discovery_link_tag :rss, books_url(:rss) %>
@@ -68,7 +68,7 @@
                 <li><%= link_to 'Administrar bibliotecas', users_path %></li>
               <% end %>
               <li>
-                <%= form_tag (@user ? user_books_path(@user) : books_path), :method => :get, :class => "navbar-search pull-left" do %>
+                <%= form_tag (@user && !@user.new_record? ? user_books_path(@user) : books_path), :method => :get, :class => "navbar-search pull-left", :id => 'simple_search' do %>
                   <%= text_field_tag :search, params[:search], :class => 'search-query', :placeholder => 'Busca' %>
                   <%= submit_tag "Busca", :id => "search_button", :type => 'hidden', :name => nil %>
                 <% end %> 

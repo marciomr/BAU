@@ -1,30 +1,30 @@
 require 'vendor/plugins/thinking-sphinx/recipes/thinking_sphinx'
 
-set :application, "Terra-Livre"
-set :repository,  "git://github.com/marciomr/Terra-Livre.git"
+set :application, "BAU"
+set :repository,  "git://github.com/marciomr/BAU.git"
 
 set :scm, :git
 
-set :user, "bibliotecaterralivre"
+set :user, "bau"
 set :use_sudo, false
 
-set :deploy_to, "/var/sites/bibliotecaterralivre/rails"
+set :deploy_to, "/var/sites/bau/rails"
 set :deploy_via, :remote_cache
 
 set :default_environment, {
-  'PATH' => "#{deploy_to}/.rvm/gems/ruby-1.8.7-p302/bin:~/.rvm/bin:$PATH",
-  'RUBY_VERSION' => 'ruby 1.8.7',
-  'GEM_HOME'     => "#{deploy_to}/.rvm/gems/ruby-1.8.7-p302",
-  'GEM_PATH'     => "#{deploy_to}/.rvm/gems/ruby-1.8.7-p302",
+  'PATH' => "#{deploy_to}/.rvm/gems/ruby-1.9.2-p318/bin:~/.rvm/bin:$PATH",
+  'RUBY_VERSION' => 'ruby 1.9.2',
+  'GEM_HOME'     => "#{deploy_to}/.rvm/gems/ruby-1.9.2-p318",
+  'GEM_PATH'     => "#{deploy_to}/.rvm/gems/ruby-1.9.2-p318",
 }
 
-server "clarice.sarava.org", :app, :web, :db, :primary => true
-set :port, 2206
+server "coisaboa.sarava.org", :app, :web, :db, :primary => true
+set :port, 2204
 
 namespace :gems do
   desc "Install gems."
   task :install do
-    run "cd #{deploy_to}/current; RAILS_ENV=production rake gems:install"
+    run "cd #{deploy_to}/current; RAILS_ENV=production bundle"
   end
 end
 
@@ -61,28 +61,28 @@ task :watch_logs, :roles => :app do
   end
 end
 
-namespace :backup do
-  desc "Save a copy of rss file in the server."
-  task :remote do
-    run "cd #{current_path}; RAILS_ENV=production rake backup:save"
-  end
-  desc "Backup locally the backups folder."
-  task :local do
-    run "tar -cvf #{current_path}/tmp/backups.tar #{deploy_to}/backups"
-    run "gzip #{current_path}/tmp/backups.tar"
-    get "#{current_path}/tmp/backups.tar.gz", "/home/marciomr/Documentos/Terra-Livre/backups.tar.gz" 
-    run "rm -f #{current_path}/tmp/backups.tar.gz"
-  end
-  desc "Recover the last rss file."
-  task :rollback do
-    run "cd #{current_path}; RAILS_ENV=production rake backup:rollback"
-  end
-  task :last do
-    run "cd #{current_path}; RAILS_ENV=production rake backup:show_last" do |channel, stream, data|
-      puts data
-    end
-  end
-end
+#namespace :backup do
+#  desc "Save a copy of rss file in the server."
+#  task :remote do
+#    run "cd #{current_path}; RAILS_ENV=production rake backup:save"
+#  end
+#  desc "Backup locally the backups folder."
+#  task :local do
+#    run "tar -cvf #{current_path}/tmp/backups.tar #{deploy_to}/backups"
+#    run "gzip #{current_path}/tmp/backups.tar"
+#    get "#{current_path}/tmp/backups.tar.gz", "/home/marciomr/Documentos/Terra-Livre/backups.tar.gz" 
+#    run "rm -f #{current_path}/tmp/backups.tar.gz"
+#  end
+#  desc "Recover the last rss file."
+#  task :rollback do
+#    run "cd #{current_path}; RAILS_ENV=production rake backup:rollback"
+#  end
+#  task :last do
+#    run "cd #{current_path}; RAILS_ENV=production rake backup:show_last" do |channel, stream, data|
+#      puts data
+#    end
+#  end
+#end
 
 before "deploy:update_code", "thinking_sphinx:stop"
 
