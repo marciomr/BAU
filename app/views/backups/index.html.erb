@@ -1,0 +1,29 @@
+<% title "Backups" %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Backups</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @backups.each do |backup| %>
+      <tr>
+        <td><%= link_to backup.date.strftime("%d/%m/%Y %T"), backup.path %></td>
+        <td>
+          <%= btn_mini_danger "recuperar", recover_user_backup_path(@user, backup.file.split('.')[0]), :method => :post, :confirm => 'Esta ação irá destruir todos os seus dados. Você tem certeza que quer continuar?' %>
+          <%= btn_mini "baixar", download_user_backup_path(@user, backup.file.split('.')[0]) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= form_tag({:action => :upload}, :multipart => true) do %>
+  <label for="upload_file">Importar backup</label>
+  <%= file_field 'upload', 'datafile' %>
+  <%= submit_tag "Upload" %>
+<% end %>
+
+<%= btn_primary 'Criar Backup', user_backups_path(@user), :method => :post %>

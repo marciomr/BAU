@@ -1,0 +1,79 @@
+// This is a manifest file that'll be compiled into including all the files listed below.
+// Add new JavaScript/Coffee code in separate files in this directory and they'll automatically
+// be included in the compiled file accessible from http://example.com/assets/application.js
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// the compiled file.
+//
+//= require jquery
+//= require jquery_ujs
+//= require jquery-ui
+//= require jquery.pjax
+//= require twitter/bootstrap
+//= require_tree .
+
+$(function () {
+    // fill isbn hidden field when isbn loose focus
+    $('#isbn').focusout(function(){
+        $('#book_isbn').val($(this).val());
+    });
+    
+    $('#dropdown-menu-bibliotecas').attr('href', '#');
+
+    // form autocomplete
+    <% %w(editor subject city country).each do |field| %>
+      typeahead('#book_<%= field %>', '/books/typeahead_<%= field %>');
+    <% end %>
+
+    // search autocomplete
+    <% %w(title editor subject).each do |field| %>
+      typeahead('#<%= field %>_filter', '/books/typeahead_<%= field %>');
+    <% end %>
+    
+    <% %w(author tag).each do |field| %>
+      typeahead('#<%= field %>_filter', '/books/typeahead_<%= field %>s');
+      typeahead('.book_<%= field %>s', '/books/typeahead_<%= field %>s');
+    <% end %>
+    
+//    $('#nav-collapse').toggleClass('collapse');
+    
+    // display modal when login-button is pressed if js enabled
+    $('#login-button').on('click', function(e){
+      $('#login-modal').modal('hide');
+    });
+    
+    // display book details using ajax if js enabled
+    $('.book-title').pjax('[data-pjax-container]');
+});  
+
+function typeahead(selector, url){
+  $(selector).typeahead({
+      source: function (typeahead, query) {
+          return $.get(url, { query: query }, function (data) {
+              return typeahead.process(data);
+          });
+      }
+  });
+  // disable default browser autocomplete
+  $(selector).attr('autocomplete', 'off');
+}
+
+function remove_fields(link) {  
+    // slide up effect
+    $(link).prev("input[type=hidden]").val("1");  
+    $(link).closest(".control-group").slideUp();  
+}  
+  
+function add_fields(link, association, content, field) {  
+    // uniq identifier
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+
+    // slide down effect    
+    var element = $('#book_'+association+'_attributes_'+new_id+'_'+field).parent().parent();
+    element.hide();
+    element.slideDown();
+ 
+    // autocomplete    
+    typeahead('.book_' + association, '/books/typeahead_' + association);
+}

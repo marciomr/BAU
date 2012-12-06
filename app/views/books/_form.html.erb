@@ -1,0 +1,41 @@
+<%= twitter_bootstrap_form_for [@user, @book] do |builder| %>
+  <div class="row-fluid">
+    <div class="span6">
+      <br/>
+      <% if params[:action] == 'new' %>
+        <span id="isbn">
+          <%= builder.hidden_field :isbn %>
+        </span>
+      <% else %>
+        <%= builder.text_field :isbn, 'ISBN' %>
+      <% end %>
+      
+      <%= builder.text_field :title, 'Título' %>
+      <%= builder.text_field :subtitle, 'Sub-Título' %>
+      <%= builder.number_field :volume, 'Volume' %>
+      <%= builder.text_field :editor, 'Editora' %>
+      <%= builder.text_field :year, 'Ano' %>
+      <%= builder.text_field :language, 'Língua' %>
+      <%= builder.number_field :page_number, 'Páginas' %>
+      <%= builder.text_field :subject, 'Assunto' %>
+      <%= builder.text_field :city, 'Cidade' %>
+      <%= builder.text_field :country, 'País' %>
+      <%= builder.text_field :cdd, 'CDD' %>
+    </div>
+
+    <div class='span6'>
+      <br/>
+
+      <%= builder.multiple_field 'author', 'autor', :name %>
+      <%= builder.multiple_field 'tag', 'palavra chave', :title %>
+
+      <%= builder.text_field :pdflink, 'PDF' %>      
+      <%= builder.text_field :imglink, 'Imagem' %>
+      <%= builder.text_area :description, 'Descrição' %>
+      
+    </div>    
+    <div class="span12">
+      <%= builder.submit %>
+    </div>
+  </div>
+<% end %>

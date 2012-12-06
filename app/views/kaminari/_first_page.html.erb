@@ -1,0 +1,16 @@
+<%# Link to the "First" page
+  - available local variables
+    url:           url to the first page
+    current_page:  a page object for the currently displayed page
+    num_pages:     total number of pages
+    per_page:      number of items to fetch per page
+    remote:        data-remote
+-%>
+
+<li class="first">
+ <% if params[:user_id] %>
+    <%= link_to_unless current_page.first?, raw('&laquo; Primeira'), user_books_path(@user, params.merge(:page => 1)), :remote => remote %>
+  <% else %>
+    <%= link_to_unless current_page.first?, raw('&laquo; Primeira'), url, :remote => remote %>
+  <% end %>
+</li>

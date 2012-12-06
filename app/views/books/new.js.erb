@@ -1,0 +1,25 @@
+<% if @attributes['title'].nil? %>
+  var element = $("<div class='alert alert-error fade in' data-alert='alert'><a data-dismiss='alert' class='close'>&times;</a>Nenhum livro encontrado.</div>");
+
+  $('#main-div').prepend(element);
+<% end %>
+ 
+$("#book_isbn").val("<%= @attributes['isbn'] %>");       
+
+<% (Book.dc_fields + Book.tl_fields - ['isbn']).each do |field| %>
+  <% if @attributes[field] -%>
+    $("#book_<%= field %>").val("<%= (@attributes[field].is_a? String) ? raw(@attributes[field].gsub(/"/, '\"')) : @attributes[field]  %>");
+    $("#book_<%= field %>").parent().parent().effect('highlight', {}, 5000);
+  <% end %>    
+<% end %>
+    
+$('#new_book .close').click();  //remove todos campos de autor  
+  
+<% if @attributes['authors_attributes'] -%>
+  <% @attributes['authors_attributes'].values.each do |author| %>
+    $("#add_authors").click();
+    $(".book_authors").last().val("<%= author['name'] %>");
+    $(".book_authors").last().parent().parent().effect('highlight', {}, 5000);
+  <% end %>
+<% end %>
+
