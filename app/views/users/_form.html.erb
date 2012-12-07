@@ -1,0 +1,11 @@
+<%= twitter_bootstrap_form_for @user, :url => url do |builder| %>
+
+  <%= builder.text_field :username, 'Usuário' %>
+  <%= builder.text_field :name, 'Nome' %>
+  <%= builder.password_field :password, 'Senha' %>
+  <%= builder.password_field :password_confirmation, 'Confirme a senha' %>
+  <%= builder.text_area :description, 'Descrição' %>
+
+  <%= builder.submit %>
+
+<% end %>

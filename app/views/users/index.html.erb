@@ -1,0 +1,28 @@
+<% title "Bibliotecas" %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Biblioteca</th>
+      <th><% if current_user %>Ações<% end %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.name, user %></td>
+        <td>
+          <% restricted_to([user, admin]) do %>
+            <%= btn_mini 'Editar', edit_user_path(user) %>
+            <%= btn_mini_danger 'Deletar', user %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% restricted_to(admin) do %>
+  <%= btn_primary 'Nova Biblioteca', signup_path %>
+<% end %>
+

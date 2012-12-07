@@ -1,0 +1,9 @@
+<% title @user.name %>
+
+<fieldset>
+  <legend>Editar Biblioteca</legend>
+  <br/>
+  
+  <%= render :partial => 'form', :locals => {:url => "/#{@user.id}"} %>
+  
+</fieldset>

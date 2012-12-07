@@ -1,0 +1,20 @@
+<% title @user.name %>
+
+<% present @user do |user_presenter| %>
+  <h1 class="user_name">
+    <%=h @user.name %>
+  </h1>
+
+  <%= user_presenter.field :username %>
+  <%= user_presenter.field :description, 'Descrição' %>
+
+  <% if current_user %>
+    <div class="form-actions">
+      <%= btn "Todas", users_path %>
+      <% restricted_to([@user, admin]) do %>
+        <%= btn "Editar", edit_user_path(@user) %>
+        <%= btn_danger "Remover", "/#{@user.id}" %> 
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
