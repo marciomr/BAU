@@ -62,8 +62,8 @@ class Book < ActiveRecord::Base
     indexes tags.title, :as => :tag
     indexes authors.name, :as => :author
     
-#    has user_id
-    has "CAST(user_id AS INT)", :type => :integer, :as => :column
+    has user_id
+#    has "CAST(user_id AS INT)", :type => :integer, :as => :column
 
     set_property :enable_star => true
     set_property :min_infix_len => 3
