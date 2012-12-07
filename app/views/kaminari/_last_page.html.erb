@@ -8,7 +8,7 @@
 -%>
 <li class="last">
   <% if params[:user_id] %>
-    <%= link_to_unless current_page.last?, raw('Última &raquo;'), user_books_path(@user, params.merge(:page => num_pages)), {:remote => remote} %>
+    <%= link_to_unless current_page.last?, raw('Última &raquo;'), user_books_path(@user, params.merge(:page => total_pages)), {:remote => remote} %>
   <% else %>
     <%= link_to_unless current_page.last?, raw('Última &raquo;'), url, {:remote => remote} %>
   <% end %>
