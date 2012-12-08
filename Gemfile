@@ -22,13 +22,13 @@ gem 'factory_girl_rails', :group => [:development, :test]
 gem 'guard-livereload', :group => [:development, :test]
 gem 'rack-livereload', :group => [:development, :test]
 
+# using my version of bootstrap because of the autocompletion
+gem 'twitter-bootstrap-rails', :git => 'git://github.com/marciomr/twitter-bootstrap-rails.git'
+
 group :assets do
   gem 'sass-rails', "  ~> 3.1.0"
   gem 'coffee-rails', "  ~> 3.1.0"
   gem 'uglifier'
-  
-  # using my version of bootstrap because of the autocompletion
-  gem 'twitter-bootstrap-rails', :git => 'git://github.com/marciomr/twitter-bootstrap-rails.git'
 end
 
 group :test do
