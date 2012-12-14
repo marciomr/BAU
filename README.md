@@ -36,7 +36,7 @@ Caso o ISBN do livro seja encontrado no [google books](http://books.google.com) 
 
 Ao preencher determinados campos (Autor, Editora etc.) são sugeridas formas de completá-lo dinamicamente.
 
-![auto complete](https://github.com/marciomr/BAU/blob/master/public/imagens/auto_complete.png)
+![auto complete](https://github.com/marciomr/BAU/blob/master/public/imagens/auto_complete.png?raw=true)
 
 ### Busca Simples e Avançada
 
