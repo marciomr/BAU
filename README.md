@@ -46,7 +46,7 @@ ou usando uma busca avançada.
 
 Interface gráfica intuitiva para gerenciar backups do catálogo:
 
-![backups](https://github.com/marciomr/BAU/blob/master/public/imagens/backup.png?raw=true)
+![backups](https://github.com/marciomr/BAU/blob/master/public/imagens/backups.png?raw=true)
 
 ### Contas
 
