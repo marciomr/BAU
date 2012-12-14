@@ -2,7 +2,7 @@
 
 Bibliotecas Autonomas Unificadas (BAU) é um site catalogação e busca de livros de bilbiotecas autônomas. O código do site é livre sob licença GPL 3 e está disponível em https://github.com/marciomr/BAU
 
-![BAU](public/imagens/bau.png)
+![BAU](https://github.com/marciomr/BAU/blob/master/public/imagens/BAU.png?raw=true)
 
 ##Features
 
@@ -36,17 +36,17 @@ Caso o ISBN do livro seja encontrado no [google books](http://books.google.com) 
 
 Busque por livros através de uma busca simples:
 
-![busca simples](public/imagens/busca_simples.png)
+![busca simples](https://github.com/marciomr/BAU/blob/master/public/imagens/busca_simples.png?raw=true)
 
 ou usando uma busca avançada.
 
-![busca avançada](public/imagens/busca_avancada.png)
+![busca avançada](https://github.com/marciomr/BAU/blob/master/public/imagens/busca_avancada.png?raw=true)
 
 ### Gerenciamento de Backups do Catálogo
 
 Interface gráfica intuitiva para gerenciar backups do catálogo:
 
-![backups](public/imagens/backups.png)
+![backups](https://github.com/marciomr/BAU/blob/master/public/imagens/backup.png?raw=true)
 
 ### Contas
 
