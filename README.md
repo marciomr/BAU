@@ -32,6 +32,9 @@ As features incluem: formulário detalhado, auto-preenchimento, busca simples e 
 
 Caso o ISBN do livro seja encontrado no [google books](http://books.google.com) ou em alguma outra biblioteca cadastrada o formulário será preenchido automaticamente com os dados extraídos desses meios.
 
+![auto fill](https://github.com/marciomr/BAU/blob/master/public/imagens/auto_fill.png?raw=true)
+
+
 ### Auto-completamento
 
 Ao preencher determinados campos (Autor, Editora etc.) são sugeridas formas de completá-lo dinamicamente.
