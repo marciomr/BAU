@@ -80,7 +80,11 @@ production:
   password: bar
 ```
 
-Configure o arquivo BAU/config/sphix.yml para apontar para path-to/sphinx/src.
+Configure o arquivo BAU/config/sphix.yml adicionando a seguinte linha:
+
+```ruby
+bin_path: "/home/bau/sphinx-2.0.4-release/src"
+```
 
 Instale as dependencias:
 ```shell
