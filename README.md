@@ -80,6 +80,8 @@ production:
   password: bar
 ```
 
+Configure o arquivo BAU/config/sphix.yml para apontar para path-to/sphinx/src.
+
 Instale as dependencias:
 ```shell
 bundle
