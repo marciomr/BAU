@@ -61,6 +61,47 @@ Interface gráfica intuitiva para gerenciar backups do catálogo:
 
 Cada biblioteca gerencia apenas seus livros através de uma conta protegida por senha. Os usuários podem buscar tanto o catálogo uma específica biblioteca como de todas as bibliotecas cadastradas.
 
+## Deploy
+
+Instale o [sphinx](http://sphinxsearch.com/)
+
+Clone o repositório no servidor:
+```shell
+git clone https://github.com/marciomr/BAU.git
+```
+
+Crie o arquivo BAU/config/database.yml
+Exemplo:
+```ruby
+production:
+  adapter: mysql2
+  database: database_development
+  username: foo
+  password: bar
+```
+
+Instale as dependencias:
+```shell
+bundle
+```
+
+Crie a pasta backups:
+```shell
+mkdir public/backups
+```
+
+Rode as migration:
+```shell
+RAILS_ENV=production rake db:migrate
+```
+
+Inicie o thinking-sphinx:
+```shell
+git clone https://github.com/marciomr/BAU.git
+```
+
+Inicie o servidor (isso depende das configurações locais).
+
 ## LICENÇA
 
 Copyright (C) 2012  Márcio Moretto Ribeiro
