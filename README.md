@@ -103,7 +103,7 @@ RAILS_ENV=production rake db:migrate
 
 Inicie o thinking-sphinx:
 ```shell
-git clone https://github.com/marciomr/BAU.git
+rake ts:start
 ```
 
 Inicie o servidor (isso depende das configurações locais).
