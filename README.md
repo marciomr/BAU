@@ -103,6 +103,7 @@ RAILS_ENV=production rake db:migrate
 
 Inicie o thinking-sphinx:
 ```shell
+rake ts:index
 rake ts:start
 ```
 
